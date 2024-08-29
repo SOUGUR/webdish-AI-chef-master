@@ -12,11 +12,33 @@ export const ChefCard1 = ({ heading, description, video }) => {
   }, []);
 
   return (
-    <div
-      className={`max-w-6xl md:mt-12 flex flex-col mx-auto justify-center items-center rounded ${themeClass}`}
-    >
-      <div className="flex justify-center flex-col mx-auto items-center shadow-gray-500 rounded shadow-xl">
-        <div className="flex flex-col items-center w-full">
+    <div className="inset-0 backdrop-blur-md bg-gray-200 bg-opacity-50 flex items-center justify-center p-4 z-50">
+      <div
+        className="fixed inset-0 bg-cover bg-center z-0"
+        style={{
+          backgroundImage:
+            "url('https://cdn.leonardo.ai/users/b7bcbe82-59ff-4ea9-9d18-f22e92cdf03e/generations/eb880b19-0545-4e9b-819c-b36195140ec9/Anime_Create_a_vibrant_mouthwatering_image_of_animestyle_gourm_1.jpg')",
+          filter: "blur(5px)",
+        }}
+      />
+      <div className="bg-transparent p-4 md:p-8 rounded-lg w-full md:w-3/4 lg:w-2/3 h-2/3 md:h-full max-w-4xl z-10">
+        <div className="flex flex-col h-full justify-between">
+          <div className="backdrop-blur-md bg-gray-200 bg-opacity-50 p-4 rounded-lg">
+            <h2 className="text-center text-2xl sm:text-3xl md:text-4xl text-black mb-6">
+              {heading}
+            </h2>
+            <p className="text-black text-base md:text-xl lg:text-2xl font-light leading-relaxed">
+              {description}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+{
+  /* <div className="flex flex-col items-center w-full">
           <video
             autoPlay
             loop
@@ -29,19 +51,5 @@ export const ChefCard1 = ({ heading, description, video }) => {
           >
             <source src={video} type="video/mp4" />
           </video>
-        </div>
-
-        <div className="flex flex-col justify-center items-center  ">
-          <h2 className="my-4 text-center flex flex-row font-bold text-3xl">
-            {heading}
-          </h2>
-          <p
-            className={`z-10 max-w-screen p-4 flex text-xl flex-col text-justify shadow-lg shadow-gray-900  shadow-sm${themeClass}`}
-          >
-            {description}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
-};
+        </div> */
+}

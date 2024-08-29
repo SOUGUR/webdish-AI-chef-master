@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useSpring, animated } from "react-spring";
-import { Fade } from "react-reveal";
+import { Fade } from 'react-reveal';
 import { ImLocation } from "react-icons/im";
 
 const listOfJobs = () => [
   {
-    jobTitle: "Frontend Developer Intern",
+    jobTitle: "Frontend Developer Engineer",
     jobLocation: "Remote",
     jobApply: "Apply Now",
     jobDescription:
@@ -17,18 +17,18 @@ const listOfJobs = () => [
     isOpen: true
   },
   {
-    jobTitle: "Backend Developer Intern",
+    jobTitle: "Backend Developer Engineer",
     jobLocation: "Remote",
     jobApply: "Apply Now",
     jobDescription:
       "We are seeking a Backend Developer to be a key contributor to our platform's server-side development. As a Backend Developer, you will work closely with the frontend team to ensure seamless integration and optimal performance",
-    jobType: "Intenship",
+    jobType: "Full Time",
     jobPath: "/Backend-Developer-Engineer",
     jobPosted: "01/02/2024",
-    isOpen: true
+    isOpen: false
   },
   {
-    jobTitle: "AI Engineer Intern",
+    jobTitle: "AI Engineer",
     jobLocation: "Remote",
     jobApply: "Apply Now",
     jobDescription:
@@ -51,7 +51,7 @@ const listOfJobs = () => [
     isOpen: true
   },
   {
-    jobTitle: "UI/UX Designer Intern",
+    jobTitle: "UI/UX Designer",
     jobLocation: "Remote",
     jobApply: "Apply Now",
     jobDescription:
@@ -160,8 +160,7 @@ function JobCard({ job }) {
       </p>
       <div className="flex flex-col gap-2 md:gap-0 sm:flex-row justify-between items-center mt-3">
         <div>
-          <strong className="text-green-800">Job Type:</strong>{" "}
-          <span className="custom-text">{job.jobType}</span>
+          <strong className="text-green-800">Job Type:</strong> <span className="custom-text">{job.jobType}</span>
         </div>
         {isJobOpen ? (
           <Link onClick={() => window.scrollTo(0, 0)} to={job.jobPath}>
@@ -217,7 +216,7 @@ function SearchJobCards() {
         <div className="flex flex-wrap gap-4 mb-8 px-4 justify-center items-stretch">
           {filteredJobs.map((job, index) => (
             <Fade key={index} delay={index * 100}>
-              <JobCard key={index} job={job} />
+                <JobCard key={index} job={job} />
             </Fade>
           ))}
         </div>

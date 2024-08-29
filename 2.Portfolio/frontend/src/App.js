@@ -5,7 +5,7 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate
+  Navigate,
 } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 
@@ -90,7 +90,7 @@ const App = () => {
         <Route path="/Chef_Intelligence" element={<Chef_Intelligence />} />
         <Route path="/Nutrition_Manager" element={<Nutrition_Manager />} />
         <Route path="/Growth" element={<Growth />} />
-        <Route path="/Priorities" r element={<Priorities />} />
+        <Route path="/Priorities"r element={<Priorities />} />
         <Route path="/R&D" element={<Focus />} />
 
         <Route

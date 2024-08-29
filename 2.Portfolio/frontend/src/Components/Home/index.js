@@ -4,6 +4,7 @@ import Unique from "../HomeComponents/Unique";
 import Madein from "../HomeComponents/Madein";
 import Happiness from "../HomeComponents/Happiness";
 import Values from "../HomeComponents/Values";
+import Ourwebs from "../HomeComponents/Ourwebs";
 import FooterItem from "../HomeComponents/FooterItem";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
@@ -16,6 +17,7 @@ function Home() {
       <Happiness />
       <Pocket />
       <Values />
+      <Ourwebs />
       <FooterItem />
     </>
   );

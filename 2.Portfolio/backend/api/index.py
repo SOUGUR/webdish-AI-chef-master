@@ -85,6 +85,7 @@ def google_callback():
     assert resp.ok, resp.text
 
     user_info = resp.json()
+    print(user_info)
     exist_user = db.User.find_one({'email': user_info['email']}, {'first_name': 1, 'user_id': 1})
 
     if not exist_user:

@@ -5,6 +5,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import LocationListener from "./hooks/LocationListener";
 import NavBarHeader from './components/NavBarHeader';
 
+import AdminPanel from './components/Admin/AdminPanel';
+
 import Home from './pages/Home';
 import SingleDish from './pages/SingleDish';
 import Cooking from './pages/Cooking';
@@ -72,6 +74,7 @@ import NotFound from './pages/NotFound';
 import Dish from './components/Card-view/DishList';
 import CookingPage from './components/start-cooking/CookingPage';
 import ReceipeSteps from './components/Receipe/ReceipeSteps';
+import Instructions from './components/Admin/Instructions';
 
 const App = () => {
     // const { user } = useAuthContext();
@@ -88,6 +91,7 @@ const App = () => {
             <Routes>
                 <Route path='/' element={<Home />} />
                 <Route path='/cooking' element={<Cooking />} />
+                <Route path='/admin' element={<AdminPanel />} />
                 <Route path='/teampage' element={<TeamPage />} />
                 <Route path='/signup' element={<CreateAccount />} />
                 <Route path='/login' element={<LoginIn />} />
@@ -154,6 +158,7 @@ const App = () => {
                 <Route path='/Card-View' element={<Dish />} />
                 <Route path='/start-cooking/:id' element={<CookingPage />} />
                 <Route path='/receipe/:id' element={<ReceipeSteps />} />
+                <Route path='/steps/:id' element={<Instructions />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </BrowserRouter>

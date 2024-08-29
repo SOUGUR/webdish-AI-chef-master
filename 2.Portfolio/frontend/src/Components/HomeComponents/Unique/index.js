@@ -1,22 +1,28 @@
 import React from "react";
 import { Carousel, Button } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import { Fade } from "react-reveal";
+import Typewriter from "./Typewriter";
+
+// images
+import salad from "../../Images/—Pngtree—healthy food_3776802.png";
+import pizza from "../../Images/—Pngtree—modern kitchen food box italian_9047468.png";
+import daal from "../../Images/daal.png";
 import beans from "../../Images/beans.png";
 import biryani from "../../Images/biryani.png";
-import daal from "../../Images/daal.png";
-import salad from "../../Images/salad.png";
-import pizza from '../../Images/pizza.png'
-import sambhar from "../../Images/sambhar.png";
+import butterchiken from "../../Images/butterchicken.png";
+
+// styles
 import "../Unique/index.css";
-import "tailwindcss/tailwind.css"; // Import Tailwind CSS first
-import { Link } from "react-router-dom";
-import { Fade } from "react-reveal"; // Import Fade effect from react-reveal
-import Typewriter from "./Typewriter";
+import "tailwindcss/tailwind.css";
+
+const carouselImages = [butterchiken, salad, pizza, beans, biryani, daal];
 
 export default function Unique() {
   return (
-    <div className="background-main-page h-full break-words ">
-      <div className=" flex flex-col md:flex-row justify-evenly items-center px-6 md:px-10 py-8 md:py-20">
-        <div className="lg:w-7/12 sm:w-full md:w-full mb-8 sm:mb-0 ">
+    <div className="background-main-page h-full break-words">
+      <div className="flex flex-col md:flex-row justify-evenly items-center px-6 md:px-10 py-8 md:py-20">
+        <div className="lg:w-7/12 sm:w-full md:w-full mb-8 sm:mb-0">
           <h1
             style={{ lineHeight: "3rem" }}
             className="main-heading relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 md:text-start"
@@ -44,41 +50,37 @@ export default function Unique() {
             </Fade>
           </div>
         </div>
-        <div className="lg:w-5/12 sm:w-full md:w-full  ">
+        <div className="lg:w-5/12 sm:w-full md:w-full">
           <Fade right>
             <div className="w-full h-auto flex justify-center">
               <Carousel
-                className="rounded-xl sm:w-1/3 md:w-2/3 "
+                className="rounded-xl sm:w-1/3 md:w-2/3"
                 autoplay
                 autoplayDelay={3000}
                 loop
+                navigation={({ setActiveIndex, activeIndex, length }) => (
+                  <div className="absolute bottom-4 left-2/4 z-50 flex -translate-x-2/4 gap-2">
+                    {new Array(length).fill("").map((_, i) => (
+                      <span
+                        key={i}
+                        className={`block h-1 cursor-pointer rounded-2xl transition-all content-[''] ${
+                          activeIndex === i ? "w-8 bg-white" : "w-4 bg-white/50"
+                        }`}
+                        onClick={() => setActiveIndex(i)}
+                      />
+                    ))}
+                  </div>
+                )}
               >
-                         <img
-                  src={salad}
-                  alt="salad"
-                  className="object-cover w-full h-full"
-                />
-                <img
-                  src={pizza}
-                  alt="pizza"
-                  className="object-cover w-full h-full mt-20"
-                />
-                <img
-                  src={daal}
-                  alt="daal"
-                  className="object-cover w-full h-full"
-                />
-       
-                <img
-                  src={beans}
-                  alt="beans"
-                  className="object-cover w-full h-full"
-                />
-                <img
-                  src={biryani}
-                  alt="biryani"
-                  className="object-cover w-full h-full"
-                />
+                {carouselImages.map((img, index) => (
+                  <img
+                    key={index}
+                    src={img}
+                    alt={`food-${index}`}
+                    className="object-cover w-full h-full"
+                    loading="lazy"
+                  />
+                ))}
               </Carousel>
             </div>
           </Fade>

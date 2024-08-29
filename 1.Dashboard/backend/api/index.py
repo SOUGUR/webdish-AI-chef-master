@@ -359,6 +359,16 @@ def feedback():
     return jsonify({'message': 'Message added successfully'}), 201
 
 
+@app.route('/steps/<id>', methods=['GET'])
+def get_steps(id):
+    dish = db.receipe.find_one({'id': id})
+    print(dish)
+    if dish:
+        return jsonify(dish['recipeSteps'])
+    else:
+        return jsonify({"error": "Recipe not found"}), 404
+
+
 if __name__ == '__main__':
     app.debug = True
     app.run()

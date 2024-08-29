@@ -5,22 +5,19 @@ const DateInput = ({ value, setValue, keyName }) => {
 
     const handleDateChange = (e) => {
         const date = e.target.value;
-        const [currentDate, currentMonth, currentYear] = value[keyName] ? value[keyName].split('/') : ['', '', ''];
-        const newValue = { ...value, [keyName]: `${date || currentDate}/${currentMonth}/${currentYear}` };
+        const newValue = { ...value, [keyName]: `${date}/${value[keyName].split('/')[1]}/${value[keyName].split('/')[2]}` };
         setValue(newValue);
     };
 
     const handleMonthChange = (e) => {
         const monthIndex = e.target.selectedIndex - 1;
-        const [currentDate, currentMonth, currentYear] = value[keyName] ? value[keyName].split('/') : ['', '', ''];
-        const newValue = { ...value, [keyName]: `${currentDate}/${monthIndex + 1 || currentMonth}/${currentYear}` };
+        const newValue = { ...value, [keyName]: `${value[keyName].split('/')[0]}/${monthIndex + 1}/${value[keyName].split('/')[2]}` };
         setValue(newValue);
     };
 
     const handleYearChange = (e) => {
         const year = e.target.value;
-        const [currentDate, currentMonth, currentYear] = value[keyName] ? value[keyName].split('/') : ['', '', ''];
-        const newValue = { ...value, [keyName]: `${currentDate}/${currentMonth}/${year || currentYear}` };
+        const newValue = { ...value, [keyName]: `${value[keyName].split('/')[0]}/${value[keyName].split('/')[1]}/${year}` };
         setValue(newValue);
     };
 

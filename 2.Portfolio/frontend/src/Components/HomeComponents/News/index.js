@@ -7,22 +7,22 @@ const newsData = [
     title:
       "Swiggy and Zomato Face Potential ₹500 Crore GST Bill on Delivery Fees",
     imageUrl:
-      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 2,
     title:
       "WayCool Foods' tech subsidiary, SAP come together to empower food value chain startups",
     imageUrl:
-      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   },
   {
     id: 3,
     title:
       "EatSure partners with IRCTC for in-train food delivery across 100 stations",
     imageUrl:
-      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-  }
+      "https://images.unsplash.com/photo-1518843875459-f738682238a6?q=80&w=3242&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  },
 ];
 
 function News() {
