@@ -18,7 +18,7 @@ const CookingPage = () => {
     
 
     useEffect(() => {
-        fetch(`http://localhost:5000/dishes/${id}/ingredients`)
+        fetch(`${import.meta.env.VITE_API_URL}/dishes/${id}/ingredients`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Dish not found');

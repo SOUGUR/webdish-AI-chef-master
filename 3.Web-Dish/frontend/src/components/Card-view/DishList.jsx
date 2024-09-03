@@ -7,7 +7,7 @@ const Dish = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('http://localhost:5000/dishes')
+        fetch(`${import.meta.env.VITE_API_URL}/dishes`)
             .then(response => response.json())
             .then(data => {
                 console.log('Fetched Data:', data); // Log the data for debugging

@@ -88,7 +88,7 @@ function ReceipeSteps() {
   useEffect(() => {
     const fetchRecipeSteps = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/recipes/${id}`); // Replace with your actual API endpoint
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/recipes/${id}`); // Replace with your actual API endpoint
         if (!response.ok) {
           throw new Error('Failed to fetch recipe steps');
         }
@@ -103,7 +103,7 @@ function ReceipeSteps() {
 
     const fetchName = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/name/${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/name/${id}`);
         const result = await response.json();
         setData2(result);
       } catch (error) {
