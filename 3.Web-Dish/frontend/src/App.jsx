@@ -14,6 +14,7 @@ import TeamPage from './pages/TeamPage';
 import CreateAccount from './components/LoginSineupPage/CreateAccount';
 import LoginIn from './components/LoginSineupPage/LoginIn';
 import ChefIntelligence from './components/ChefIntelligence';
+import SecondaryIntelligence from "./components/SecondaryIntelligence";
 
 import SeasonalDishes from './components/Seasonal-Top/SeasonalDishes';
 import DishPage from './pages/DishPage';
@@ -84,9 +85,10 @@ const App = () => {
         <BrowserRouter>
             <LocationListener setLocation={setLocation} />
 
-            {(location.pathname !== '/chef-intelligence' && location.pathname !== '/chef-intelligence/generatedDish' && location.pathname !== '/chef-intelligence/archives') && (
-                <NavBarHeader />
-            )}
+            {location.pathname !== "/chef-intelligence" &&
+        location.pathname !== "/chef-intelligence/generatedDish" &&
+        location.pathname !== "/chef-intelligence/archives" &&
+        location.pathname !== "/sec-intelligence" && <NavBarHeader />}
 
             <Routes>
                 <Route path='/' element={<Home />} />
@@ -96,6 +98,7 @@ const App = () => {
                 <Route path='/signup' element={<CreateAccount />} />
                 <Route path='/login' element={<LoginIn />} />
                 <Route path='chef-intelligence/*' element={<ChefIntelligence />} />
+                <Route path="/sec-intelligence" element={<SecondaryIntelligence />} />
 
                 <Route path='/SeasonalDishes' element={<SeasonalDishes />} />
                 <Route path="/dish/:dishName" element={<DishPage />} />
