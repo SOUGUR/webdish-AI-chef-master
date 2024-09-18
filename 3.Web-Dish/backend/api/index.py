@@ -31,8 +31,10 @@ scheduler.init_app(app)
 scheduler.start()
 
 client = MongoClient(os.getenv('MONGODB_URL'))
-db = client['AI_Chef_Master']  # AI_Chef_Master
+# db = client['AI_Chef_Master']  # AI_Chef_Master
 
+db = client['chef_master_db']  # AI_Chef_Master
+dishes = db['dishes']
 
 # google login
 app.config["GOOGLE_OAUTH_CLIENT_ID"] = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
@@ -245,8 +247,9 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
 import numpy as np
+import uuid
 
-# Modified data structure
+
 data = {
     'dish_name': ['Pasta Carbonara', 'Chicken Curry', 'Caesar Salad', 'Beef Stir Fry'],
     'ingredients': [
@@ -254,29 +257,10 @@ data = {
         '500g chicken breast, 2 tbsp yogurt, 1 tsp turmeric, 1 tsp garam masala, 1 onion, 3 garlic cloves, 1 tbsp ginger, 2 tbsp curry powder, 400ml coconut milk, 200ml chicken stock',
         '2 heads romaine lettuce, 1 egg yolk, 2 garlic cloves, 2 tsp Dijon mustard, 2 tsp Worcestershire sauce, 1 lemon, 1/2 tsp anchovy paste, 1/2 cup olive oil, 1 cup croutons, 1/2 cup Parmesan, 2 chicken breasts',
         '500g beef sirloin, 2 tbsp soy sauce, 1 tbsp oyster sauce, 1 tsp sesame oil, 2 tbsp vegetable oil, 2 garlic cloves, 1 tbsp ginger, 1 bell pepper, 1 onion, 1 cup broccoli, 1 cup snap peas, 1/4 cup chicken stock, 1 tbsp cornstarch'
-    ],
-    'steps': [
-        ['Cook spaghetti in salted water', 'Fry pancetta until crispy', 'Whisk eggs and cheese',
-         'Toss hot pasta with pancetta', 'Add egg mixture to create sauce', 'Serve with extra cheese and pepper'],
-        ['Marinate chicken', 'Fry onion, garlic, and ginger', 'Add curry powder and chicken',
-         'Pour in coconut milk and stock', 'Simmer until cooked', 'Serve with rice and naan'],
-        ['Make dressing', 'Prepare lettuce and croutons', 'Grill and slice chicken', 'Toss salad with dressing',
-         'Add chicken and extra cheese'],
-        ['Marinate beef', 'Stir-fry garlic and ginger', 'Cook beef', 'Stir-fry vegetables',
-         'Combine beef and vegetables', 'Thicken sauce', 'Serve over rice']
-    ],
-    'video_link': [
-        'https://www.youtube.com/watch?v=GDUbWNJLPnc',
-        'https://www.youtube.com/watch?v=GDUbWNJLPnc',
-        'https://www.youtube.com/watch?v=GDUbWNJLPnc',
-        'https://www.youtube.com/watch?v=GDUbWNJLPnc'
     ]
 }
 
-#C:/Users/ZEN/Desktop/Web-Dish/frontend/src/components/SecondaryIntelligence/data/videos/dough.mp4
-
 df = pd.DataFrame(data)
-
 
 class RecipeModel:
     def __init__(self):
@@ -288,40 +272,41 @@ class RecipeModel:
         self.tfidf_matrix = self.vectorizer.fit_transform(dish_names)
         self.is_trained = True
 
-    def find_closest_recipe(self, query):
+    def find_closest_recipes(self, query, num_recipes=3):
         if not self.is_trained:
             return None
         query_vec = self.vectorizer.transform([query])
         similarities = cosine_similarity(query_vec, self.tfidf_matrix).flatten()
-        closest_index = np.argmax(similarities)
-        return closest_index
-
+        top_indices = similarities.argsort()[-num_recipes:][::-1]
+        return top_indices
 
 recipe_model = RecipeModel()
 recipe_model.train(df['dish_name'])
-
-#CHAT-GPT ROUTE
-@app.route('/generate_recipe', methods=['POST'])
-def generate_recipe():
+#chatgpt-like
+@app.route('/generate_recipes', methods=['POST'])
+def generate_recipes():
     try:
         data = request.json
-        dish_name = data.get('dish')
-        if not dish_name:
-            return jsonify({'error': 'No dish name provided'}), 400
+        query = data.get('query')
+        if not query:
+            return jsonify({'error': 'No query provided'}), 400
 
-        closest_index = recipe_model.find_closest_recipe(dish_name)
-        if closest_index is None:
+        closest_indices = recipe_model.find_closest_recipes(query)
+        if closest_indices is None:
             return jsonify({'error': 'Model not trained'}), 500
 
-        recipe = {
-            'dish_name': df.loc[closest_index, 'dish_name'],
-            'ingredients': df.loc[closest_index, 'ingredients'],
-            'steps': df.loc[closest_index, 'steps'],
-            'video_link': df.loc[closest_index, 'video_link']
-        }
-        return jsonify(recipe)
+        recipes = []
+        for index in closest_indices:
+            recipe = {
+                'id': str(uuid.uuid4()),  # Generate a unique ID for each recipe
+                'dish_name': df.loc[index, 'dish_name'],
+                'ingredients': df.loc[index, 'ingredients']
+            }
+            recipes.append(recipe)
+
+        return jsonify({'recipes': recipes})
     except Exception as e:
-        app.logger.error(f"Error generating recipe: {str(e)}")
+        app.logger.error(f"Error generating recipes: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
 
 
@@ -352,7 +337,6 @@ def get_dish_history():
     except Exception as e:
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
-
 
 # genrated recipes
 @app.route('/start-process', methods=['POST'])
