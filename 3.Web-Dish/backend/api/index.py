@@ -48,9 +48,8 @@ google_blueprint = make_google_blueprint(
 )
 app.register_blueprint(google_blueprint, url_prefix="/login")
 
+
 # #firebase credential
-
-
 
 
 # cred = credentials.Certificate("credentials.json")
@@ -249,7 +248,6 @@ import pandas as pd
 import numpy as np
 import uuid
 
-
 data = {
     'dish_name': ['Pasta Carbonara', 'Chicken Curry', 'Caesar Salad', 'Beef Stir Fry'],
     'ingredients': [
@@ -261,6 +259,7 @@ data = {
 }
 
 df = pd.DataFrame(data)
+
 
 class RecipeModel:
     def __init__(self):
@@ -280,8 +279,11 @@ class RecipeModel:
         top_indices = similarities.argsort()[-num_recipes:][::-1]
         return top_indices
 
+
 recipe_model = RecipeModel()
 recipe_model.train(df['dish_name'])
+
+
 #chatgpt-like
 @app.route('/generate_recipes', methods=['POST'])
 def generate_recipes():
@@ -308,7 +310,6 @@ def generate_recipes():
     except Exception as e:
         app.logger.error(f"Error generating recipes: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
-
 
 # sidebar history
 @app.route('/api/dish_history', methods=['GET', 'POST'])
@@ -338,6 +339,7 @@ def get_dish_history():
         app.logger.error(f"An error occurred: {str(e)}")
         return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
+
 # genrated recipes
 @app.route('/start-process', methods=['POST'])
 def start_process():
@@ -349,8 +351,8 @@ def start_process():
     except Exception as e:
         print(f"Error starting process: {str(e)}")
         return jsonify({"error": "Something went wrong"}), 500
-    
-    
+
+
 #arnab code
 @app.route('/dishes', methods=['GET'])
 def get_dishes():
@@ -432,7 +434,6 @@ def get_steps(id):
         return jsonify(dish['recipeSteps'])
     else:
         return jsonify({"error": "Recipe not found"}), 404
-    
 
 
 # Firebase setup
@@ -451,13 +452,14 @@ storage_client = storage.Client()
 bucket_name = "ai-chef-master-37900.appspot.com"
 bucket = storage_client.bucket(bucket_name)
 
+
 @app.route('/upload', methods=['POST'])
 def upload_video():
     try:
         # Get dish ID and step index from the form data
         dish_id = request.form.get('dishId')
         step_index = int(request.form.get('stepIndex'))
-        print(dish_id,step_index)
+        print(dish_id, step_index)
         print(request.files['video'])
 
         # Get the uploaded file from the request
@@ -489,8 +491,6 @@ def upload_video():
             return jsonify({'message': 'Video uploaded successfully', 'video_url': video_url})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-
 
 
 if __name__ == '__main__':

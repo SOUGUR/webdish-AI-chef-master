@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const MainContent = () => {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [hideSuggestion, setHideSuggestion] = useState(false);
@@ -26,12 +28,12 @@ const MainContent = () => {
       setInputMessage("");
 
       try {
-        const response = await fetch("http://localhost:5000/generate_recipe", {
+        const response = await fetch("http://localhost:5000/generate_recipes", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ dish: inputMessage }),
+          body: JSON.stringify({ query: inputMessage }),
         });
         const data = await response.json();
 
@@ -39,23 +41,17 @@ const MainContent = () => {
           throw new Error(data.error);
         }
 
-        // Format the recipe data into a readable message
-        const formattedRecipe = `
-  Recipe for ${data.dish_name}:
-  
-  Ingredients:
-  ${data.ingredients}
-  
-  Steps:
-  ${data.steps.map((step, index) => `${index + 1}. ${step}`).join("\n")}
-        `.trim();
+        const formattedRecipes = data.recipes.map((recipe) => ({
+          name: recipe.dish_name,
+          ingredients: recipe.ingredients,
+          id: recipe.id,
+        }));
 
         setMessages((prev) => [
           ...prev,
           {
-            text: formattedRecipe,
+            recipes: formattedRecipes,
             sender: "AI Chef",
-            videoUrl: data.video_link, // Store the video URL separately
           },
         ]);
       } catch (error) {
@@ -63,7 +59,7 @@ const MainContent = () => {
         setMessages((prev) => [
           ...prev,
           {
-            text: `Sorry, I couldn't find a recipe for that dish. ${error.message}`,
+            text: `Sorry, I couldn't find recipes for that query. ${error.message}`,
             sender: "AI Chef",
           },
         ]);
@@ -83,28 +79,37 @@ const MainContent = () => {
                 message.sender === "user" ? "text-right" : "text-left"
               }`}
             >
-              <span
-                className={`inline-block p-2 rounded-lg ${
-                  message.sender === "user"
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-700 text-white"
-                }`}
-              >
-                <pre className="whitespace-pre-wrap font-sans text-sm">
+              {message.sender === "user" ? (
+                <span className="inline-block p-2 rounded-lg bg-blue-500 text-white">
                   {message.text}
-                </pre>
-              </span>
-              {message.videoUrl && (
-                <div className="mt-2">
-                  <iframe
-                    width="100%"
-                    height="315"
-                    src={message.videoUrl}
-                    title="Recipe Video"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
-                </div>
+                </span>
+              ) : message.recipes ? (
+                <Link to="/chef-intelligence/generatedDish">
+                  <div className="space-y-2">
+                    {message.recipes.map((recipe) => (
+                      <div
+                        key={recipe.id}
+                        className="bg-gray-700 rounded-lg p-2"
+                      >
+                        <div className="text-white font-semibold hover:underline">
+                          {recipe.name}
+                        </div>
+                        {
+                          <div className="mt-2 text-sm text-gray-300">
+                            <h4 className="font-semibold">Ingredients:</h4>
+                            <pre className="whitespace-pre-wrap">
+                              {recipe.ingredients}
+                            </pre>
+                          </div>
+                        }
+                      </div>
+                    ))}
+                  </div>
+                </Link>
+              ) : (
+                <span className="inline-block p-2 rounded-lg bg-gray-700 text-white">
+                  {message.text}
+                </span>
               )}
             </div>
           ))}

@@ -17,11 +17,9 @@ const Navbar = ({ lightMode, setLightMode, sideBarOpen, setSideBarOpen }) => {
   const [voiceAssistantOpen, setVoiceAssistantOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(0);
 
-
   const toggleVoiceAssistant = () => {
     setVoiceAssistantOpen(!voiceAssistantOpen);
   };
-
 
   const indianLanguages = ["Hindi", "Bengali", "Telugu", "Marathi", "Tamil"];
 
@@ -123,11 +121,12 @@ const Navbar = ({ lightMode, setLightMode, sideBarOpen, setSideBarOpen }) => {
             >
               <p className="text-sm text-gray-200">Custom Instructions</p>
               <svg
-                className={`ml-auto h-5 w-5  justify-center flex align-center transform-${voiceAssistantOpen ? "rotate-180" : ""
-                  }`}
+                className={`ml-auto h-5 w-5  justify-center flex align-center transform-${
+                  voiceAssistantOpen ? "rotate-180" : ""
+                }`}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
-                fill="currentColor"
+                fill="currentColor" 
               >
                 <path
                   fillRule="evenodd"
@@ -159,8 +158,8 @@ const Navbar = ({ lightMode, setLightMode, sideBarOpen, setSideBarOpen }) => {
                     {selectedValue === 0
                       ? "Chat"
                       : selectedValue === 50
-                        ? "Voice"
-                        : "Chat and Voice"}
+                      ? "Voice"
+                      : "Chat and Voice"}
                   </label>
                 </div>
               </div>
@@ -347,8 +346,9 @@ const Navbar = ({ lightMode, setLightMode, sideBarOpen, setSideBarOpen }) => {
                     >
                       <p className="text-lg text-center">Custom Instructions</p>
                       <svg
-                        className={`ml-auto h-5 w-5 mt-2 justify-center flex align-center ${voiceAssistantOpen ? "rotate-180" : ""
-                          }`}
+                        className={`ml-auto h-5 w-5 mt-2 justify-center flex align-center ${
+                          voiceAssistantOpen ? "rotate-180" : ""
+                        }`}
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                         fill="currentColor"
@@ -386,8 +386,8 @@ const Navbar = ({ lightMode, setLightMode, sideBarOpen, setSideBarOpen }) => {
                             {selectedValue === 0
                               ? "Chat"
                               : selectedValue === 50
-                                ? "Voice"
-                                : "Chat and Voice"}
+                              ? "Voice"
+                              : "Chat and Voice"}
                           </label>
                         </div>
                       </div>
