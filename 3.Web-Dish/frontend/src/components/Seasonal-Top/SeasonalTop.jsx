@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Card2 from '../Card2';
 // import SeasonalDishesData from '../../Data/Seasonal-Top-Dishes/SeasonalDishesData';
 import TopDishesData from '../../Data/Seasonal-Top-Dishes/TopDishesData';
@@ -8,23 +8,11 @@ import { useSpring, animated } from 'react-spring';
 import Flip from 'react-reveal/Flip';
 import { Link } from 'react-router-dom';
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
-//import RecommendedData from '../../Data/RecommendedData';
+import RecommendedData from '../../Data/RecommendedData';
 import useFetchDishes from '../../hooks/useFetchDishes';
 
 const SeasonalTop = () => {
   const { loading, dishes, error } = useFetchDishes();
-
-  const [dish, setDishes] = useState([]);
-
-    useEffect(() => {
-        fetch('http://localhost:5000/dishes')
-            .then(response => response.json())
-            .then(data => {
-                console.log('Fetched Data:', data); // Log the data for debugging
-                setDishes(data);
-            })
-            .catch(error => console.error('Error fetching data:', error));
-    }, []);
 
   const fadeIn = useSpring({
     from: { opacity: 0 },
@@ -87,16 +75,15 @@ const SeasonalTop = () => {
         </div>
       </Marquee>
 
-      {/* RECOMENDDED DISHES */}
       <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
         <h1 className='text-center text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold'>Recommended Dishes</h1>
       </div>
       <Marquee>
         <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden" >
-          {dish.map((dish, index) => (
+          {RecommendedData.map((dish, index) => (
             <Flip key={index} cascade left>
               <animated.div style={fadeIn} className="flex-grow h-full">
-                <Card2 key={index} title={dish.dish_name} time={dish.cooking_time} rating={dish.rating} imageUrl={dish.image} />
+                <Card2 key={index} title={dish.dishName} time={dish.time} rating={dish.rating} imageUrl={dish.dishImage} />
               </animated.div>
             </Flip>
           ))}

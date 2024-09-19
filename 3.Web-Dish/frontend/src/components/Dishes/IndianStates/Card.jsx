@@ -1,6 +1,6 @@
 import React from "react";
 import Card2 from "../../Card2";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { dishesSeeMorePath } from "../../../Data/SeeMorePathUrl";
 import { Flip } from "react-reveal";
 import { useSpring, animated } from 'react-spring';
@@ -12,12 +12,6 @@ const Card = ({ title, famousDish }) => {
         to: { opacity: 1 },
         config: { duration: 1000 },
     });
-
-    const navigate = useNavigate();
-
-    const handleCardClick = (id) => {
-        navigate(`/start-cooking/${id}`);
-    };
 
     return (
         <div className="mx-2">
@@ -39,7 +33,7 @@ const Card = ({ title, famousDish }) => {
             <div className="flex overflow-x-scroll smooth-scroll gap-3">
                 {famousDish.map((dish, index) => (
                     <Flip key={index} cascade left>
-                        <animated.div style={fadeIn} className="flex-grow h-full py-3" onClick={() => handleCardClick(dish.id)}>
+                        <animated.div style={fadeIn} className="flex-grow h-full py-3">
                             <div style={{ height: "280px" }}>
                                 <Card2
                                     title={dish.dish_name}
