@@ -29,7 +29,7 @@ function CreateAccount() {
     else if (!confirmPassword) return toast.error("Confirm you password");
 
     if (password !== confirmPassword) return toast.error("Password doesn't match");
-
+    
     await signup(fname, lname, countryCode, phoneNumber, email, password, navigate);
   }
 

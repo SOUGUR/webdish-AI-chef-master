@@ -14,7 +14,6 @@ export default function NavBarDishes() {
     { path: "/Quick-Dishes", label: "Quick Dishes" },
     { path: "/Healthy-Dishes", label: "Healthy Dishes" },
     { path: "/Create-Menu", label: "Create Menu" },
-    { path: "/Card-view", label: "All Dishes" },
     { path: "/chef-intelligence", label: "Chef Intelligence", external: true },
   ];
 

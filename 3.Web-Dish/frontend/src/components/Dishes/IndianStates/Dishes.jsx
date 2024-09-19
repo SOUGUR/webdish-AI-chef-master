@@ -51,7 +51,7 @@ function Dishes() {
     };
 
     return (
-        <div className='bg-[#f7f3cd] min-h-screen'>
+        <div className='bg-[#f7f3cd] max-w-full overflow-x-hidden '>
             <h1 className='py-12 text-2xl sm:text-4xl md:text-6xl text-center font-bold text-black'>{stateName} Dishes</h1>
             {dishes ? (dishes.length > 0 ? renderDishesByCourse() : (
                 <p className='text-lg text-center'>No dish found</p>

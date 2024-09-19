@@ -4,7 +4,7 @@ import { SiCodechef } from "react-icons/si";
 import 'plyr/dist/plyr.css';
 
 const SingleDish = (props) => {
-const { dishImage, dishAlt, dishTitle, dishType, preprationTime, dishIngredients, dishCalories, dishDescription,dishCuisine } = props;
+const { dishImage, dishAlt, dishTitle, dishType, preprationTime, dishIngredients, dishCalories, dishDescription } = props;
 
 return (
 <>
@@ -18,10 +18,6 @@ return (
                 <div className="bg-[#00544f] text-white rounded-full w-fit py-1 px-2 mb-8">
                     {dishType}
                 </div>
-                <div className="bg-[#00544f] text-white rounded-full w-fit py-1 px-2 mb-8">
-                    {dishCuisine}
-                </div>
-                
 
                 <div className="flex flex-col justify-between  ">
                     <div className="flex items-center   justify-around text-white space-y-4 md:space-y-0 md:space-x-4 bg-[#00544f] py-2 rounded-2xl">

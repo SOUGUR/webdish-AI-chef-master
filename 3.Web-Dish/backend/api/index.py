@@ -282,7 +282,7 @@ class RecipeModel:
 
 recipe_model = RecipeModel()
 recipe_model.train(df['dish_name'])
-
+    
 
 #chatgpt-like
 @app.route('/generate_recipes', methods=['POST'])
@@ -310,6 +310,7 @@ def generate_recipes():
     except Exception as e:
         app.logger.error(f"Error generating recipes: {str(e)}")
         return jsonify({'error': 'Internal server error'}), 500
+
 
 # sidebar history
 @app.route('/api/dish_history', methods=['GET', 'POST'])
