@@ -63,29 +63,39 @@ function SeeMoreDescription({ slideDishes }) {
         <div key={index} className="slider-item relative overflow-hidden">
           <div className="h-[80vh] flex items-center justify-center">
             <div className="absolute inset-0 bg-black opacity-40 z-10"></div>
-             <img
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 transform scale-100 hover:scale-110"
-              src={dish.image || 'https://playswellwithbutter.com/wp-content/uploads/2021/04/Grilled-Bell-Peppers-6-960x1440.jpg'}  
-              alt={dish.dish_name}
-              // alt={dish.dishName}  
+            <img
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 transform scale-100 hover:scale-110"
+                src={dish.image || 'https://playswellwithbutter.com/wp-content/uploads/2021/04/Grilled-Bell-Peppers-6-960x1440.jpg'}
+                alt={dish.dish_name}
+                // alt={dish.dishName}
             />
-            <div className="absolute px-5 inset-0 flex flex-col items-center justify-center text-white z-20">
-              <h1 className="text-5xl font-bold mb-4">{dish.dish_name}</h1>  
-              {/* <h1 className="text-5xl font-bold mb-4">{dish.dishName}</h1>   */}
 
-              {/* <div className="flex text-2xl items-center justify-center mb-4">
-                {renderStarRating(0)}  
-                {renderStarRating(dish.rating)}  
-                <span className="ml-2 text-2xl font-semibold">
-                  {dish.rating} 
-                </span>
-              </div> */}
-              
-              <p className="text-lg text-justify max-w-lg mx-auto mb-8">{dish.description}</p>  
+            {/*<div className="absolute px-5 inset-0 flex flex-col items-center justify-center text-white z-20">*/}
+            {/*  <h1 className="text-5xl font-bold mb-4">{dish.dish_name}</h1>*/}
+            {/*  /!* <h1 className="text-5xl font-bold mb-4">{dish.dishName}</h1>   *!/*/}
+
+            {/*  /!* <div className="flex text-2xl items-center justify-center mb-4">*/}
+            {/*    {renderStarRating(0)}  */}
+            {/*    {renderStarRating(dish.rating)}  */}
+            {/*    <span className="ml-2 text-2xl font-semibold">*/}
+            {/*      {dish.rating} */}
+            {/*    </span>*/}
+            {/*  </div> *!/*/}
+            {/*  */}
+            {/*  <p className="md:text-4xl font-light text-justify max-w-lg mx-auto mb-8">{dish.description}</p>*/}
+            {/*</div>*/}
+
+            <div className="absolute px-5 inset-0 flex flex-col items-center justify-center text-white z-20">
+              <h1 className="text-6xl font-bold mb-6">{dish.dish_name}</h1>
+
+              <p className="text-3xl md:text-4xl lg:text-5xl font-extralight text-center max-w-4xl mx-auto mb-8">
+                {dish.description}
+              </p>
             </div>
-          </div> 
+
+          </div>
         </div>
-      ))}
+       ))}
     </Slider>
   );
 }

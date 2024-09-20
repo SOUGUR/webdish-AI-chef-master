@@ -1,4 +1,17 @@
- 
+/* Footer.css */
+
+.footer {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #333;
+    padding: 2rem 1rem;
+}
+
+.fluid-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .card-container {
     display: flex;
     justify-content: center;
@@ -12,6 +25,19 @@
     justify-content: center;
 }
 
+.footer-content {
+    margin-bottom: 2rem;
+}
+
+.footer-heading {
+    font-family: "Gilroy", sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    text-decoration: underline;
+    line-height: 26px;
+}
+
 .list-items-styles {
     list-style: none;
     font-family: "Gilroy", sans-serif;
@@ -19,20 +45,16 @@
     text-align: start;
     font-size: 17px;
     line-height: 1.75em;
+    padding: 0;
+}
+
+.list-items-styles li {
+    margin-bottom: 5px;
 }
 
 .list-items-styles li:hover {
     color: rgb(249, 249, 249);
     text-shadow: 2px 2px 4px rgba(149, 143, 143, 0);
-}
-
-.heading-item {
-    font-family: "Gilroy", sans-serif;
-    font-weight: 800;
-    margin-bottom: 10px;
-    text-decoration: underline;
-    font-size: 20px;
-    line-height: 26px;
 }
 
 .heading-title {
@@ -48,16 +70,6 @@
     text-shadow: 5px 5px 8px rgba(12, 0, 0, 0.8);
 }
 
-.list-items-styles li {
-    margin-bottom: 5px;
-    text-align: start;
-}
-
-.footer {
-    font-family: Arial, Helvetica, sans-serif;
-    color: #333;
-}
-
 .footer h1,
 .footer h2 {
     font-size: 24px;
@@ -70,4 +82,56 @@
 
 .golden-text {
     color: hsl(50, 33%, 30%);
+}
+
+/* Ensure consistent spacing for social media icons */
+.list-items-styles li.flex {
+    display: flex;
+    align-items: center;
+}
+
+.list-items-styles li.flex span {
+    margin-right: 0.5rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .footer {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .card-container {
+        width: 100%;
+    }
+
+    .footer-content {
+        text-align: center;
+    }
+
+    .list-items-styles {
+        text-align: center;
+    }
+
+    .list-items-styles li.flex {
+        justify-content: center;
+    }
+
+    .heading-title {
+        font-size: 4rem;
+    }
+}
+
+/* Tablet responsiveness */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .footer {
+        padding: 2rem 1rem;
+    }
+
+    .card-container {
+        width: 90%;
+    }
+
+    .heading-title {
+        font-size: 5rem;
+    }
 }

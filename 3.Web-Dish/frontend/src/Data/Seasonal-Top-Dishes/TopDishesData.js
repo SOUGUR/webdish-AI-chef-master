@@ -29,7 +29,7 @@ const TopDishesData = [
   {
     dishName: "Paneer Pulav",
     dishImage:
-      "https://www.whiskaffair.com/wp-content/uploads/2019/08/Paneer-Pulao-1-3.jpg",
+      "https://th.bing.com/th/id/OIP.PDEarGsxrhTJXsjK2-17uQHaHa?rs=1&pid=ImgDetMain",
     time: "120",
     rating: "4",
     description:

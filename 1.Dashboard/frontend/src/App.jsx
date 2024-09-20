@@ -6,11 +6,11 @@ import { useAuthContext } from './hooks/useAuthContext'
 import Navbar from './components/Navbar'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
 import SearchPage from './pages/SearchPage'
 import HistoryPage from './pages/HistoryPage'
 import ContactPage from './pages/ContactPage'
+// import SignupPage from './pages/SignupPage'
 // import JobsPage from './pages/JobsPage'
 // import CareerPage from './pages/CareerPage'
 // import JobForm from './components/JobForm'
@@ -36,11 +36,11 @@ function App() {
           <Routes>
             <Route path='/' element={<HomePage />} />
             <Route path='/login' element={!user ? <LoginPage /> : <Navigate to='/dashboard' />} />
-            <Route path='/signup' element={!user ? <SignupPage /> : <Navigate to='/dashboard' />} />
             <Route path='/dashboard' element={user ? <DashboardPage /> : <Navigate to='/login' />} />
             <Route path='/search' element={!user ? <LoginPage /> : <SearchPage theme={theme} />} />
             <Route path='/history' element={!user ? <LoginPage /> : <HistoryPage />} />
             <Route path='/contact' element={<ContactPage />} />
+            {/*<Route path='/signup' element={!user ? <SignupPage /> : <Navigate to='/dashboard' />} />*/}
             {/* <Route path='/jobs' element={!user ? <JobsPage /> : <Navigate to='/login' />} />
             <Route path='/career' element={<CareerPage/>}/>
             <Route path='/jobform' element={!user ? <JobForm /> : <Navigate to='/login' />} />

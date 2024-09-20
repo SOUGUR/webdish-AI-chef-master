@@ -1,22 +1,23 @@
-from flask import Flask, request, jsonify, redirect, session, url_for
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity, get_current_user
-from pymongo import MongoClient
-from flask_dance.contrib.google import make_google_blueprint, google
-from gridfs import GridFS
-from flask_cors import CORS, cross_origin
-import os
 import json
-import requests
-import re
+import os
 import urllib.parse
+
 import bson
 from dotenv import load_dotenv
+from flask import Flask, request, jsonify, redirect, session, url_for
+from flask_cors import CORS
+from flask_dance.contrib.google import make_google_blueprint, google
+from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
+from pymongo import MongoClient
 
 load_dotenv()
-from pathlib import Path
 from datetime import datetime, timedelta
-from bson.regex import Regex
 import re
+
+import random
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
@@ -26,7 +27,7 @@ app.secret_key = os.urandom(12)
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = timedelta(days=30)
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=1)
 jwt = JWTManager(app)
 
 client = MongoClient(os.getenv('MONGODB_URL'))
@@ -112,28 +113,28 @@ def sign_up():
         return jsonify({'message': 'SignUp Successful'}), 201
 
 
-@app.route('/chef/login', methods=['POST'])
-def login():
-    if request.method == 'POST':
-        data = request.get_json()
-
-        email = data.get('email')
-        password = data.get('password')
-        session['email'] = email
-
-        login_user = db.Chef.find_one({'email': email, 'password': password})
-        if login_user:
-            access_token = create_access_token(identity=email)
-
-            login_user = db.Chef.find_one({'email': email}, {'first_name': 1, 'last_name': 1, 'user_id': 1})
-
-            kname = login_user['first_name'] + " " + login_user['last_name']
-            user_id = login_user['user_id']
-            session['is_login'] = True
-            return jsonify(message='Login Successful', access_token=access_token, email=email, name=kname,
-                           user_id=user_id)
-        else:
-            return jsonify({'message': 'Invalid email and password'}), 401
+# @app.route('/chef/login', methods=['POST'])
+# def login():
+#     if request.method == 'POST':
+#         data = request.get_json()
+#
+#         email = data.get('email')
+#         password = data.get('password')
+#         session['email'] = email
+#
+#         login_user = db.Chef.find_one({'email': email, 'password': password})
+#         if login_user:
+#             access_token = create_access_token(identity=email)
+#
+#             login_user = db.Chef.find_one({'email': email}, {'first_name': 1, 'last_name': 1, 'user_id': 1})
+#
+#             kname = login_user['first_name'] + " " + login_user['last_name']
+#             user_id = login_user['user_id']
+#             session['is_login'] = True
+#             return jsonify(message='Login Successful', access_token=access_token, email=email, name=kname,
+#                            user_id=user_id)
+#         else:
+#             return jsonify({'message': 'Invalid email and password'}), 401
 
 
 @app.route('/chef/checkDishExists', methods=['GET'])
@@ -367,6 +368,141 @@ def get_steps(id):
         return jsonify(dish['recipeSteps'])
     else:
         return jsonify({"error": "Recipe not found"}), 404
+
+
+# Raj Code
+
+EMAIL_USER = os.getenv('EMAIL_USER')
+EMAIL_PASS = os.getenv('EMAIL_PASS')
+
+otp_store = {}
+email_verified_store = {}
+
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+
+def send_otp_email(email, otp):
+    msg = MIMEMultipart()
+    msg['From'] = EMAIL_USER
+    msg['To'] = email
+    msg['Subject'] = "Login OTP for 2-Step Verification"
+
+    body = f"Your OTP for login is: {otp}"
+    msg.attach(MIMEText(body, 'plain'))
+
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(EMAIL_USER, EMAIL_PASS)
+    text = msg.as_string()
+    server.sendmail(EMAIL_USER, email, text)
+    server.quit()
+
+
+@app.route('/chef/send-otp', methods=['POST'])
+def send_otp():
+    data = request.get_json()
+    email = data.get('email')
+
+    if not email:
+        return jsonify(message='Email is required'), 400
+
+    # Check if user exists
+    user = db.Chef.find_one({'email': email})
+    if not user:
+        return jsonify(message='User not found'), 404
+
+    # Generate and send OTP
+    otp = generate_otp()
+    otp_store[email] = otp
+    try:
+        send_otp_email(email, otp)
+        return jsonify(message='OTP sent successfully'), 200
+    except Exception as e:
+        print(f"Error sending OTP: {str(e)}")
+        return jsonify(message='Failed to send OTP. Please try again.'), 500
+
+
+@app.route('/chef/verify-otp', methods=['POST'])
+def verify_otp():
+    data = request.get_json()
+    email = data.get('email')
+    otp = data.get('otp')
+
+    if not email or not otp:
+        return jsonify(message='Email and OTP are required'), 400
+
+    stored_otp = otp_store.get(email)
+    if not stored_otp or stored_otp != otp:
+        return jsonify(message='Invalid OTP'), 401
+
+    # OTP is valid
+    otp_store.pop(email, None)
+
+    email_verified_store[email] = True
+
+    return jsonify(message='Email verified successfully'), 200
+
+
+@app.route('/chef/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    if not email or not password:
+        return jsonify(message='Email and password are required'), 400
+
+    login_user = db.Chef.find_one({'email': email, 'password': password})
+    if not login_user:
+        return jsonify(message='Invalid email or password'), 401
+
+    # Check if email is verified using local storage
+    if not email_verified_store.get(email, False):
+        return jsonify(message='Email not verified. Please verify your email first.'), 403
+    else:
+        email_verified_store[email] = False
+
+    # Created access token
+    access_token = create_access_token(identity=email)
+
+    # Set session data
+    session.permanent = True
+    session['is_login'] = True
+    session['email'] = email
+    session['login_time'] = datetime.utcnow().isoformat()
+
+    return jsonify(
+        message='Login Successful',
+        access_token=access_token,
+        email=email,
+    ), 200
+
+
+@app.route('/chef/check-session', methods=['GET'])
+@jwt_required()
+def check_session():
+    current_user = get_jwt_identity()
+    if 'email' in session and session['email'] == current_user:
+        login_time = datetime.fromisoformat(session['login_time'])
+        current_time = datetime.utcnow()
+        time_elapsed = current_time - login_time
+
+        if time_elapsed < timedelta(hours=1):
+            return jsonify(message='Session is valid', email=current_user), 200
+        else:
+            session.clear()
+            return jsonify(message='Session has expired'), 401
+    else:
+        return jsonify(message='No active session'), 401
+
+
+@app.route('/chef/logout', methods=['POST'])
+@jwt_required()
+def logout():
+    session.clear()
+    return jsonify(message='Logged out successfully'), 200
 
 
 if __name__ == '__main__':
