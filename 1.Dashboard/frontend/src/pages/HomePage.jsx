@@ -18,7 +18,7 @@ const HomePage = () => {
 
         <p className='custom-text-secondary description text-lg md:text-xl font-medium pb-6 lg:pb-8 relative'>Bring your signature dishes to life on our platform. Every recipe, every ingredient, and every cooking technique you provide adds a unique flavor to our growing culinary library.</p>
         {!user &&
-          <Link to='/signup'>
+          <Link to='/login'>
             <button className="bg-green-600 hover:bg-green-700 group  relative px-8 py-3 overflow-hidden font-medium rounded-xl border  text-xl md:text-2xl shadow-2xl">
               <span className=" text-white">Get Started</span>
             </button>
