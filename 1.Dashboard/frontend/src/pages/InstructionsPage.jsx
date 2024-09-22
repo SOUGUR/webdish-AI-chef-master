@@ -240,66 +240,6 @@ const InstructionsPage = ({ setTab, formData, setFormData }) => {
         </div>
       </div>
 
-      <div className="custom-bg shadow-xl  p-0.5 w-[90%] lg:w-1/2 rounded-lg mt-5">
-        <div className="items-center relative backdrop-filter backdrop-blur-xl rounded-lg">
-          <Ingredient
-            formData={formData}
-            setFormData={setFormData}
-            portion={2}
-          />
-          <Instruction
-            formData={formData}
-            setFormData={setFormData}
-            portion={2}
-          />
-        </div>
-      </div>
-
-      <div className="custom-bg shadow-xl  p-0.5 w-[90%] lg:w-1/2 rounded-lg mt-5">
-        <div className="items-center relative backdrop-filter backdrop-blur-xl rounded-lg">
-          <Ingredient
-            formData={formData}
-            setFormData={setFormData}
-            portion={3}
-          />
-          <Instruction
-            formData={formData}
-            setFormData={setFormData}
-            portion={3}
-          />
-        </div>
-      </div>
-
-      <div className="custom-bg shadow-xl p-0.5 w-[90%] lg:w-1/2 rounded-lg mt-5">
-        <div className="items-center relative backdrop-filter backdrop-blur-xl rounded-lg">
-          <Ingredient
-            formData={formData}
-            setFormData={setFormData}
-            portion={4}
-          />
-          <Instruction
-            formData={formData}
-            setFormData={setFormData}
-            portion={4}
-          />
-        </div>
-      </div>
-
-      <div className="custom-bg shadow-xl p-0.5 w-[90%] lg:w-1/2 rounded-lg mt-5">
-        <div className="items-center relative backdrop-filter backdrop-blur-xl rounded-lg">
-          <Ingredient
-            formData={formData}
-            setFormData={setFormData}
-            portion={5}
-          />
-          <Instruction
-            formData={formData}
-            setFormData={setFormData}
-            portion={5}
-          />
-        </div>
-      </div>
-
       <div className="flex flex-col md:flex-row items-center justify-center gap-4 py-8">
         <div className="flex gap-4">
           <button

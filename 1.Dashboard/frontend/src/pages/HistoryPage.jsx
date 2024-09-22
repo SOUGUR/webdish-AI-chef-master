@@ -95,11 +95,9 @@ const History = () => {
           setisLoading(false);
         })
         .catch((error) => {
-          logout()
           console.error("Error:", error);
         });
     } catch (error) {
-      logout()
       console.error("Error fetching data:", error);
     }
   };
