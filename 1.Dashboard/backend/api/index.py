@@ -371,7 +371,6 @@ def get_steps(id):
 
 
 # Raj Code
-
 EMAIL_USER = os.getenv('EMAIL_USER')
 EMAIL_PASS = os.getenv('EMAIL_PASS')
 
@@ -403,15 +402,19 @@ def send_otp_email(email, otp):
 @app.route('/chef/send-otp', methods=['POST'])
 def send_otp():
     data = request.get_json()
-    email = data.get('email')
+    username = data.get('email')  # The 'email' field actually contains the username
 
-    if not email:
-        return jsonify(message='Email is required'), 400
+    if not username:
+        return jsonify(message='Username is required'), 400
 
     # Check if user exists
-    user = db.Chef.find_one({'email': email})
+    user = db.Chef.find_one({'userId': username})
     if not user:
         return jsonify(message='User not found'), 404
+
+    email = user.get('email')
+    if not email:
+        return jsonify(message='Email not found for this user'), 404
 
     # Generate and send OTP
     otp = generate_otp()
@@ -427,7 +430,13 @@ def send_otp():
 @app.route('/chef/verify-otp', methods=['POST'])
 def verify_otp():
     data = request.get_json()
-    email = data.get('email')
+    username = data.get('email')
+    # Check if user exists
+    user = db.Chef.find_one({'userId': username})
+    if not user:
+        return jsonify(message='User not found'), 404
+
+    email = user.get('email')
     otp = data.get('otp')
 
     if not email or not otp:
@@ -448,11 +457,17 @@ def verify_otp():
 @app.route('/chef/login', methods=['POST'])
 def login():
     data = request.get_json()
-    email = data.get('email')
+    username = data.get('email')
+    # Check if user exists
+    user = db.Chef.find_one({'userId': username})
+    if not user:
+        return jsonify(message='User not found'), 404
+
+    email = user.get('email')
     password = data.get('password')
 
     if not email or not password:
-        return jsonify(message='Email and password are required'), 400
+        return jsonify(message='Username and password are required'), 400
 
     login_user = db.Chef.find_one({'email': email, 'password': password})
     if not login_user:
@@ -460,7 +475,7 @@ def login():
 
     # Check if email is verified using local storage
     if not email_verified_store.get(email, False):
-        return jsonify(message='Email not verified. Please verify your email first.'), 403
+        return jsonify(message='User not verified. Please verify your user first.'), 403
     else:
         email_verified_store[email] = False
 

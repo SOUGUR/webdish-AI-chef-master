@@ -222,7 +222,7 @@ const Ingredient = ({ formData, setFormData, portion }) => {
               outline-none`}
               />
             </div>
-            <div>
+            <div className='md:mt-6'>
               <select className={`custom-input custom-text ${portion !==1 ? "cursor-not-allowed" : "cursor-pointer" }
                 px-2 mt-2 py-[6px] mb-[3px] text-lg w-full border border-black rounded-md focus:border-orange-400
                 placeholder:italic outline-none`}>
@@ -234,19 +234,6 @@ const Ingredient = ({ formData, setFormData, portion }) => {
                 <option value="whole">piece</option>
               </select>
             </div>
-          </div>
-          <div className="flex w-full items-center justify-center">
-            {portion === 1 ? (
-            <button onClick={handleIngredientSubmit} type="button" className={`text-white border bg-zinc-700 p-2 px-6
-              my-4 rounded-xl hover:bg-zinc-950`}>
-              Add Ingredient
-            </button>
-            ) : portion !== 1 && !isQuantityDisabled && (
-            <button onClick={handleIngredientSubmit} type="button" className={`text-white border bg-zinc-700 p-2 px-6
-              my-4 rounded-xl hover:bg-zinc-950`}>
-              Add Quantity
-            </button>
-            )}
           </div>
         </>
         ) : null}
@@ -312,7 +299,7 @@ const Ingredient = ({ formData, setFormData, portion }) => {
       </div>
     </div>
 
-    <ul className="flex flex-wrap gap-2 lg:gap-4 w-full">
+    <ul className="flex flex-wrap gap-2 ml-5 md:ml-8 lg:gap-4 w-full">
       {formData.ingredients
       .filter((ingredient) => ingredient.quantity[portion - 1] !== "")
       .map((ingredient, index) => (
