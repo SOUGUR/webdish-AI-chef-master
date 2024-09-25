@@ -8,7 +8,7 @@ const MainContent = () => {
   const [hideSuggestion, setHideSuggestion] = useState(false);
 
   const suggestions = [
-    { title: "Chiken Briyani", subtitle: "yummy chunks of chiken rice" },
+    { title: "Chicken Biryani", subtitle: "yummy chunks of chicken rice" },
     {
       title: "Masala Dosa",
       subtitle: "smashed potato with dosa",
@@ -160,7 +160,7 @@ const MainContent = () => {
           type="text"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
-          placeholder="Message AiChief"
+          placeholder="Message AiChef"
           className="w-full bg-gray-700 text-white rounded-md py-3 px-4 pr-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <button

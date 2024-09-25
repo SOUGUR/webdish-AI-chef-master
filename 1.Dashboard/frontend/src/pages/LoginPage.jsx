@@ -30,14 +30,7 @@ const LoginPage = () => {
             Navigate("/dashboard");
         } else toast.error(json['message']);
     }
-
     const handleSendEmailOTP = async () => {
-        const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-        if (!emailRegex.test(email)) {
-            toast.error("Please enter a valid email address");
-            return;
-        }
-
         try {
             const response = await fetch(
                 `${import.meta.env.VITE_API_URL}/chef/send-otp`,
@@ -114,13 +107,13 @@ const LoginPage = () => {
                         className='custom-bg backdrop-filter backdrop-blur-xl h-full w-full items-center p-4  back md:p-16 rounded-lg flex flex-col justify-center'>
                         <div className='flex md:gap-4 flex-col md:flex-row min-w-full'>
                             <div className='my-4 min-w-full'>
-                                <label className='custom-text font-medium mb-1'>Email</label>
+                                <label className='custom-text font-medium mb-1'>Username</label>
                                 <div className='mt-2'>
                                     <div className="flex">
                                         <input
                                             type="email"
                                             className="custom-input custom-text flex-grow py-2 px-3 border border-zinc-600 rounded-l-lg"
-                                            placeholder="abc@gmail.com"
+                                            placeholder="User123"
                                             name="email"
                                             onChange={(e) => setEmail(e.target.value)}
                                             value={email}
