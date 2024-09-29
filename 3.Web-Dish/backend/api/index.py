@@ -15,7 +15,9 @@ from werkzeug.utils import secure_filename
 import firebase_admin
 from firebase_admin import credentials, storage
 from google.cloud import storage
-import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
@@ -235,6 +237,42 @@ def history(name):
 
     except Exception as e:
         return jsonify({'message': f'Something went wrong: {str(e)}'}), 500
+    
+    
+# Abhishek Code
+#To store feedbacks into  Feedback db
+@app.route("/create_feedback", methods=["POST"])
+def post_feedback():
+    try:
+        data = request.get_json()
+        feedback = data.get('feedback')
+        user_id = data.get('user_id')
+        dish = data.get('dish')
+        print({
+            'user':user_id,
+            'feedback':feedback,
+            'dish':dish
+        })
+        db.Feedbacks.insert_one({
+            'user':user_id,
+            'feedback':feedback,
+            'dish':dish
+        })
+        print(list(db.Feedbacks.find({})))
+        return jsonify({'status':"success"}), 200
+    except Exception as e:
+        return jsonify({'message' : f'Something went wrong {str(e)}'}), 500
+
+#To get feedbacked dishes 
+@app.route("/get_feedback_dishes", methods=['GET', 'POST'])
+def get_dishes():
+    try:
+        data = request.get_json()
+        user = data.get('user')
+        dishes = [i['dish'] for i in db.feedbacks.find({'user':user})]
+        return jsonify({"dishes":dishes}), 200
+    except Exception as e:
+        return jsonify({"message" : f"Something went wrong {str(e)}"}), 500
 
 
 #  ========================================================================================================================================
@@ -353,6 +391,7 @@ def start_process():
         print(f"Error starting process: {str(e)}")
         return jsonify({"error": "Something went wrong"}), 500
 
+# ==========================================================================================================================================
 
 #arnab code
 @app.route('/dishes', methods=['GET'])

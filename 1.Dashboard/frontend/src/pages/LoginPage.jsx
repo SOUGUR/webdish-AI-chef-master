@@ -117,7 +117,6 @@ const LoginPage = () => {
                                             name="email"
                                             onChange={(e) => setEmail(e.target.value)}
                                             value={email}
-                                            required
                                             disabled={isEmailVerified}
                                         />
                                         <button
