@@ -31,7 +31,7 @@
     "momnet": "^2.29.1",
     "next": "^14.0.4",
     "pdfjs": "^2.5.2",
-    "pdfjs-dist": "^3.11.174",
+    "pdfjs-dist": "^4.6.82",
     "react": "^18.2.0",
     "react-datepicker": "^4.25.0",
     "react-dom": "^18.2.0",

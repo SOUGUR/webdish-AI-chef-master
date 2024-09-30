@@ -53,7 +53,6 @@ app.register_blueprint(google_blueprint, url_prefix="/login")
 
 # #firebase credential
 
-
 # cred = credentials.Certificate("credentials.json")
 # firebase_admin.initialize_app(cred)
 
@@ -238,7 +237,44 @@ def history(name):
     except Exception as e:
         return jsonify({'message': f'Something went wrong: {str(e)}'}), 500
     
+# ==============================================================================================================================================
+
+# Sebin Model :
+# API Route for recipe recommendation by query
+from models import recommend_dishes, recommend_recipes_by_review
+
+@app.route('/query_recommend', methods=['POST'])
+def query_recommend():
     
+    try:
+        query = request.json.get('query')
+        if not query:
+            return jsonify({'error': 'Query not provided'}), 400
+        
+        recommendations = recommend_dishes(query)
+        query_result = recommendations.to_dict(orient='records')
+        return jsonify(query_result), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# API Route for recipe recommendation by feedback
+
+@app.route('/feedback_recommend', methods=['POST'])
+def feedback_recommend():
+    try:
+        user_review = request.json.get('review')
+        if not user_review:
+            return jsonify({'error':'Feedback not found'}), 400
+        
+        recommendations = recommend_recipes_by_review(user_review)
+        feed_result = recommendations.to_dict(orient='records')
+        return jsonify(feed_result), 200
+    
+    except Exception as e :
+        return jsonify({'error': str(e)}), 500
+# ==============================================================================================================================================
+  
 # Abhishek Code
 #To store feedbacks into  Feedback db
 @app.route("/create_feedback", methods=["POST"])
@@ -265,7 +301,7 @@ def post_feedback():
 
 #To get feedbacked dishes 
 @app.route("/get_feedback_dishes", methods=['GET', 'POST'])
-def get_dishes():
+def get_feedback_dishes():
     try:
         data = request.get_json()
         user = data.get('user')
@@ -479,18 +515,18 @@ def get_steps(id):
 # Firebase setup
 # firebase_storage_bucket = 'gs://ai-chef-master-37900.appspot.com'
 
-# # Initialize Google Cloud Storage client
+# Initialize Google Cloud Storage client
 # storage_client = storage.Client()
 # bucket = storage_client.bucket(firebase_storage_bucket)
 
-cred = credentials.Certificate('credentials.json')
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'ai-chef-master-37900.appspot.com'
-})
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
-storage_client = storage.Client()
-bucket_name = "ai-chef-master-37900.appspot.com"
-bucket = storage_client.bucket(bucket_name)
+# cred = credentials.Certificate('credentials.json')
+# firebase_admin.initialize_app(cred, {
+#     'storageBucket': 'ai-chef-master-37900.appspot.com'
+# })
+# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+# storage_client = storage.Client()
+# bucket_name = "ai-chef-master-37900.appspot.com"
+# bucket = storage_client.bucket(bucket_name)
 
 
 @app.route('/upload', methods=['POST'])
