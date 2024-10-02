@@ -33,7 +33,7 @@ const LoginPage = () => {
     const handleSendEmailOTP = async () => {
         try {
             const response = await fetch(
-                `${import.meta.env.VITE_API_URL}/chef/send-otp`,
+                `https://old-dashboard-backend.onrender.com/chef/send-otp`,
                 {
                     method: "POST",
                     headers: {
