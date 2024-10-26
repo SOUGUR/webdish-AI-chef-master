@@ -33,9 +33,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 client = MongoClient(os.getenv('MONGODB_URL'))
-# db = client['AI_Chef_Master']  # AI_Chef_Master
-
-db = client['chef_master_db']  # AI_Chef_Master
+db = client['AI_Chef_Master']  
 dishes = db['dishes']
 
 # google login
@@ -51,16 +49,18 @@ google_blueprint = make_google_blueprint(
 app.register_blueprint(google_blueprint, url_prefix="/login")
 
 
-# #firebase credential
+# Firebase setup
+firebase_storage_bucket = 'ai-chef-master-37900.appspot.com'
+cred = credentials.Certificate('credentials.json')
+firebase_admin.initialize_app(cred, {
+    'storageBucket': firebase_storage_bucket
+})
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+# Initialize Google Cloud Storage client
+storage_client = storage.Client()
+bucket = storage_client.bucket(firebase_storage_bucket) 
 
-# cred = credentials.Certificate("credentials.json")
-# firebase_admin.initialize_app(cred)
-
-# #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
-# storage_client = storage.Client()
-# bucket_name = "gs://ai-chef-master-37900.appspot.com"
-# bucket = storage_client.bucket(bucket_name)
-
+#=======================================================================================================================================================
 
 @app.route("/")
 def index():
@@ -441,7 +441,21 @@ def get_details(id):
     details = db.Dish.find_one({'id': id}, {'_id': 0, 'dish_name': 1})
     return jsonify(details)
 
+@app.route('/dish', methods=['POST'])
+def get_dish_by_name():
+    data = request.json
+    dish_name = data.get('dish_name')
 
+    if not dish_name:
+        return jsonify({"error": "Dish name not provided"}), 400
+
+    dish = db.Dish.find_one({'dish_name': dish_name}, {'_id': 0})
+
+    if dish:
+        return jsonify(dish)
+    else:
+        return jsonify({"error": "Dish not found"}), 404
+    
 @app.route('/dishes/<id>/ingredients', methods=['GET'])
 def get_ingredients(id):
     dish = db.Dish.find_one({'id': id})
@@ -479,16 +493,14 @@ def get_recipe(id):
         return jsonify({"error": "Recipe not found"}), 404
 
 
+
 @app.route('/dishes/state', methods=['POST'])
 def get_states():
     data = request.json
-    print(data)
     state = data.get('state')
-    print(state)
     cursor = db['Dish'].find({"popularity_state": state}, {"_id": 0})
     # Convert cursor to a list of dictionaries
     dishes = list(cursor)
-    print(dishes)
     return jsonify(dishes)
 
 
@@ -512,21 +524,16 @@ def get_steps(id):
         return jsonify({"error": "Recipe not found"}), 404
 
 
-# Firebase setup
-# firebase_storage_bucket = 'gs://ai-chef-master-37900.appspot.com'
-
-# Initialize Google Cloud Storage client
-# storage_client = storage.Client()
-# bucket = storage_client.bucket(firebase_storage_bucket)
-
+# # Firebase setup
+# firebase_storage_bucket = 'ai-chef-master-37900.appspot.com'
 # cred = credentials.Certificate('credentials.json')
 # firebase_admin.initialize_app(cred, {
-#     'storageBucket': 'ai-chef-master-37900.appspot.com'
+#     'storageBucket': firebase_storage_bucket
 # })
 # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+# # Initialize Google Cloud Storage client
 # storage_client = storage.Client()
-# bucket_name = "ai-chef-master-37900.appspot.com"
-# bucket = storage_client.bucket(bucket_name)
+# bucket = storage_client.bucket(firebase_storage_bucket) 
 
 
 @app.route('/upload', methods=['POST'])
