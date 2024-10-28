@@ -1,7 +1,6 @@
 FRONTEND URLS :
-Dashboard : FRONTEND_URL
+Dashboard : VITE_API_URL
 Portfolio : REACT_APP_API_URL
-Web-dish  : FRONTEND_URL
+Web-dish  : VITE_API_URL
 
 # Last Update :
-portfolio latest code updated

@@ -35,30 +35,6 @@ db = client['AI_Chef_Master']
 # ==========================================================================================================================================
 
 
-# @app.route('/chef/login', methods=['POST'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.get_json()
-#
-#         email = data.get('email')
-#         password = data.get('password')
-#         session['email'] = email
-#
-#         login_user = db.Chef.find_one({'email': email, 'password': password})
-#         if login_user:
-#             access_token = create_access_token(identity=email)
-#
-#             login_user = db.Chef.find_one({'email': email}, {'first_name': 1, 'last_name': 1, 'user_id': 1})
-#
-#             kname = login_user['first_name'] + " " + login_user['last_name']
-#             user_id = login_user['user_id']
-#             session['is_login'] = True
-#             return jsonify(message='Login Successful', access_token=access_token, email=email, name=kname,
-#                            user_id=user_id)
-#         else:
-#             return jsonify({'message': 'Invalid email and password'}), 401
-
-
 @app.route('/chef/checkDishExists', methods=['GET'])
 def check_dish_exists():
     dish_name = request.args.get('name').lower()

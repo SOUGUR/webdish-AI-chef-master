@@ -524,18 +524,6 @@ def get_steps(id):
         return jsonify({"error": "Recipe not found"}), 404
 
 
-# # Firebase setup
-# firebase_storage_bucket = 'ai-chef-master-37900.appspot.com'
-# cred = credentials.Certificate('credentials.json')
-# firebase_admin.initialize_app(cred, {
-#     'storageBucket': firebase_storage_bucket
-# })
-# os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
-# # Initialize Google Cloud Storage client
-# storage_client = storage.Client()
-# bucket = storage_client.bucket(firebase_storage_bucket) 
-
-
 @app.route('/upload', methods=['POST'])
 def upload_video():
     try:
