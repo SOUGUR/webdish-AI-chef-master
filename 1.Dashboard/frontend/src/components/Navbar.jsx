@@ -12,7 +12,6 @@ const Navbar = ({theme, setTheme}) => {
   const {logout} = useLogout();
   const {user} = useAuthContext();
   const { targetLang, changeLanguage } = useTranslation();
-  const location = useLocation();
 
   const handleLogout = () => {
     logout();
