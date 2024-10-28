@@ -15,7 +15,9 @@ from werkzeug.utils import secure_filename
 import firebase_admin
 from firebase_admin import credentials, storage
 from google.cloud import storage
-import os
+
+from dotenv import load_dotenv
+load_dotenv()
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
@@ -31,9 +33,7 @@ scheduler.init_app(app)
 scheduler.start()
 
 client = MongoClient(os.getenv('MONGODB_URL'))
-# db = client['AI_Chef_Master']  # AI_Chef_Master
-
-db = client['chef_master_db']  # AI_Chef_Master
+db = client['AI_Chef_Master']  
 dishes = db['dishes']
 
 # google login
@@ -49,17 +49,18 @@ google_blueprint = make_google_blueprint(
 app.register_blueprint(google_blueprint, url_prefix="/login")
 
 
-# #firebase credential
+# Firebase setup
+firebase_storage_bucket = 'ai-chef-master-37900.appspot.com'
+cred = credentials.Certificate('credentials.json')
+firebase_admin.initialize_app(cred, {
+    'storageBucket': firebase_storage_bucket
+})
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+# Initialize Google Cloud Storage client
+storage_client = storage.Client()
+bucket = storage_client.bucket(firebase_storage_bucket) 
 
-
-# cred = credentials.Certificate("credentials.json")
-# firebase_admin.initialize_app(cred)
-
-# #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
-# storage_client = storage.Client()
-# bucket_name = "gs://ai-chef-master-37900.appspot.com"
-# bucket = storage_client.bucket(bucket_name)
-
+#=======================================================================================================================================================
 
 @app.route("/")
 def index():
@@ -235,6 +236,79 @@ def history(name):
 
     except Exception as e:
         return jsonify({'message': f'Something went wrong: {str(e)}'}), 500
+    
+# ==============================================================================================================================================
+
+# Sebin Model :
+# API Route for recipe recommendation by query
+from models import recommend_dishes, recommend_recipes_by_review
+
+@app.route('/query_recommend', methods=['POST'])
+def query_recommend():
+    
+    try:
+        query = request.json.get('query')
+        if not query:
+            return jsonify({'error': 'Query not provided'}), 400
+        
+        recommendations = recommend_dishes(query)
+        query_result = recommendations.to_dict(orient='records')
+        return jsonify(query_result), 200
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+# API Route for recipe recommendation by feedback
+
+@app.route('/feedback_recommend', methods=['POST'])
+def feedback_recommend():
+    try:
+        user_review = request.json.get('review')
+        if not user_review:
+            return jsonify({'error':'Feedback not found'}), 400
+        
+        recommendations = recommend_recipes_by_review(user_review)
+        feed_result = recommendations.to_dict(orient='records')
+        return jsonify(feed_result), 200
+    
+    except Exception as e :
+        return jsonify({'error': str(e)}), 500
+# ==============================================================================================================================================
+  
+# Abhishek Code
+#To store feedbacks into  Feedback db
+@app.route("/create_feedback", methods=["POST"])
+def post_feedback():
+    try:
+        data = request.get_json()
+        feedback = data.get('feedback')
+        user_id = data.get('user_id')
+        dish = data.get('dish')
+        print({
+            'user':user_id,
+            'feedback':feedback,
+            'dish':dish
+        })
+        db.Feedbacks.insert_one({
+            'user':user_id,
+            'feedback':feedback,
+            'dish':dish
+        })
+        print(list(db.Feedbacks.find({})))
+        return jsonify({'status':"success"}), 200
+    except Exception as e:
+        return jsonify({'message' : f'Something went wrong {str(e)}'}), 500
+
+#To get feedbacked dishes 
+@app.route("/get_feedback_dishes", methods=['GET', 'POST'])
+def get_feedback_dishes():
+    try:
+        data = request.get_json()
+        user = data.get('user')
+        dishes = [i['dish'] for i in db.feedbacks.find({'user':user})]
+        return jsonify({"dishes":dishes}), 200
+    except Exception as e:
+        return jsonify({"message" : f"Something went wrong {str(e)}"}), 500
 
 
 #  ========================================================================================================================================
@@ -353,6 +427,7 @@ def start_process():
         print(f"Error starting process: {str(e)}")
         return jsonify({"error": "Something went wrong"}), 500
 
+# ==========================================================================================================================================
 
 #arnab code
 @app.route('/dishes', methods=['GET'])
@@ -366,7 +441,21 @@ def get_details(id):
     details = db.Dish.find_one({'id': id}, {'_id': 0, 'dish_name': 1})
     return jsonify(details)
 
+@app.route('/dish', methods=['POST'])
+def get_dish_by_name():
+    data = request.json
+    dish_name = data.get('dish_name')
 
+    if not dish_name:
+        return jsonify({"error": "Dish name not provided"}), 400
+
+    dish = db.Dish.find_one({'dish_name': dish_name}, {'_id': 0})
+
+    if dish:
+        return jsonify(dish)
+    else:
+        return jsonify({"error": "Dish not found"}), 404
+    
 @app.route('/dishes/<id>/ingredients', methods=['GET'])
 def get_ingredients(id):
     dish = db.Dish.find_one({'id': id})
@@ -404,16 +493,14 @@ def get_recipe(id):
         return jsonify({"error": "Recipe not found"}), 404
 
 
+
 @app.route('/dishes/state', methods=['POST'])
 def get_states():
     data = request.json
-    print(data)
     state = data.get('state')
-    print(state)
     cursor = db['Dish'].find({"popularity_state": state}, {"_id": 0})
     # Convert cursor to a list of dictionaries
     dishes = list(cursor)
-    print(dishes)
     return jsonify(dishes)
 
 
@@ -435,23 +522,6 @@ def get_steps(id):
         return jsonify(dish['recipeSteps'])
     else:
         return jsonify({"error": "Recipe not found"}), 404
-
-
-# Firebase setup
-# firebase_storage_bucket = 'gs://ai-chef-master-37900.appspot.com'
-
-# # Initialize Google Cloud Storage client
-# storage_client = storage.Client()
-# bucket = storage_client.bucket(firebase_storage_bucket)
-
-cred = credentials.Certificate('credentials.json')
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'ai-chef-master-37900.appspot.com'
-})
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
-storage_client = storage.Client()
-bucket_name = "ai-chef-master-37900.appspot.com"
-bucket = storage_client.bucket(bucket_name)
 
 
 @app.route('/upload', methods=['POST'])

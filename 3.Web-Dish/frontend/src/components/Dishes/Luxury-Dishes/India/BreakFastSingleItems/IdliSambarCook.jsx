@@ -22,6 +22,8 @@ const IngredientsData= [
   { title: "Coriander Leaves", image: "🌿", quantity: "for garnish" },
 ];
 
+
+
  
 function IdliSambarCook() {
   const cookingProps = {

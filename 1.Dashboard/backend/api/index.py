@@ -6,7 +6,6 @@ import bson
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, redirect, session, url_for
 from flask_cors import CORS
-from flask_dance.contrib.google import make_google_blueprint, google
 from flask_jwt_extended import JWTManager, jwt_required, create_access_token, get_jwt_identity
 from pymongo import MongoClient
 
@@ -33,108 +32,7 @@ jwt = JWTManager(app)
 client = MongoClient(os.getenv('MONGODB_URL'))
 db = client['AI_Chef_Master']
 
-app.config["GOOGLE_OAUTH_CLIENT_ID"] = os.getenv('GOOGLE_OAUTH_CLIENT_ID')
-app.config["GOOGLE_OAUTH_CLIENT_SECRET"] = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
-
-google_blueprint = make_google_blueprint(
-    client_id=os.getenv('GOOGLE_OAUTH_CLIENT_ID'),
-    client_secret=os.getenv('GOOGLE_OAUTH_CLIENT_SECRET'),
-    redirect_to='google_callback',
-    scope=["https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/userinfo.profile",
-           "openid"]
-)
-app.register_blueprint(google_blueprint, url_prefix="/login")
-
-
-@app.route("/", methods=["POST"])
-def index():
-    if not google.authorized:
-        return redirect(url_for("google.login"))
-    return redirect(url_for("google_callback"))
-
-
-@app.route("/callback")
-def google_callback():
-    if not google.authorized:
-        return jsonify({"error": "Failed to log in."}), 400
-    resp = google.get("/oauth2/v1/userinfo")
-    assert resp.ok, resp.text
-
-    user_info = resp.json()
-    exist_chef = db.Chef.find_one({'email': user_info['email']}, {'first_name': 1, 'user_id': 1})
-
-    if not exist_chef:
-        user_id = "Chef" + user_info['given_name'].upper() + "-" + str(round((datetime.now().timestamp()) * 1000000))
-        db.Chef.insert_one({
-            'first_name': user_info['given_name'],
-            'last_name': user_info['family_name'],
-            'email': user_info['email'],
-            'user_id': user_id
-        })
-    else:
-        user_id = exist_chef['user_id']
-
-    user_info['user_id'] = user_id
-    token = create_access_token(identity=user_info['email'])
-    user_info['access_token'] = token
-    user_info_str = urllib.parse.quote(json.dumps(user_info))
-
-    return redirect(f"{os.getenv('FRONTEND_URL')}/login?data={user_info_str}", code=302)
-
-
-@app.route('/chef/signup', methods=['POST'])
-def sign_up():
-    if request.method == 'POST':
-        data = request.get_json()
-
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
-        email = data.get('email')
-        password = data.get('password')
-        password_repeat = data.get('password_repeat')
-
-        exist_chef = db.Chef.find_one({'email': email}, {'first_name': 1, 'user_id': 1})
-
-        if exist_chef:
-            return jsonify({"message": "User Already registered"}), 409
-        if password != password_repeat:
-            return jsonify({'message': 'Password not match'})
-
-        user_id = "Chef" + first_name.upper() + "-" + str(round((datetime.now().timestamp()) * 1000000))
-
-        db.Chef.insert_one({
-            'first_name': first_name,
-            'last_name': last_name,
-            'email': email,
-            'password': password,
-            'user_id': user_id
-        })
-
-        return jsonify({'message': 'SignUp Successful'}), 201
-
-
-# @app.route('/chef/login', methods=['POST'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.get_json()
-#
-#         email = data.get('email')
-#         password = data.get('password')
-#         session['email'] = email
-#
-#         login_user = db.Chef.find_one({'email': email, 'password': password})
-#         if login_user:
-#             access_token = create_access_token(identity=email)
-#
-#             login_user = db.Chef.find_one({'email': email}, {'first_name': 1, 'last_name': 1, 'user_id': 1})
-#
-#             kname = login_user['first_name'] + " " + login_user['last_name']
-#             user_id = login_user['user_id']
-#             session['is_login'] = True
-#             return jsonify(message='Login Successful', access_token=access_token, email=email, name=kname,
-#                            user_id=user_id)
-#         else:
-#             return jsonify({'message': 'Invalid email and password'}), 401
+# ==========================================================================================================================================
 
 
 @app.route('/chef/checkDishExists', methods=['GET'])
