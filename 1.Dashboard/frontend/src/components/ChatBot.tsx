@@ -1,5 +1,5 @@
 // @ts-ignore
-// merge issue - adding this file test
+// merge issue - adding this file
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, Send, X } from 'lucide-react';
 
