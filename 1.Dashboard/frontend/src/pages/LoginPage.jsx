@@ -33,7 +33,7 @@ const LoginPage = () => {
     const handleSendEmailOTP = async () => {
         try {
             const response = await fetch(
-                `https://old-dashboard-backend.onrender.com/chef/send-otp`,
+                `${import.meta.env.VITE_API_URL}/chef/send-otp`,
                 {
                     method: "POST",
                     headers: {
@@ -117,7 +117,6 @@ const LoginPage = () => {
                                             name="email"
                                             onChange={(e) => setEmail(e.target.value)}
                                             value={email}
-                                            required
                                             disabled={isEmailVerified}
                                         />
                                         <button

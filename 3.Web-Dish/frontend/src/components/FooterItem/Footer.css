@@ -38,6 +38,17 @@
     line-height: 26px;
 }
 
+.social a{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.social :hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .list-items-styles {
     list-style: none;
     font-family: "Gilroy", sans-serif;

@@ -195,52 +195,48 @@ const recipeSteps = [
   }
 ];
 
+
 function RecipeSteps({ steps }) {
-  const [currentStep, setCurrentStep] = useState(0);
+  const [currentStepIndex, setCurrentStepIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
 
-  useEffect(()=>{
-      const fetchData = async () =>{
-        try{
-          const response = await fetch('');
-          const data = await response.json();
-          setCurrentStep(data);
+  const currentStep = steps[currentStepIndex];
 
-        }catch(e){
-          console.error("Error fetching recipe steps");
+  const goToNextStep = () => {
+    if (currentStepIndex < steps.length - 1) {
+      setCurrentStepIndex(currentStepIndex + 1);
+    }
+  };
 
-        }
-      }
-      fetchData();
-  },[])
+  const goToPreviousStep = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex(currentStepIndex - 1);
+    }
+  };
 
+  const isLastStep = currentStepIndex === steps.length - 1;
+  const isFirstStep = currentStepIndex === 0;
 
-  // const goToNextStep = () => {
-  //   setCurrentStep(currentStep + 1);
-  // };
+  const handleFeedbackSubmission = () => {
+    setShowAlert(true);
+    alert('You have successfully created a dish!');
+  };
 
-  // const goToPreviousStep = () => {
-  //   setCurrentStep(currentStep - 1);
-  // };
+  if (!currentStep) {
+    return <div>Loading...</div>;
+  }
 
-  // const isLastStep = currentStep === steps.length - 1;
-  // const isFirstStep = currentStep === 0;
-
-  // const handleFeedbackSubmission = () => {
-  //   alert('You have successfully created a dish!');
-  // };
-
- 
   return (
     <div className="px-4 py-8 bg-[#f7f3cd] shadow-lg rounded-lg">
       <h1 className="text-4xl font-semibold text-center mb-8">Preparation Steps</h1>
-      <div key={currentStep}>
-        <h2 className="text-2xl font-semibold mb-4">{`${currentStep + 1}. ${currentStep.title}`}</h2>
+      <div key={currentStepIndex}>
+        <h2 className="text-2xl font-semibold mb-4">
+          {`${currentStepIndex + 1}. ${currentStep.title}`}
+        </h2>
         <div className='flex justify-between items-center'>
           <p className="text-xl">Time: {currentStep.time}</p>
           <div className='flex gap-2 items-center'>
-            <FcAlarmClock size={30} /> 
-            {/*<p>CountDown</p> */}
+            <FcAlarmClock size={30} />
           </div>
         </div>
         <div className="flex justify-center items-center">
@@ -266,39 +262,60 @@ function RecipeSteps({ steps }) {
           </ul>
         </Fade>
       </div>
-      <div className="flex justify-between items-center">
-        <button onClick={goToPreviousStep} disabled={isFirstStep} className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed" aria-label="Previous Step">
+      <div className="flex justify-between items-center mt-6">
+        <button 
+          onClick={goToPreviousStep} 
+          disabled={isFirstStep}
+          className={`px-4 py-2 rounded-md ${
+            isFirstStep 
+              ? 'bg-gray-300 cursor-not-allowed' 
+              : 'bg-blue-500 text-white hover:bg-blue-600'
+          }`}
+          aria-label="Previous Step"
+        >
           {isFirstStep ? "First Step" : "Previous Step"}
         </button>
-        <div>
-          <span className="mr-2">{currentStep + 1}</span>
+        <div className="text-lg font-medium">
+          <span className="mr-2">{currentStepIndex + 1}</span>
           <span>of</span>
-          <span className="ml-2">{currentStep.length}</span>
+          <span className="ml-2">{steps.length}</span>
         </div>
         {isLastStep ? (
           <Link to='/feedback'>
-            <button onClick={handleFeedbackSubmission}  className="px-4 py-2 bg-green-500 text-white rounded-md" aria-label="Submit Feedback">
-             Submit Feedback
-          </button>
+            <button 
+              onClick={handleFeedbackSubmission}
+              className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600"
+              aria-label="Submit Feedback"
+            >
+              Submit Feedback
+            </button>
           </Link>
         ) : (
-          <button onClick={goToNextStep} disabled={isLastStep} className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed" aria-label="Next Step">
+          <button 
+            onClick={goToNextStep}
+            disabled={isLastStep}
+            className={`px-4 py-2 rounded-md ${
+              isLastStep 
+                ? 'bg-gray-300 cursor-not-allowed' 
+                : 'bg-blue-500 text-white hover:bg-blue-600'
+            }`}
+            aria-label="Next Step"
+          >
             {isLastStep ? "Last Step" : "Next Step"}
           </button>
         )}
       </div>
-  
-      </div>
+    </div>
   );
 }
 
- function MasalaDosaCook() {
+function MasalaDosaCook() {
   return (
     <div className="bg-[#f7f3cd] min-h-screen flex flex-col justify-center">
       <div className="flex-1 max-w-4xl mx-auto py-8">
         <h1 className="text-4xl font-semibold text-center mb-8">Masala Dosa Recipe</h1>
         <RecipeSteps steps={recipeSteps} />
-       </div>
+      </div>
     </div>
   );
 }
