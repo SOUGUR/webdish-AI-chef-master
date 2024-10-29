@@ -42,9 +42,9 @@ const Navbar = ({theme, setTheme}) => {
     await translateAllText(elements, targetLang); 
   };
 
-  useEffect(() => {
-    handleTranslate();
-  }, [targetLang, location]); 
+  // useEffect(() => {
+  //   handleTranslate();
+  // }, [targetLang, location]); 
   
 
   return (
