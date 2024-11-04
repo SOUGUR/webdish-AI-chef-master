@@ -262,6 +262,7 @@ export default function NavBarHeader() {
         </div>
       </div>
 
+
       {showMenu && (
         <div className="md:hidden">
           <div className="px-4 py-2">
@@ -276,7 +277,6 @@ export default function NavBarHeader() {
                   About Us
                 </Link>
               </li>
-
               <li className="flex items-center ">
                 <div className="relative ">
                   <div className="absolute inset-y-0 flex items-center px-3 pointer-events-none">
@@ -297,6 +297,7 @@ export default function NavBarHeader() {
                 </div>
               </li>
 
+              {/* Language selection dropdown */}
               <li className="flex items-center">
                 <div className="mx-auto flex w-full">
                   <div className="group cursor-pointer py-2 text-base md:text-md">
@@ -307,7 +308,7 @@ export default function NavBarHeader() {
                         <MdArrowDropDown size={23} />
                       </div>
                     </div>
-                    <div className="invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible">
+                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible">
                       {CountryFlag.map((country) => (
                         <div
                           key={country.countryFlag}
@@ -321,116 +322,35 @@ export default function NavBarHeader() {
                     </div>
                   </div>
                 </div>
-
-                {isLanguageDropdownOpen && (
-                  <div className="absolute top-full mt-2 p-2 bg-white border rounded-md shadow-md">
-                    {CountryFlag.map((country) => (
-                      <div
-                        key={country.countryFlag}
-                        className="flex text-black items-center gap-2 cursor-pointer"
-                        onClick={() => selectLanguage(country.countryFlag)}
-                      >
-                        <Flag countryFlag={country.countryFlag} />
-                        <span>{country.countryFlag.toUpperCase()}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </li>
 
-              {location.pathname !== "/" && (
-                <li className="flex items-center gap-2">
-                  <div className="mx-auto flex w-full">
-                    <div className="group cursor-pointer py-2">
-                      <div className="flex items-center justify-center">
-                        <button
-                          className="menu-hover items-center flex text-base md:text-md"
-                          onClick={() => {}}
-                        >
-                          All
-                          <MdArrowDropDown size={23} />
-                        </button>
-                      </div>
-                      <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] py-1 px-4 text-white shadow-xl group-hover:visible">
-                        {categories.map(({ path, label }) => (
-                          <Link
-                            key={path}
-                            to={path}
-                            className={`hover:bg-[#007a72] rounded-md px-3 py-2 text-lg font-medium`}
-                            onClick={() => handleCategoryClick(label)}
-                          >
-                            {label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
+              {/* Conditional render for "Create Account" or "Logout" */}
+              {!user ? (
+                <li className="text-base md:text-md">
+                  <Link to="/signup" onClick={() => setShowMenu(false)}>
+                    Create Account
+                  </Link>
+                </li>
+              ) : (
+                <li className="text-base md:text-md">
+                  <button
+                    onClick={() => {
+                      logout();
+                      setShowMenu(false);
+                    }}
+                  >
+                    Logout
+                  </button>
                 </li>
               )}
 
-              <li className="text-base md:text-md flex items-center">
-                <div className="mx-auto flex w-full">
-                  <div
-                    className="group cursor-pointer py-2 text-base md:text-md"
-                    onClick={toggleIndianDropdown}
-                  >
-                    <div className="flex items-center gap-1">
-                      <div className="flex">
-                        {selectedIndianLanguage.toUpperCase()}
-                        <MdArrowDropDown size={23} />
-                      </div>
-                    </div>
-                    <div
-                      className={
-                        "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4  text-white shadow-xl group-hover:visible"
-                      }
-                      style={{ maxHeight: "200px", overflowY: "auto" }}
-                    >
-                      {IndianLanguages.map((lang) => (
-                        <div
-                          key={lang.code}
-                          className="flex text-white pt-1 items-center rounded-md px-3 py-2 gap-2 cursor-pointer hover:bg-[#007a72]"
-                          onClick={() => handleIndianLanguageSelect(lang.code)}
-                        >
-                          <span>{lang.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {indianDropdownOpen && (
-                  <div
-                    className={
-                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible"
-                    }
-                    style={{ maxHeight: "200px", overflowY: "auto" }}
-                  >
-                    {IndianLanguages.map((lang) => (
-                      <div
-                        key={lang.code}
-                        className="flex text-white pt-1 items-center px-4 mb-1 gap-2 cursor-pointer hover:bg-[#007a72]"
-                        onClick={() => handleIndianLanguageSelect(lang.code)}
-                      >
-                        <span>{lang.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </li>
-
-              <li className=" text-base md:text-md">
-                <Link to="/signup" onClick={() => setShowMenu(false)}>
-                  Create Account
-                </Link>
-              </li>
               <li>
                 <Link
                   to="/settings"
                   onClick={() => setShowMenu(false)}
                   className="text-base md:text-md flex items-center"
                 >
-                  Setting
+                  Setting 
                   <IoSettingsSharp />
                 </Link>
               </li>

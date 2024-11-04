@@ -3,9 +3,9 @@ import Card2 from "./Card2";
 import { Link } from "react-router-dom";
 import { dishesSeeMorePath } from "../Data/SeeMorePathUrl";
 import { Flip } from "react-reveal";
-import { useSpring, animated } from 'react-spring';
+import { useSpring, animated } from "react-spring";
 import { MdOutlineUnfoldMoreDouble } from "react-icons/md";
-import './Card3.css'
+import "./Card3.css";
 const Card3 = ({ title, famousDish }) => {
   const fadeIn = useSpring({
     from: { opacity: 0 },
@@ -28,23 +28,33 @@ const Card3 = ({ title, famousDish }) => {
           }
         `}
       </style>
-      
+
       <div className="flex flex-row justify-between items-center">
-        <div className="flex font-bold text-xl md:text-2xl lg:text-4xl items-baseline mt-12">{title}</div>
-        {dishesSeeMorePath.map((path, index) => (
-          title === path.title && (
-            <Link key={index} to={path.pathUrl} onClick={() => window.scrollTo(0,0)}>
-              <button className="ml-12 font-bold px-2 mt-12 h-7">
-                <div className="flex items-center mb-5 justify-center" onClick={() => window.scrollTo(0, 0)}>
-                  <MdOutlineUnfoldMoreDouble  size={30}/>
-                </div>
-              </button>
-            </Link>
-          )
-        ))}
+        <div className="flex font-bold text-xl md:text-2xl lg:text-4xl items-baseline mt-12">
+          {title}
+        </div>
+        {dishesSeeMorePath.map(
+          (path, index) =>
+            title === path.title && (
+              <Link
+                key={index}
+                to={path.pathUrl}
+                onClick={() => window.scrollTo(0, 0)}
+              >
+                <button className="ml-12 font-bold px-2 mt-12 h-7">
+                  <div
+                    className="flex items-center mb-5 justify-center"
+                    onClick={() => window.scrollTo(0, 0)}
+                  >
+                    <MdOutlineUnfoldMoreDouble size={30} />
+                  </div>
+                </button>
+              </Link>
+            )
+        )}
       </div>
 
-      <div className="flex overflow-x-scroll smooth-scroll gap-3">
+      {/* <div className="flex overflow-x-scroll smooth-scroll gap-3">
         {famousDish.map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full py-3">
@@ -60,6 +70,24 @@ const Card3 = ({ title, famousDish }) => {
             </animated.div>
           </Flip>
         ))}
+      </div> */}
+
+      <div className="flex overflow-x-scroll smooth-scroll gap-3">
+        {famousDish[0] && (
+          <Flip cascade left>
+            <animated.div style={fadeIn} className="flex-grow h-full py-3">
+              <div style={{ height: "280px" }}>
+                <Card2
+                  title={famousDish[0].dishName}
+                  dishPath={famousDish[0].dishPath}
+                  imageUrl={famousDish[0].dishImage}
+                  time={60}
+                  rating={4.5}
+                />
+              </div>
+            </animated.div>
+          </Flip>
+        )}
       </div>
     </div>
   );

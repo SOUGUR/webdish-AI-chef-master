@@ -45,7 +45,7 @@ function QuickDishes() {
             </div>
           </div>
 
-          <Marquee>
+          {/* <Marquee>
           <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden" >
               {QuickDishesRecommendedData.map((dish, index) => (
                 <Flip key={index} cascade left> 
@@ -78,7 +78,9 @@ function QuickDishes() {
                 </Flip>
               ))}
             </div>
-          </Marquee>
+          </Marquee> */}
+
+          <h1 className='text-center text-2xl my-4'>COMING SOON ...</h1>
 
         </div>
         <Footer />

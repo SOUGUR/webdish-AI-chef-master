@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect } from "react";
 import {Link, NavLink} from "react-router-dom";
 import {useLogout} from "../hooks/useLogout";
 import {useAuthContext} from "../hooks/useAuthContext";
@@ -12,6 +13,7 @@ const Navbar = ({theme, setTheme}) => {
   const {logout} = useLogout();
   const {user} = useAuthContext();
   const { targetLang, changeLanguage } = useTranslation();
+  
 
   const handleLogout = () => {
     logout();
@@ -107,7 +109,7 @@ const Navbar = ({theme, setTheme}) => {
               <div>
                 <button className="  ">
                   <Link
-                      className="text-lg  font-primary px-4 h-full  transition-all duration-300 border border-yellow-800 rounded-xl hover:bg-[#ff910032]  py-2 "
+                      className="text-lg  font-primary px-4 h-full  transition-all duration-300 border border-yellow-800 rounded-xl hover:bg-[#ff910032]  py-2 mx-2"
                       to="/login"
                   >
                     Login
@@ -121,7 +123,7 @@ const Navbar = ({theme, setTheme}) => {
               value={targetLang}
               onClick={handleTranslate}
               onChange={(e) => changeLanguage(e.target.value)}
-              className="px-2 py-2 border border-yellow-800 rounded-md bg-white text-black no-translate"
+              className="px-2 py-2 border border-yellow-800 rounded-xl bg-white text-black no-translate text-center text-lg"
             >
               <option value="">English</option>
               <option value="hi">Hindi</option>

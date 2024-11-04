@@ -50,7 +50,7 @@ app.register_blueprint(google_blueprint, url_prefix="/login")
 
 
 # Firebase setup
-firebase_storage_bucket = 'ai-chef-master-37900.appspot.com'
+firebase_storage_bucket = 'ai-chef-master-eeb7d.appspot.com'
 cred = credentials.Certificate('credentials.json')
 firebase_admin.initialize_app(cred, {
     'storageBucket': firebase_storage_bucket

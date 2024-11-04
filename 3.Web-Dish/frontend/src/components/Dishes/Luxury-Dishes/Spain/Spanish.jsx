@@ -9,7 +9,7 @@ return (
 <div className='bg-[#f7f3cd] min-h-screen'>
     <div className=' '>
         <h1 className='py-12 text-2xl sm:text-4xl md:text-6xl text-center font-bold text-black'>Spanish Dishes</h1>
-        <div>
+        {/* <div>
             <Card3 title="Spanish Breakfast"  famousDish={SpanishBreakFast}/>
         </div>
         <div>
@@ -17,7 +17,10 @@ return (
         </div>
         <div>
             <Card3 title="Spanish Dinner" famousDish={SpanishDinner}/>
-        </div>
+        </div> */}
+
+        <h1 className='text-center text-2xl my-4'>COMING SOON ...</h1>
+
     </div>
 </div>
 );

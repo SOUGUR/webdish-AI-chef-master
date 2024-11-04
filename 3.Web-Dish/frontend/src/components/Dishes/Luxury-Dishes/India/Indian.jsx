@@ -1,5 +1,5 @@
 import React from 'react';
- import Card3 from '../../../Card3'
+import Card3 from '../../../Card3'
 import { IndianBreakFast } from '../../../../Data/LuxuryDishesData/IndianDishes/IndianBreakFast';
 import { IndianLunch } from '../../../../Data/LuxuryDishesData/IndianDishes/IndianLunch';
 import { IndianDinner } from '../../../../Data/LuxuryDishesData/IndianDishes/IndianDinner';
@@ -11,12 +11,13 @@ return (
         <div>
             <Card3 title="Indian Breakfast" famousDish={IndianBreakFast}/>
         </div>
-        <div>
+        {/* <div>
             <Card3 title="Indian Lunch"  famousDish={IndianLunch}/>
         </div>   
         <div>
             <Card3 title="Indian Dinner" famousDish={IndianDinner}/>
-        </div>
+        </div> */}
+
     </div>
 </div>
 );
