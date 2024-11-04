@@ -125,7 +125,7 @@ const Navbar = ({theme, setTheme}) => {
               onChange={(e) => changeLanguage(e.target.value)}
               className="px-2 py-2 border border-yellow-800 rounded-md bg-white text-black no-translate"
             >
-              <option value="">English</option>
+              <option value="en">English</option>
               <option value="hi">Hindi</option>
               <option value="ta">Tamil</option>
               <option value="te">Telugu</option>
