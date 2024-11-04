@@ -1,5 +1,5 @@
 import React from "react";
-import {Link, NavLink} from "react-router-dom";
+import {Link, NavLink, useLocation} from "react-router-dom";
 import {useLogout} from "../hooks/useLogout";
 import {useAuthContext} from "../hooks/useAuthContext";
 import {toast} from "react-toastify";
@@ -12,6 +12,8 @@ const Navbar = ({theme, setTheme}) => {
   const {logout} = useLogout();
   const {user} = useAuthContext();
   const { targetLang, changeLanguage } = useTranslation();
+  const location = useLocation();
+
 
   const handleLogout = () => {
     logout();
