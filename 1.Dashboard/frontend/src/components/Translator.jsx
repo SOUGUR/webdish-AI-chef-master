@@ -11,7 +11,7 @@ const normalizeText = (text) => {
 };
 
 const isMeaningfulTranslation = (translatedText, targetLang) => {
-    const twoCharLanguages = ['hi', 'zh', 'ja', 'en']; 
+    const twoCharLanguages = ['hi']; 
     return translatedText && (translatedText.length > 2 || (translatedText.length === 2 && twoCharLanguages.includes(targetLang)));
 };
 
@@ -41,6 +41,7 @@ export const translateText = async (text, targetLang, uniqueKey) => {
             saveTranslationToLocalStorage(uniqueKey, translatedText);
         } else {
             console.warn(`Translation for "${text}" to "${targetLang}" may not be meaningful: "${translatedText}"`);
+            saveTranslationToLocalStorage(uniqueKey, translatedText);
         }
 
         return translatedText;
@@ -54,7 +55,7 @@ export const translateText = async (text, targetLang, uniqueKey) => {
 const translateTexts = async (texts, targetLang) => {
     return await Promise.all(
         texts.map(async (text) => {
-            const uniqueKey = `${targetLang}-${normalizeText(text)}`; 
+            const uniqueKey = `${targetLang}-${normalizeText(text)}`;
             return await translateText(text, targetLang, uniqueKey);
         })
     );
@@ -79,7 +80,7 @@ export const translateAllText = async (elements, targetLang) => {
                 const cachedTranslation = getTranslationFromLocalStorage(uniqueKey);
 
                 if (cachedTranslation) {
-                    node.textContent = cachedTranslation.replace(/__NUM_(\d+(\.\d+)?)__/g, '$1'); 
+                    node.textContent = cachedTranslation.replace(/__NUM_(\d+(\.\d+)?)__/g, '$1');
                 } else {
                     translations.push(preservedText);
                     uniqueKeys.push(uniqueKey);
@@ -101,17 +102,32 @@ export const translateAllText = async (elements, targetLang) => {
                     saveTranslationToLocalStorage(uniqueKeys[i], finalText); 
                 } else {
                     console.warn(`Translated text for "${translations[i]}" is not meaningful: "${finalText}"`);
-                    nodesToTranslate[i].textContent = finalText;
                     saveTranslationToLocalStorage(uniqueKeys[i], finalText);
                 }
             }
         } catch (error) {
             console.error('Error translating text:', error);
             for (const node of nodesToTranslate) {
-                node.textContent = node.parentNode.getAttribute('data-original-text') || node.textContent; 
+                node.textContent = node.parentNode.getAttribute('data-original-text') || node.textContent;
             }
         }
     }
 };
 
+export const changeLanguage = async (newLang) => {
+    const currentLang = localStorage.getItem('selectedLanguage');
 
+    const newLangTranslations = Object.keys(localStorage).filter(key => key.startsWith(newLang));
+    if (newLangTranslations.length === 0) {
+        if (currentLang) {
+            const keysToRemove = Object.keys(localStorage).filter(key => key.startsWith(currentLang));
+            keysToRemove.forEach(key => localStorage.removeItem(key));
+        }
+    }
+
+    localStorage.setItem('selectedLanguage', newLang);
+
+    const elements = document.body.querySelectorAll('*');
+    
+    await translateAllText(elements, newLang);
+};
