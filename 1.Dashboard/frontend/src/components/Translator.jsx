@@ -101,7 +101,8 @@ export const translateAllText = async (elements, targetLang) => {
                     saveTranslationToLocalStorage(uniqueKeys[i], finalText); 
                 } else {
                     console.warn(`Translated text for "${translations[i]}" is not meaningful: "${finalText}"`);
-                    nodesToTranslate[i].textContent = nodesToTranslate[i].parentNode.getAttribute('data-original-text') || nodesToTranslate[i].textContent; 
+                    nodesToTranslate[i].textContent = finalText;
+                    saveTranslationToLocalStorage(uniqueKeys[i], finalText);
                 }
             }
         } catch (error) {
