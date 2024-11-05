@@ -16,7 +16,7 @@ const Flag = ({ countryFlag }) => (
   />
 );
 
-export default function NavBarHeader() {
+export default function NavBarHeader(props) {
   const location = useLocation();
   const { user } = useAuthContext();
   const { logout } = useLogout();
@@ -77,6 +77,31 @@ export default function NavBarHeader() {
 
   const [showMenu, setShowMenu] = useState(false);
 
+  async function recommendDishes(text){
+    props.setDishes([])
+    if(text!==""){
+      await fetch(`${import.meta.env.VITE_API_URL}/recommend_dishes`,{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Access-Control-Allow-Origin": "*"
+        },
+        body:JSON.stringify({
+          query: text
+        })
+      }).then(async(e)=>{
+        let json = await e.json()
+        for (let i = 0; i < json.length; i++) {
+          props.setDishes([json[i]])
+        }
+        props.setSearch(true)
+      })
+    }
+    else{
+      props.setSearch(false)
+    }
+  }
+
   return (
     <nav className="shadow-lg bg-[#00544f] md:px-2 text-white sticky top-0 z-50">
       <div className="flex justify-between mx-1 items-center h-16">
@@ -113,6 +138,7 @@ export default function NavBarHeader() {
                   type="search"
                   placeholder="Search recipes, dishes"
                   className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
+                  onChange={(e)=>recommendDishes(e.target.value)
                 />
 
                 <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
@@ -289,6 +315,7 @@ export default function NavBarHeader() {
                     type="search"
                     placeholder="Search recipes, dishes"
                     className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
+                    onChange={(e)=>recommendDishes(e.target.value)
                   />
 
                   <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
