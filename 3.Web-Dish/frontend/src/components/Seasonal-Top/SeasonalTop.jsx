@@ -13,7 +13,7 @@ import useFetchDishes from "../../hooks/useFetchDishes";
 
 
 const SeasonalTop = () => {
-  const { loading, dishes, error } = useFetchDishes();
+  const { loading, dishes, error, recent } = useFetchDishes();
 
   const fadeIn = useSpring({
     from: { opacity: 0 },
@@ -23,6 +23,36 @@ const SeasonalTop = () => {
 
   return (
     <div className="text-zinc-800 bg-[#f7f3cd] text-center py-12">
+    <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
+        <h1 className='text-center text-lg sm:text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold '>Recently Viewed</h1>
+        <div className='mr-8'>
+          <button onClick={() => window.scrollTo(0, 0)}>
+            <Link to='/SeasonalDishes' className=' text-end font-bold text-lg sm:text-xl md:text-2xl'><MdOutlineUnfoldMoreDouble size={30} /></Link>
+          </button>
+        </div>
+      </div>
+      {loading ? (
+        <h3>Fetching...</h3>
+      ) : (
+        <Marquee>
+          <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden" >
+            {recent.map((dish, index) => (
+              <Flip key={index} cascade left>
+                <animated.div style={fadeIn} className="flex-grow h-full">
+                  <Card2
+                    key={index}
+                    title={dish.dish_name}
+                    dishPath={`/dish/${dish.dish_name}`}
+                    time={dish.cooking_time}
+                    rating={0}
+                    imageUrl={dish.image || 'https://playswellwithbutter.com/wp-content/uploads/2021/04/Grilled-Bell-Peppers-6-960x1440.jpg'}
+                  />
+                </animated.div>
+              </Flip>
+            ))}
+          </div>
+        </Marquee>
+      )}
       {/* SEASONAL DISHES */}
       <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
         <h1 className="text-center text-lg sm:text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold ">
