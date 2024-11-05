@@ -1,0 +1,35 @@
+.results{
+    width: 50%;
+    height: max-content;
+    gap: 60px;
+    margin: 10px auto 0px auto;
+    border-radius: 5px;
+}
+
+.cards{
+    height: 120px;
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px .5px black;
+    margin: 3% auto 30px auto;
+    .dish-photo{
+        height: 100px;
+        width: 100px;
+        margin: auto 0px auto 20px;
+    }
+    .info{
+        .title{
+            font-size: 18px;
+            width: 70%;
+            margin: 40px 0px auto 20px;
+        }
+    }
+    cursor: pointer;
+    transition: all 0.33s ease-in-out;
+    &:hover{
+        scale: 1.013;
+    }
+}
