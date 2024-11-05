@@ -236,6 +236,28 @@ def history(name):
 
     except Exception as e:
         return jsonify({'message': f'Something went wrong: {str(e)}'}), 500
+
+@app.route("/retrieve-history", methods=['POST'])
+def retrieve_history():
+    history = [i['title'] for i in db.recent.find({'user':request.json.get('chef')})]
+    print(history)
+    dish_info = []
+    for i in history:
+        print(db.Dish.find_one({"dish_name":i}))
+        dish_info.append(db.Dish.find_one({'dish_name': i}))
+    return json.loads(json_util.dumps(dish_info))
+
+@app.route("/recent-history", methods = ["POST"])
+def recent_history():
+    exists = list(db.recent.find({"user":request.json.get("chef"), "title":request.json.get("dish")}))
+    if len(exists) > 0:
+        print(json_util.dumps(exists))
+        return jsonify({"status":"alread added"})
+    else:
+        inserted = db.recent.insert_one({"user":request.json.get("chef") , "title":request.json.get("dish")})
+        print(json_util.dumps(inserted))
+        if inserted:
+            return jsonify({"status":"done"})
     
 # ==============================================================================================================================================
 
@@ -257,6 +279,13 @@ def query_recommend():
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
+@app.route("/recommend_dishes", methods = ["POST"])
+def recommend():
+    query = request.json.get("query")
+    if not query:
+        return jsonify({"error":"Query not provided"})
+    return json_util.dumps(list(db.Dish.find({'dish_name': {"$regex":query}})))
     
 # API Route for recipe recommendation by feedback
 
