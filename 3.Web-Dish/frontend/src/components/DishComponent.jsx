@@ -1,28 +1,35 @@
-import React from 'react'
+import React from "react";
+import { Link } from "react-router-dom";
 
 function DishComponent(props) {
   return (
-    <div className="cards" onClick = {async(e)=>{
-        await fetch(`${import.meta.env.VITE_API_URL}/recent-history`,{
-          method:"POST",
-          headers:{
-            "Content-Type":"application/json",
-            "Access-Control-Allow-Origin": "*"
+    <div
+      className="cards"
+      onClick={async (e) => {
+        await fetch(`${import.meta.env.VITE_API_URL}/recent-history`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
-          body:JSON.stringify({
-            chef:JSON.parse(localStorage.getItem("user")).user_id,
-            dish:props.title
-          })
-        }).then((e)=>{
-          console.log(e.json())
-        })
-      }}>
+          body: JSON.stringify({
+            chef: JSON.parse(localStorage.getItem("user")).user_id,
+            dish: props.title,
+          }),
+        }).then((e) => {
+          console.log(e.json());
+        });
+        // window.location+="/dish/"+props.title
+      }}
+    >
+      
       <img className="dish-photo" src={props.img} />
       <div className="info">
-        <p className="title">{props.title.slice(0,40)+"...."}</p>
+        <p className="title">{props.title.slice(0, 40) + "...."}</p>
       </div>
+      
     </div>
-  )
+  );
 }
 
-export default DishComponent
+export default DishComponent;

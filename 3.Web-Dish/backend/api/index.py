@@ -251,11 +251,9 @@ def retrieve_history():
 def recent_history():
     exists = list(db.recent.find({"user":request.json.get("chef"), "title":request.json.get("dish")}))
     if len(exists) > 0:
-        print(json_util.dumps(exists))
         return jsonify({"status":"alread added"})
     else:
         inserted = db.recent.insert_one({"user":request.json.get("chef") , "title":request.json.get("dish")})
-        print(json_util.dumps(inserted))
         if inserted:
             return jsonify({"status":"done"})
     

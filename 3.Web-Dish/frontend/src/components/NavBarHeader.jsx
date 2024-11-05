@@ -138,8 +138,7 @@ export default function NavBarHeader(props) {
                   type="search"
                   placeholder="Search recipes, dishes"
                   className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                  onChange={(e)=>recommendDishes(e.target.value)
-                />
+                  onChange={(e)=>recommendDishes(e.target.value)}/>
 
                 <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
                   <FaMicrophone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -315,7 +314,7 @@ export default function NavBarHeader(props) {
                     type="search"
                     placeholder="Search recipes, dishes"
                     className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                    onChange={(e)=>recommendDishes(e.target.value)
+                    onChange={(e)=>recommendDishes(e.target.value)}
                   />
 
                   <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
