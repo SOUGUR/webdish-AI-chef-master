@@ -83,6 +83,8 @@ import ArunachalPradeshLuxuryDinner from "./components/Dishes/All-NavItem/Arunac
 const App = () => {
   const { user } = useAuthContext();
   const [location, setLocation] = useState({ pathname: "" });
+  const [showSearch, setSearch] = useState(false)
+  const [Dishes, setDishes] = useState([])
 
   return (
     <BrowserRouter>
@@ -91,10 +93,10 @@ const App = () => {
       {location.pathname !== "/chef-intelligence" &&
         location.pathname !== "/chef-intelligence/generatedDish" &&
         location.pathname !== "/chef-intelligence/archives" &&
-        location.pathname !== "/sec-intelligence" && <NavBarHeader />}
+        location.pathname !== "/sec-intelligence" && <NavBarHeader setSearch={setSearch} dishes={Dishes} setDishes={setDishes} />}
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home dishes={Dishes} showSearch={showSearch} />} />
         <Route path="/cooking" element={<Cooking />} />
         <Route path="/teampage" element={<TeamPage />} />
         <Route path="/signup" element={<CreateAccount />} />
