@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Fade } from "react-reveal";
 import { Link } from "react-router-dom";
 import Cooking from "../../pages/Cooking";
 
-const DishCookComponent = ({ dish, people }) => {
+const DishCookComponent = ({ dish, people, recipeSteps }) => {
     return (
         <div className="bg-[#f7f3cd] min-h-screen flex flex-col justify-center">
             <div className="flex-1 max-w-4xl mx-auto py-8">
@@ -16,12 +16,29 @@ const DishCookComponent = ({ dish, people }) => {
 
 const RecipeSteps = ({ dish, people, steps }) => {
     const [currentStep, setCurrentStep] = useState(0);
+    const [ingredients, setIngredients] = useState([]);
+
+    // If click on next button or previous button ingredient changes
+    useEffect(()=>{
+        const splitVal = dish.instructions[currentStep].step.split(" "); // Split the String into array
+        // Matching ingredients words with splitted String
+        dish.ingredients.map((ingredient)=> 
+            splitVal.forEach(element => {
+                if(element.substring(0,ingredient.name.length/2+1) == ingredient.name.toLowerCase().substring(0,ingredient.name.length/2+1)){
+                    console.log(ingredient.name);
+                    setIngredients(prev => [...prev, ingredient.name]);
+                }
+            })
+        )
+    }, [currentStep]);
 
     const goToNextStep = () => {
+        setIngredients([]);
         setCurrentStep(currentStep + 1);
     };
 
     const goToPreviousStep = () => {
+        setIngredients([]);
         setCurrentStep(currentStep - 1);
     };
 
@@ -51,9 +68,11 @@ const RecipeSteps = ({ dish, people, steps }) => {
                 <Fade bottom cascade delay={500}>
                     <ul className="mb-4 grid grid-cols-2 sm:grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                         {dish.ingredients.map((ingredient, j) => (
+                            ingredients.map((item) => item == ingredient.name &&
                             <li key={j}>
                                 <IngredientCard title={ingredient.name} quantity={`${ingredient.quantity[people - 1]} ${ingredient.unit}`} />
                             </li>
+                            )
                         ))}
                     </ul>
                 </Fade>
