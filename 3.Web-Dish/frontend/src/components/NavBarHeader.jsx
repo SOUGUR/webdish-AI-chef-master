@@ -67,7 +67,7 @@ export default function NavBarHeader(props) {
   const [selectedIndianLanguage, setSelectedIndianLanguage] = useState("ENG");
   const [indianDropdownOpen, setIndianDropdownOpen] = useState(false);
 
-  const handleIndianLanguageSelect = (languageCode) => {
+  const handleIndianLanguageSelect = async(languageCode) => {
     setSelectedIndianLanguage(languageCode);
     setIndianDropdownOpen(false);
     const elements = Array.from(document.body.querySelectorAll('*')).filter(element => element.childNodes.length > 0);
