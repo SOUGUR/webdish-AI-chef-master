@@ -25,7 +25,7 @@ function DishComponent(props) {
       
       <img className="dish-photo" src={props.img} />
       <div className="info">
-        <p className="title">{props.title.slice(0, 40) + "...."}</p>
+        <p className="title">{props.title}</p>
       </div>
       
     </div>

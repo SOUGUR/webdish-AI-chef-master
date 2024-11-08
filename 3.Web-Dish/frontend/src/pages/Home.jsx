@@ -13,21 +13,20 @@ let i = 0
 const Home = (props) => {
   return (
     <div className='overflow-x-hidden' >
-      <div style={{"display":`${props.showSearch == false?"none":"block"}`}}>
-        {props.dishes.map((e)=>{
-          console.log(e)
-          return(
-            <DishComponent key={i++} ingre={e.ingredients} instructions={e.instructions} title={e.dish_name} img={e.image} />
-          )
-        })}
-      </div>
-      <div style={{"display":`${props.showSearch == true?"none":"block"}`}}>
+      {props.showSearch && <div>
+          {props.dishes.map((e)=>{
+            return(
+              <DishComponent key={i++} ingre={e.ingredients} instructions={e.instructions} title={e.dish_name} img={e.image} />
+            )
+          })}
+        </div>}
+        {!props.showSearch && <div>
         <NavBarDishes />
         <Banner />
         <Choices />
         <SeasonalTop />
         <Footer />
-      </div>
+      </div>}
     </div>
   )
 }
