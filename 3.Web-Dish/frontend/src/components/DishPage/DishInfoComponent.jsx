@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Marquee from "react-fast-marquee"
 import { Flip } from "react-reveal"
 import { useSpring, animated } from 'react-spring'
@@ -28,7 +28,7 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
             />
 
             <div className="px-12">
-                <MainIngradients mainIngredients={dish.ingredients} />
+                <MainIngradients mainIngredients={dish.ingredients} people={people} />
                 <KitchenEquipments kitchenEquipments={dish.kitchen_equipments} />
                 <NumberOfPeople people={people} setPeople={setPeople} />
             </div>
@@ -65,14 +65,14 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
     )
 }
 
-function MainIngradients({ mainIngredients }) {
+function MainIngradients({ mainIngredients, people }) {
     return <div>
         <h1 className=" text-green-700 font-bold mt-5 text-2xl md:text-3xl">Main Ingredients</h1>
         <div className="m-4">
             <ul className="list-inside list-disc text-lg">
                 {mainIngredients.map((item, index) => (
                     <li className="mb-2" key={index}>
-                        <span className="font-semibold">{item.quantity[0]}</span> <span className="font-semibold">{item.unit}</span> - <span className="font-semibold">{item.name}</span>
+                        <span className="font-semibold">{item.quantity[people-1]}</span> <span className="font-semibold">{item.unit}</span> - <span className="font-semibold">{item.name}</span>
                     </li>
                 ))}
             </ul>
