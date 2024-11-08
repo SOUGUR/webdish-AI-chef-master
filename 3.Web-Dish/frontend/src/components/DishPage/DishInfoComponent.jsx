@@ -44,7 +44,7 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
                 </button>
             </div>
 
-            <div className='mb-5'>
+            {/* <div className='mb-5'>
                 <div className="pb-6 pt-6 px-4 md:px-8">
                     <h1 className='text-center text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold'>Recommended Dishes</h1>
                 </div>
@@ -59,7 +59,7 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
                         ))}
                     </div>
                 </Marquee>
-            </div>
+            </div> */}
             <Footer />
         </div>
     )

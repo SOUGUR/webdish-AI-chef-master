@@ -240,10 +240,10 @@ def history(name):
 @app.route("/retrieve-history", methods=['POST'])
 def retrieve_history():
     history = [i['title'] for i in db.recent.find({'user':request.json.get('chef')})]
-    print(history)
+    # print(history)
     dish_info = []
     for i in history:
-        print(db.Dish.find_one({"dish_name":i}))
+        # print(db.Dish.find_one({"dish_name":i}))
         dish_info.append(db.Dish.find_one({'dish_name': i}))
     return json.loads(json_util.dumps(dish_info))
 
