@@ -26,10 +26,12 @@ const RecipeSteps = ({ dish, people, steps }) => {
     const [ingredients, setIngredients] = useState([]);
 
     useEffect(() => {
-        const splitVal = dish.instructions[currentStep].step.split(" ");
+        const splitVal = dish.instructions[currentStep].step.split(/[ ,]+/);
+        console.log(splitVal);
 
         dish.ingredients.map((ingredient) =>
             splitVal.forEach(element => {
+                console.log(element);
                 if (element.substring(0, ingredient.name.length / 2 + 1) == ingredient.name.toLowerCase().substring(0, ingredient.name.length / 2 + 1)) {
                     console.log(ingredient.name);
                     setIngredients(prev => [...prev, ingredient.name]);
