@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
 import { useLogout } from "../hooks/useLogout";
 import { FaMicrophone } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { MdArrowDropDown } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
+import {translateAllText} from "./Translator"
 
 const Flag = ({ countryFlag }) => (
   <img
@@ -33,7 +34,7 @@ export default function NavBarHeader(props) {
   ];
 
   const IndianLanguages = [
-    { name: "English", code: "eng" },
+    { name: "English", code: "en" },
     { name: "Hindi", code: "hi" },
     { name: "Bengali", code: "bn" },
     { name: "Telugu", code: "te" },
@@ -69,6 +70,8 @@ export default function NavBarHeader(props) {
   const handleIndianLanguageSelect = (languageCode) => {
     setSelectedIndianLanguage(languageCode);
     setIndianDropdownOpen(false);
+    const elements = Array.from(document.body.querySelectorAll('*')).filter(element => element.childNodes.length > 0);
+    await translateAllText(elements, languageCode);
   };
 
   const toggleIndianDropdown = () => {
@@ -77,9 +80,9 @@ export default function NavBarHeader(props) {
 
   const [showMenu, setShowMenu] = useState(false);
 
-  async function recommendDishes(text){
+  async function recommend(text) {
     props.setDishes([])
-    if(text!==""){
+    if(text){
       await fetch(`${import.meta.env.VITE_API_URL}/recommend_dishes`,{
         method:"POST",
         headers:{
@@ -91,14 +94,8 @@ export default function NavBarHeader(props) {
         })
       }).then(async(e)=>{
         let json = await e.json()
-        for (let i = 0; i < json.length; i++) {
-          props.setDishes([json[i]])
-        }
-        props.setSearch(true)
+        props.setDishes(json)
       })
-    }
-    else{
-      props.setSearch(false)
     }
   }
 
@@ -138,7 +135,14 @@ export default function NavBarHeader(props) {
                   type="search"
                   placeholder="Search recipes, dishes"
                   className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                  onChange={(e)=>recommendDishes(e.target.value)}/>
+                  onChange={(e)=>{
+                    if(e.target.value){
+                      props.setSearch(e.target.value)
+                      recommend(e.target.value)
+                    }else{
+                      props.setSearch("")
+                    }
+                  }} />
 
                 <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
                   <FaMicrophone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -223,10 +227,10 @@ export default function NavBarHeader(props) {
                     {IndianLanguages.map((lang) => (
                       <div
                         key={lang.code}
-                        className="flex text-white pt-1 items-center rounded-md px-3 py-2 gap-2 cursor-pointer hover:bg-[#007a72]"
+                        className="flex text-white pt-1 items-center rounded-md px-3 py-2 gap-2 cursor-pointer hover:bg-[#007a72] no-translate"
                         onClick={() => handleIndianLanguageSelect(lang.code)}
                       >
-                        <span>{lang.name}</span>
+                        <span className="no-translate">{lang.name}</span>
                       </div>
                     ))}
                   </div>
@@ -314,7 +318,13 @@ export default function NavBarHeader(props) {
                     type="search"
                     placeholder="Search recipes, dishes"
                     className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                    onChange={(e)=>recommendDishes(e.target.value)}
+                    onChange={(e)=>{
+                      if(e.target.value){
+                        props.setSearch(e.target.value)
+                      }else{
+                        props.setSearch("")
+                      }
+                    }}
                   />
 
                   <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
