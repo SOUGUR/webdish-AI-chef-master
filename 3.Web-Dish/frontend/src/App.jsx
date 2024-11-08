@@ -83,7 +83,7 @@ import ArunachalPradeshLuxuryDinner from "./components/Dishes/All-NavItem/Arunac
 const App = () => {
   const { user } = useAuthContext();
   const [location, setLocation] = useState({ pathname: "" });
-  const [showSearch, setSearch] = useState(false)
+  const [showSearch, setSearch] = useState("")
   const [Dishes, setDishes] = useState([])
 
   return (
