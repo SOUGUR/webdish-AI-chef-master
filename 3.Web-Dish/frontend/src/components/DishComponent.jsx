@@ -36,7 +36,7 @@ function DishComponent(props) {
     <div className="cards" onClick={handleClick}>
       <img className="dish-photo" src={props.img} alt={props.title} />
       <div className="info">
-        <p className="title">{props.title.slice(0, 40) + "...."}</p>
+        <p className="title">{props.title}</p>
       </div>
     </div>
   );

@@ -67,7 +67,7 @@ export default function NavBarHeader(props) {
   const [selectedIndianLanguage, setSelectedIndianLanguage] = useState("ENG");
   const [indianDropdownOpen, setIndianDropdownOpen] = useState(false);
 
-  const handleIndianLanguageSelect = (languageCode) => {
+  const handleIndianLanguageSelect = async(languageCode) => {
     setSelectedIndianLanguage(languageCode);
     setIndianDropdownOpen(false);
     const elements = Array.from(document.body.querySelectorAll('*')).filter(element => element.childNodes.length > 0);
@@ -120,7 +120,7 @@ export default function NavBarHeader(props) {
               <Link to="/">Home</Link>
             </li>
             <li className="text-base md:text-md">
-              <Link to="/">About Us</Link>
+              <Link to="https://aichefmaster.com/aboutUs">About Us</Link>
             </li>
 
             <li className="flex items-center ">
@@ -321,6 +321,7 @@ export default function NavBarHeader(props) {
                     onChange={(e)=>{
                       if(e.target.value){
                         props.setSearch(e.target.value)
+                        recommend(e.target.value)
                       }else{
                         props.setSearch("")
                       }

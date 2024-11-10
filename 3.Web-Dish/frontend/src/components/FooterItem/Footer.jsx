@@ -12,11 +12,11 @@ const Footer = () => {
             <div className="footer-content">
               <h2 className="footer-heading">Company</h2>
               <ul className="list-items-styles">
-                <li>About Us</li>
-                <li>Team</li>
-                <li>Career</li>
-                <li>Blogs</li>
-                <li>News</li>
+                <li><a href="https://aichefmaster.com/aboutUs">About Us</a></li>
+                <li><a href="https://aichefmaster.com/Team">Team</a></li>
+                <li><a href="https://aichefmaster.com/job">Career</a></li>
+                <li><a href="https://aichefmaster.com/blogs">Blogs</a></li>
+                <li><a href="https://aichefmaster.com/news">News</a></li>
               </ul>
             </div>
           </div>
@@ -25,7 +25,7 @@ const Footer = () => {
             <div className="footer-content">
               <h2 className="footer-heading">Contact</h2>
               <ul className="list-items-styles">
-                <li>Help & Support</li>
+                <li><a href="mailto:info@aichefmaster.com?subject=Can%20you%20help%20">Help & Support</a></li>
               </ul>
             </div>
           </div>
@@ -75,8 +75,8 @@ const Footer = () => {
               <ul className="list-items-styles">
                 <li>Privacy Policy</li>
                 <li>Terms &amp; Refund</li>
-                <li>About Us</li>
-                <li>Contact</li>
+                <li><a href="https://aichefmaster.com/aboutUs"> About Us </a></li>
+                <li><a href="https://aichefrecipe.com/contact"> Contact </a></li>
               </ul>
             </div>
           </div>

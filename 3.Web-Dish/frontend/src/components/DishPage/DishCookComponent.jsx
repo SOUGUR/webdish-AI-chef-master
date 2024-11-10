@@ -126,7 +126,7 @@ const RecipeSteps = ({ dish, people, steps }) => {
             )}
           </div>
           <div className="text-center mt-6">
-            {dish.instructions[currentStep].time[people - 1] >= 2 && (
+            {dish.instructions[currentStep].time[people - 1] >= 5 && (
               <button
                 onClick={startTimer}
                 className="px-4 py-2 bg-purple-500 text-white rounded-md"
