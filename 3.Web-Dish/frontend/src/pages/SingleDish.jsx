@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { BsFillStopwatchFill, BsFire } from "react-icons/bs";
+import { BsFillStopwatchFill } from "react-icons/bs";
+import { FaMapLocationDot } from "react-icons/fa6";
 import { SiCodechef } from "react-icons/si";
 import "plyr/dist/plyr.css";
 
@@ -13,6 +14,7 @@ const SingleDish = (props) => {
     dishIngredients,
     dishCalories,
     dishDescription,
+    dishState,
   } = props;
 
   return (
@@ -59,12 +61,21 @@ const SingleDish = (props) => {
                 </div>
 
                 {/* <div className="flex flex-col items-center md:flex-row gap-3">
-                            <BsFire className="text-4xl md:mt-2" />
-                            <div className="font-semibold text-sm md:text-base">
-                                <p className="text-xs md:text-sm">Calories</p>
-                                <p className="text-xs md:text-sm">{dishCalories}</p>
-                            </div>
-                        </div> */}
+                  <BsFire className="text-4xl md:mt-2" />
+                  <div className="font-semibold text-sm md:text-base">
+                    <p className="text-xs md:text-sm">Calories</p>
+                    <p className="text-xs md:text-sm">{dishCalories}</p>
+                  </div>
+                </div> */}
+
+                <div className="flex flex-col items-center md:flex-row gap-3">
+                  <FaMapLocationDot className="text-4xl md:mt-2" />
+                  <div className="font-semibold text-sm md:text-base">
+                    <p className="text-xs md:text-sm">State</p>
+                    <p className="text-xs md:text-sm">{dishState}</p>
+                  </div>
+                </div>
+
               </div>
 
               <div className="">
