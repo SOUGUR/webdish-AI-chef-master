@@ -61,7 +61,7 @@ const Navbar = ({theme, setTheme}) => {
                 alt="logo"
             />
           </a>
-          <a href="/">AIChefMaster</a>
+          <a href="/">AI Chef Master</a>
         </h1>
 
         <ul className="hidden xl:flex xl:items-center h-full ">

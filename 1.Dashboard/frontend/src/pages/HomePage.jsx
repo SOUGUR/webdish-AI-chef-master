@@ -13,7 +13,7 @@ const HomePage = () => {
         <div className='w-[300px] h-[300px] z-1 rounded-full absolute top-[-40px] left-[-40px] blur-3xl bg-[#8bfb451c]  '></div>
         <h2 className='custom-text font-bold relative text-2xl md:text-4xl lg:text-5xl z-10 pb-6 lg:pb-8'>
           <p className='text-green-600 inline pr-2'>Welcome</p>
-          to AiChefMaster <p>Dashboard</p>
+          to Ai Chef Master <p>Dashboard</p>
         </h2>
 
         <p className='custom-text-secondary description text-lg md:text-xl font-medium pb-6 lg:pb-8 relative'>Bring your signature dishes to life on our platform. Every recipe, every ingredient, and every cooking technique you provide adds a unique flavor to our growing culinary library.</p>

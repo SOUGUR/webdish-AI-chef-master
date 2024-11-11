@@ -36,9 +36,9 @@ function CreateAccount() {
   const handleGoogleAuth = () => {
     window.location.href = `${import.meta.env.VITE_API_URL}/login/google`;
   };
-  const handleMicrosoftAuth = () => {
-    window.location.href = `${import.meta.env.VITE_API_URL}/login/microsoft`;
-  };
+  // const handleMicrosoftAuth = () => {
+  //   window.location.href = `${import.meta.env.VITE_API_URL}/login/microsoft`;
+  // };
 
   return (
     <>
@@ -144,13 +144,13 @@ function CreateAccount() {
               <img src={google} alt="Google" />
               <button className='font-medium '>Continue With Google</button>
             </div>
-            <div
+            {/* <div
               className='gap-2 border p-2 rounded-lg border-black flex justify-start items-center   hover:scale-110'
               onClick={handleMicrosoftAuth}
             >
               <img src={microsoft} alt="Microsoft" />
               <button className='font-medium '>Continue With Microsoft</button>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
