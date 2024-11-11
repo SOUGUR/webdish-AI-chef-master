@@ -116,29 +116,6 @@ def sign_up():
         return jsonify({'message': 'SignUp Successful'}), 201
 
 
-# @app.route('/chef/login', methods=['POST'])
-# def login():
-#     if request.method == 'POST':
-#         data = request.get_json()
-#
-#         email = data.get('email')
-#         password = data.get('password')
-#         session['email'] = email
-#
-#         login_user = db.Chef.find_one({'email': email, 'password': password})
-#         if login_user:
-#             access_token = create_access_token(identity=email)
-#
-#             login_user = db.Chef.find_one({'email': email}, {'first_name': 1, 'last_name': 1, 'user_id': 1})
-#
-#             kname = login_user['first_name'] + " " + login_user['last_name']
-#             user_id = login_user['user_id']
-#             session['is_login'] = True
-#             return jsonify(message='Login Successful', access_token=access_token, email=email, name=kname,
-#                            user_id=user_id)
-#         else:
-#             return jsonify({'message': 'Invalid email and password'}), 401
-
 
 @app.route('/chef/checkDishExists', methods=['GET'])
 def check_dish_exists():
@@ -150,70 +127,6 @@ def check_dish_exists():
     else:
         return jsonify({'exists': False}), 200
 
-
-# @app.route('/chef/createDish', methods=['POST'])
-# @jwt_required()
-# def create_dish():
-#     user_info = get_jwt_identity()
-#     login_user = db.Chef.find_one({'email': user_info}, {'first_name': 1, 'last_name': 1})
-#     kname = login_user['first_name'] + " " + login_user['last_name']
-#
-#     temp = request.get_json()
-#     dish_name = temp['name'].lower()
-#
-#     existing_dish = db.Dish.find_one({'dish_name': {"$regex": f'^{re.escape(dish_name)}$', "$options": "i"}})
-#
-#     if existing_dish:
-#         return jsonify({'error': 'Dish already exists with the same name'}), 400
-#
-#     formatted_time = datetime.now().strftime("%H:%M:%S")
-#     formatted_date = datetime.now().strftime("%Y-%m-%d")
-#
-#     db.Dish.insert_one({
-#         "created_by": kname,
-#         "ingredients": temp['ingredients'],
-#         "instructions": temp.get('instructions'),
-#         "description": temp.get('description'),
-#         "dish_name": temp['name'],
-#         "veg_non_veg": temp['veg_non_veg'],
-#         "popularity_state": temp['popularity_state'],
-#         "Cuisine": temp['cuisine'],
-#         "cooking_time": temp['cooking_time'],
-#         "kitchen_equipments": temp['kitchen_equipments'],
-#         "courses": temp['courses'],
-#         "Created_date": formatted_date,
-#         "Created_time": formatted_time,
-#         "email": user_info
-#     })
-#
-#     return jsonify({'message': 'Dish Saved Successfully'}), 201
-#
-#
-# @app.route('/myAccount', methods=['GET'])
-# @jwt_required()
-# def myAccount():
-#     user_info = get_jwt_identity()
-#     login_user = db.Chef.find_one({'email': user_info}, {'first_name': 1, 'last_name': 1})
-#     name = login_user['first_name'] + " " + login_user['last_name']
-#
-#     All_dis = db.Dish.find({'email': user_info})
-#     output3 = []
-#     for dish in All_dis:
-#         dish_data = {
-#             "id": str(dish['_id']),
-#             "name": dish['dish_name'],
-#             "cuisine": dish['Cuisine'],
-#             "veg_non": dish['veg_non_veg'],
-#             "course_type": dish['courses'],
-#             "created_date": dish['Created_date'],
-#             "created_time": dish['Created_time'],
-#             "description": dish['description'],
-#             "cooking_time": dish["cooking_time"],
-#             "popularity_state": dish["popularity_state"]
-#         }
-#         output3.append(dish_data)
-#
-#     return jsonify(output3)
 
 
 @app.route('/api/search', methods=['GET', 'POST'])

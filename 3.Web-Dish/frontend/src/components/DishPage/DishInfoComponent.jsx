@@ -73,7 +73,7 @@ function MainIngradients({ mainIngredients, people }) {
             <ul className="list-inside list-disc text-lg">
                 {mainIngredients.map((item, index) => (
                     <li className="mb-2" key={index}>
-                        <span className="font-semibold">{item.quantity[people-1]}</span> <span className="font-semibold">{item.unit}</span> - <span className="font-semibold">{item.name}</span>
+                        <span className="font-semibold">{item.quantity[people-1]}</span> <span className="font-semibold">{item.unit}</span> - <span className="font-semibold">{item.name}</span> 
                     </li>
                 ))}
             </ul>
