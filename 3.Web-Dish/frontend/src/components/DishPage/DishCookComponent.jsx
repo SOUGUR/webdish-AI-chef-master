@@ -24,21 +24,60 @@ const RecipeSteps = ({ dish, people, steps }) => {
     const [showNotification, setShowNotification] = useState(false);
 
     const [ingredients, setIngredients] = useState([]);
+    const [finalIngredients, setFinalIngredients] = useState([]);
 
     useEffect(() => {
-        const splitVal = dish.instructions[currentStep].step.split(/[ ,]+/);
-        console.log(splitVal);
+        
+        // console.log(splitVal);
 
-        dish.ingredients.map((ingredient) =>
-            splitVal.forEach(element => {
-                console.log(element);
-                if (element.substring(0, ingredient.name.length / 2 + 1) == ingredient.name.toLowerCase().substring(0, ingredient.name.length / 2 + 1)) {
-                    console.log(ingredient.name);
-                    setIngredients(prev => [...prev, ingredient.name]);
-                }
-            })
-        );
+        // dish.ingredients.map((ingredient) =>
+        //     splitVal.forEach(element => {
+        //         console.log(element);
+        //         if (element.substring(0, ingredient.name.length / 2 + 1) == ingredient.name.toLowerCase().substring(0, ingredient.name.length / 2 + 1)) {
+        //             console.log(ingredient.name);
+        //             setIngredients(prev => [...prev, ingredient.name]);
+        //         }
+        //     })
+        // );
+        console.log(dish.ingredients);
+        // console.log(dish.ingredients['name']);
+        dish.ingredients.forEach((ingredient) =>{
+            setIngredients(prev => [...prev, ingredient.name]);
+        })
+        setFinalIngredients([]);
     }, [currentStep]);
+
+    useEffect(()=>{
+        const StringVal = dish.instructions[currentStep].step.toLowerCase();
+        console.log(StringVal);
+        const splitVal = StringVal.split(/[\s,-]+/);
+        console.log(ingredients);
+
+        ingredients.forEach(item=> {
+            if (StringVal.includes(item.toLowerCase().substring(0,item.length-1)) || StringVal.includes(item.toLowerCase().substring(0,item.length))) { 
+                // console.log("Yes ---- " + item);
+                setFinalIngredients(prev => [...prev, item]);
+            }
+        })
+
+        // ingredients.forEach(item=>{
+        //     splitVal.forEach(element => {
+                    
+        //         if(element.length == item.length -1 || element.length == item.length -2){
+        //             console.log("greater " + element, " " + item.toLowerCase());
+        //             if(element.substring(0, item.length / 2 + 1) == item.toLowerCase().substring(0, item.length / 2 + 1)){
+        //                 setFinalIngredients(prev => [...prev, item]);
+        //             }
+        //         }
+        //         else if(item.length >= 2 * element.length){
+        //             console.log("less " + element.substring(0, element.length-1), " " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+        //             if(element.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 - 2 )){
+        //                 setFinalIngredients(prev => [...prev, item]);
+        //             }
+        //         }
+        //     })
+        // })
+    }, [ingredients]);
 
     const goToNextStep = () => {
         setIngredients([]);
@@ -113,7 +152,7 @@ const RecipeSteps = ({ dish, people, steps }) => {
                         <Fade bottom cascade delay={500}>
                             <ul className="mb-4 grid grid-cols-2 sm:grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                                 {dish.ingredients.map((ingredient, j) => (
-                                    ingredients.map((item) => item == ingredient.name &&
+                                    finalIngredients.map((item) => item == ingredient.name &&
                                         <li key={j}>
                                             <IngredientCard title={ingredient.name} quantity={`${ingredient.quantity[people - 1]} ${ingredient.unit}`} />
                                         </li>
