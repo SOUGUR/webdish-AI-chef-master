@@ -163,64 +163,23 @@ const InstructionsPage = ({setTab, formData, setFormData}) => {
         }
     };
 
-    // const getCurrentIngredientPortion = () => {
-    //   if (formData.ingredients.length === 0) return 1;
-    //   const lastIngredient = formData.ingredients[formData.ingredients.length - 1];
-    //   const isLastIngredientFilled = lastIngredient.quantity.every(quantity => quantity !== "");
-    //   return isLastIngredientFilled ? 5 : lastIngredient.quantity.findIndex(quantity => quantity === "") + 1;
-    // };
-    // const renderIngredients = () => {
-    //   const currentPortion = getCurrentIngredientPortion();
-    //   let components = [];
-    //   for (let i = 1; i <= currentPortion; i++) {
-    //     components.push(
-    //       <Ingredient
-    //         key={i}
-    //         formData={formData}
-    //         setFormData={setFormData}
-    //         portion={i}
-    //       />
-    //     );
-    //   }
-    //   return components;
-    // };
-
-    // const getCurrentInstructionPortion = () => {
-    //   if (formData.instructions.length === 0) return 1;
-    //   const lastInstruction = formData.instructions[formData.instructions.length - 1];
-    //   const isLastInstructionFilled = lastInstruction.time.every(time => time !== "");
-    //   return isLastInstructionFilled ? 5 : lastInstruction.time.findIndex(time => time === "") + 1;
-    // };
-    // const renderInstructions = () => {
-    //   const currentPortion = getCurrentInstructionPortion();
-    //   let components = [];
-    //   for (let i = 1; i <= currentPortion; i++) {
-    //     components.push(
-    //       <Instruction
-    //         key={i}
-    //         formData={formData}
-    //         setFormData={setFormData}
-    //         portion={i}
-    //       />
-    //     );
-    //   }
-    //   return components;
-    // };
-
     useEffect(() => {
         const totalTime = formData.instructions.reduce((acc, instruction) => {
-            const timeArray = Array.isArray(instruction.time) ? instruction.time : [];
-            return acc + timeArray.reduce((timeAcc, time) => timeAcc + parseInt(time), 0);
+            const firstTimeValue = Array.isArray(instruction.time) && instruction.time.length > 0
+                ? parseInt(instruction.time[0])
+                : 0;
+            return acc + firstTimeValue;
         }, 0);
-
+    
         const updatedFormData = {
             ...formData,
             cooking_time: totalTime,
         };
-
+    
         setFormData(updatedFormData);
         localStorage.setItem("formData", JSON.stringify(updatedFormData));
     }, [formData.instructions]);
+    
 
     return (
         <>
