@@ -164,12 +164,12 @@ export default function NavBarHeader(props) {
                 <div className="group cursor-pointer py-2 text-base md:text-md">
                   <div className="flex items-center gap-1">
                     <Flag countryFlag={selectedLanguage} />
-                    <div className="flex">
+                    <div className="flex no-translate">
                       {selectedLanguage.toUpperCase()}
                       <MdArrowDropDown size={23} />
                     </div>
                   </div>
-                  <div className="invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible">
+                  <div className="invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible no-translate">
                     {CountryFlag.map((country) => (
                       <div
                         key={country.countryFlag}
@@ -177,7 +177,7 @@ export default function NavBarHeader(props) {
                         onClick={() => selectLanguage(country.countryFlag)}
                       >
                         <Flag countryFlag={country.countryFlag} />
-                        <span>{country.countryFlag.toUpperCase()}</span>
+                        <span className="no-translate">{country.countryFlag.toUpperCase()}</span>
                       </div>
                     ))}
                   </div>
@@ -191,14 +191,14 @@ export default function NavBarHeader(props) {
                   <div className="group cursor-pointer py-2">
                     <div className="flex items-center justify-center">
                       <button
-                        className="menu-hover items-center flex text-base md:text-md"
+                        className="menu-hover items-center flex text-base md:text-md no-translate"
                         onClick={() => {}}
                       >
                         All
                         <MdArrowDropDown size={23} />
                       </button>
                     </div>
-                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] py-1 px-4 text-white shadow-xl group-hover:visible">
+                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] py-1 px-4 text-white shadow-xl group-hover:visible no-translate">
                       {categories.map(({ path, label }) => (
                         <Link
                           key={path}
@@ -222,14 +222,14 @@ export default function NavBarHeader(props) {
                   onClick={toggleIndianDropdown}
                 >
                   <div className="flex items-center gap-1">
-                    <div className="flex">
+                    <div className="flex no-translate">
                       {selectedIndianLanguage.toUpperCase()}
                       <MdArrowDropDown size={23} />
                     </div>
                   </div>
                   <div
                     className={
-                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4  text-white shadow-xl group-hover:visible"
+                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4  text-white shadow-xl group-hover:visible no-translate"
                     }
                     style={{ maxHeight: "200px", overflowY: "auto" }}
                   >
@@ -249,17 +249,17 @@ export default function NavBarHeader(props) {
               {indianDropdownOpen && (
                 <div
                   className={
-                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible"
+                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible no-translate"
                   }
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
                   {IndianLanguages.map((lang) => (
                     <div
                       key={lang.code}
-                      className="flex text-white pt-1 items-center px-4 mb-1 gap-2 cursor-pointer hover:bg-[#007a72]"
+                      className="flex text-white pt-1 items-center px-4 mb-1 gap-2 cursor-pointer hover:bg-[#007a72] no-translate"
                       onClick={() => handleIndianLanguageSelect(lang.code)}
                     >
-                      <span>{lang.name}</span>
+                    <span className="no-translate">{lang.name}</span>
                     </div>
                   ))}
                 </div>
@@ -354,7 +354,7 @@ export default function NavBarHeader(props) {
                         <MdArrowDropDown size={23} />
                       </div>
                     </div>
-                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible">
+                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4 text-white shadow-xl group-hover:visible no-translate">
                       {CountryFlag.map((country) => (
                         <div
                           key={country.countryFlag}
@@ -362,7 +362,7 @@ export default function NavBarHeader(props) {
                           onClick={() => selectLanguage(country.countryFlag)}
                         >
                           <Flag countryFlag={country.countryFlag} />
-                          <span>{country.countryFlag.toUpperCase()}</span>
+                          <span className="no-translate">{country.countryFlag.toUpperCase()}</span>
                         </div>
                       ))}
                     </div>
