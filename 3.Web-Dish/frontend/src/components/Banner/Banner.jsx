@@ -20,7 +20,7 @@ const Banner = () => {
           <img src={DishText} className='filter invert' alt="" />
         </div>
       }
-      subtitle="Cook your favorite Dish, Cuisines & recipes with AI Chef"
+      subtitle="Cook your favorite Dish, Cuisines & Recipes with AI Chef"
   />
    );
 };

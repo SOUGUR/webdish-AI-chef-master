@@ -22,7 +22,7 @@ const RecipeSteps = ({ steps }) => {
 
   const handleFeedbackSubmission = () => {
     alert('You have successfully created a dish!');
-    navigate('/feedback');
+    navigate('/dish-feedback');
   };
 
   return (

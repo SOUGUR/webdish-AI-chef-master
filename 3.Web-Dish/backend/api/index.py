@@ -531,15 +531,60 @@ def get_states():
     return jsonify(dishes)
 
 
-@app.route('/feedback', methods=['POST'])
-def feedback():
-    data = request.json
-    db.Feedback.insert_one({
-        "email": data.get('email'),
-        "message": data.get('message'),
-        "reaction": data.get('reaction')
-    })
-    return jsonify({'message': 'Message added successfully'}), 201
+def validate_feedback_data(data):
+    """Validate the feedback form data"""
+    required_fields = ['email', 'overallRating', 'message']
+    
+    for field in required_fields:
+        if field not in data or not data[field]:
+            return False, f"Missing required field: {field}"
+            
+    if not isinstance(data['overallRating'], (int, float)) or not (0 <= data['overallRating'] <= 5):
+        return False, "Invalid overall rating"
+        
+    return True, None
+
+
+@app.route('/dish-feedback', methods=['POST'])
+def submit_feedback():
+    try:
+        data = request.json
+        
+        # Validate the incoming data
+        is_valid, error_message = validate_feedback_data(data)
+        if not is_valid:
+            return jsonify({"error": error_message}), 400
+            
+        # Add timestamp to the feedback
+        feedback_document = {
+            "email": data["email"],
+            "reviewType": data.get("reviewType", ""),
+            "overallRating": data["overallRating"],
+            "difficultyLevel": data.get("difficultyLevel", ""),
+            "cookingTime": data.get("cookingTime", ""),
+            "tasteRating": data.get("tasteRating", 0),
+            "presentationRating": data.get("presentationRating", 0),
+            "followedInstructions": data.get("followedInstructions", True),
+            "madeModifications": data.get("madeModifications", False),
+            "modifications": data.get("modifications", ""),
+            "wouldMakeAgain": data.get("wouldMakeAgain", ""),
+            "message": data["message"],
+            "suggestedImprovements": data.get("suggestedImprovements", ""),
+            "photoUrl": data.get("photoUrl", ""),
+            "createdAt": datetime.utcnow()
+        }
+        
+        # Insert the feedback into MongoDB
+        result = db.Feedback.insert_one(feedback_document)
+        
+        if result.inserted_id:
+            return jsonify({"message": "Message added successfully", "id": str(result.inserted_id)}), 201
+        else:
+            return jsonify({"error": "Failed to save feedback"}), 500
+            
+    except Exception as e:
+        app.logger.error(f"Error submitting feedback: {str(e)}")
+        return jsonify({"error": "Internal server error"}), 500
 
 
 @app.route('/steps/<id>', methods=['GET'])

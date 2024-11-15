@@ -60,7 +60,7 @@ const SeasonalTop = () => {
       )}
 
       {/* SEASONAL DISHES */}
-      <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
+      <div className="pb-6 pt-6 flex justify-between px-4 md:px-8 scroll-smooth">
         <h1 className="text-center text-lg sm:text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold ">
           Seasonal Dishes
         </h1>
@@ -99,7 +99,7 @@ const SeasonalTop = () => {
       )}
 
       {/* TOP DISHES */}
-      <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
+      <div className="pb-6 pt-6 flex justify-between px-4 md:px-8 scroll-smooth">
         <h1 className="text-center text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold ">
           Top Dishes
         </h1>
@@ -169,7 +169,7 @@ const SeasonalTop = () => {
         </div>
       </Marquee> */}
 
-      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden">
+      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden scroll-smooth">
         {dishes.slice(16, 23).map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full">

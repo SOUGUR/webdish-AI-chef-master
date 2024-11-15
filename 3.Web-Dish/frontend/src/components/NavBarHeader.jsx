@@ -7,7 +7,7 @@ import { MdArrowDropDown } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
-import {translateAllText} from "./Translator"
+import { translateAllText } from "./Translator";
 
 const Flag = ({ countryFlag }) => (
   <img
@@ -64,14 +64,18 @@ export default function NavBarHeader(props) {
     setSelectedLanguage(countryFlag);
     setLanguageDropdownOpen(false);
   };
-  const [selectedIndianLanguage, setSelectedIndianLanguage] = useState(sessionStorage.getItem("lang")?sessionStorage.getItem("lang"):"EN");
+  const [selectedIndianLanguage, setSelectedIndianLanguage] = useState(
+    sessionStorage.getItem("lang") ? sessionStorage.getItem("lang") : "EN"
+  );
   const [indianDropdownOpen, setIndianDropdownOpen] = useState(false);
 
-  const handleIndianLanguageSelect = async(languageCode) => {
+  const handleIndianLanguageSelect = async (languageCode) => {
     setSelectedIndianLanguage(languageCode);
     setIndianDropdownOpen(false);
-    const elements = Array.from(document.body.querySelectorAll('*')).filter(element => element.childNodes.length > 0);
-    sessionStorage.setItem("lang", languageCode)
+    const elements = Array.from(document.body.querySelectorAll("*")).filter(
+      (element) => element.childNodes.length > 0
+    );
+    sessionStorage.setItem("lang", languageCode);
     await translateAllText(elements, languageCode);
   };
 
@@ -79,32 +83,32 @@ export default function NavBarHeader(props) {
     setIndianDropdownOpen(!indianDropdownOpen);
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     setTimeout(() => {
-      if(sessionStorage.getItem("lang")){
-        handleIndianLanguageSelect(sessionStorage.getItem("lang"))
+      if (sessionStorage.getItem("lang")) {
+        handleIndianLanguageSelect(sessionStorage.getItem("lang"));
       }
     }, 1500);
-  }, [])
+  }, []);
 
   const [showMenu, setShowMenu] = useState(false);
 
   async function recommend(text) {
-    props.setDishes([])
-    if(text){
-      await fetch(`${import.meta.env.VITE_API_URL}/recommend_dishes`,{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json",
-          "Access-Control-Allow-Origin": "*"
+    props.setDishes([]);
+    if (text) {
+      await fetch(`${import.meta.env.VITE_API_URL}/recommend_dishes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
         },
-        body:JSON.stringify({
-          query: text
-        })
-      }).then(async(e)=>{
-        let json = await e.json()
-        props.setDishes(json)
-      })
+        body: JSON.stringify({
+          query: text,
+        }),
+      }).then(async (e) => {
+        let json = await e.json();
+        props.setDishes(json);
+      });
     }
   }
 
@@ -144,14 +148,15 @@ export default function NavBarHeader(props) {
                   type="search"
                   placeholder="Search recipes, dishes"
                   className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                  onChange={(e)=>{
-                    if(e.target.value){
-                      props.setSearch(e.target.value)
-                      recommend(e.target.value)
-                    }else{
-                      props.setSearch("")
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      props.setSearch(e.target.value);
+                      recommend(e.target.value);
+                    } else {
+                      props.setSearch("");
                     }
-                  }} />
+                  }}
+                />
 
                 <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
                   <FaMicrophone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
@@ -300,7 +305,6 @@ export default function NavBarHeader(props) {
         </div>
       </div>
 
-
       {showMenu && (
         <div className="md:hidden">
           <div className="px-4 py-2">
@@ -327,12 +331,12 @@ export default function NavBarHeader(props) {
                     type="search"
                     placeholder="Search recipes, dishes"
                     className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
-                    onChange={(e)=>{
-                      if(e.target.value){
-                        props.setSearch(e.target.value)
-                        recommend(e.target.value)
-                      }else{
-                        props.setSearch("")
+                    onChange={(e) => {
+                      if (e.target.value) {
+                        props.setSearch(e.target.value);
+                        recommend(e.target.value);
+                      } else {
+                        props.setSearch("");
                       }
                     }}
                   />
@@ -370,6 +374,88 @@ export default function NavBarHeader(props) {
                 </div>
               </li>
 
+              {location.pathname !== "/" && (
+              <li className="flex items-center gap-2">
+                <div className="mx-auto flex w-full items-center justify-center  ">
+                  <div className="group cursor-pointer py-2">
+                    <div className="flex items-center justify-center">
+                      <button
+                        className="menu-hover items-center flex text-base md:text-md"
+                        onClick={() => {}}
+                      >
+                        All
+                        <MdArrowDropDown size={23} />
+                      </button>
+                    </div>
+                    <div className="invisible absolute z-50 flex mx-auto flex-col bg-[#00544f] py-1 px-4 text-white shadow-xl group-hover:visible">
+                      {categories.map(({ path, label }) => (
+                        <Link
+                          key={path}
+                          to={path}
+                          className={`hover:bg-[#007a72] rounded-md px-3 py-2 text-lg font-medium`}
+                          onClick={() => handleCategoryClick(label)}
+                        >
+                          {label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </li>
+            )}
+
+
+              <li className="text-base  md:text-md flex items-center">
+              <div className="mx-auto flex w-full">
+                <div
+                  className="group cursor-pointer py-2 text-base md:text-md"
+                  onClick={toggleIndianDropdown}
+                >
+                  <div className="flex items-center gap-1">
+                    <div className="flex">
+                      {selectedIndianLanguage.toUpperCase()}
+                      <MdArrowDropDown size={23} />
+                    </div>
+                  </div>
+                  <div
+                    className={
+                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4  text-white shadow-xl group-hover:visible"
+                    }
+                    style={{ maxHeight: "200px", overflowY: "auto" }}
+                  >
+                    {IndianLanguages.map((lang) => (
+                      <div
+                        key={lang.code}
+                        className="flex text-white pt-1 items-center rounded-md px-3 py-2 gap-2 cursor-pointer hover:bg-[#007a72] no-translate"
+                        onClick={() => handleIndianLanguageSelect(lang.code)}
+                      >
+                        <span className="no-translate">{lang.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {indianDropdownOpen && (
+                <div
+                  className={
+                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible"
+                  }
+                  style={{ maxHeight: "200px", overflowY: "auto" }}
+                >
+                  {IndianLanguages.map((lang) => (
+                    <div
+                      key={lang.code}
+                      className="flex text-white pt-1 items-center px-4 mb-1 gap-2 cursor-pointer hover:bg-[#007a72]"
+                      onClick={() => handleIndianLanguageSelect(lang.code)}
+                    >
+                      <span>{lang.name}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </li>
+
               {/* Conditional render for "Create Account" or "Logout" */}
               {!user ? (
                 <li className="text-base md:text-md">
@@ -396,7 +482,7 @@ export default function NavBarHeader(props) {
                   onClick={() => setShowMenu(false)}
                   className="text-base md:text-md flex items-center"
                 >
-                  Setting 
+                  Setting
                   <IoSettingsSharp />
                 </Link>
               </li>
