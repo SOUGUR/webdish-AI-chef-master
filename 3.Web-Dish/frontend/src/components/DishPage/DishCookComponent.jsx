@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Fade } from "react-reveal";
 import { Link } from "react-router-dom";
 import Cooking from "../../pages/Cooking";
+import stringSimilarity from 'string-similarity';
 
 const DishCookComponent = ({ dish, people }) => {
     return (
@@ -27,20 +28,8 @@ const RecipeSteps = ({ dish, people, steps }) => {
     const [finalIngredients, setFinalIngredients] = useState([]);
 
     useEffect(() => {
-        
-        // console.log(splitVal);
-
-        // dish.ingredients.map((ingredient) =>
-        //     splitVal.forEach(element => {
-        //         console.log(element);
-        //         if (element.substring(0, ingredient.name.length / 2 + 1) == ingredient.name.toLowerCase().substring(0, ingredient.name.length / 2 + 1)) {
-        //             console.log(ingredient.name);
-        //             setIngredients(prev => [...prev, ingredient.name]);
-        //         }
-        //     })
-        // );
         console.log(dish.ingredients);
-        // console.log(dish.ingredients['name']);
+        
         dish.ingredients.forEach((ingredient) =>{
             setIngredients(prev => [...prev, ingredient.name]);
         })
@@ -48,35 +37,72 @@ const RecipeSteps = ({ dish, people, steps }) => {
     }, [currentStep]);
 
     useEffect(()=>{
-        const StringVal = dish.instructions[currentStep].step.toLowerCase();
+        const StringVal = dish.instructions[currentStep].step.toLowerCase() || '';
         console.log(StringVal);
-        const splitVal = StringVal.split(/[\s,-]+/);
+        const splitVal = StringVal.split(/[\s,]+/);
         console.log(ingredients);
+        const matchedIngredients = new Set();
 
         ingredients.forEach(item=> {
             if (StringVal.includes(item.toLowerCase().substring(0,item.length-1)) || StringVal.includes(item.toLowerCase().substring(0,item.length))) { 
                 // console.log("Yes ---- " + item);
-                setFinalIngredients(prev => [...prev, item]);
+                matchedIngredients.add(item);
+                
             }
+            else{
+                loop: for (let element of splitVal){
+                    // let itemVal = item.replace(/s/g, )
+                    let elementVal = element.replace(/-/g, ' ');
+                    if(element.length == item.length -1){
+                        console.log("less " + element + " , " + item.toLowerCase());
+                        if(element.replace(/-/g, '').substring(0, item.length / 2 + 1) == item.toLowerCase().trim(" ").substring(0, item.length / 2 + 1) ||
+                            elementVal.substring(0, element.length / 2) == item.toLowerCase().substring(0, item.length / 2 - 1) ){
+                            console.log("matched--------- " + item);
+                            matchedIngredients.add(item);
+                            break loop;
+                        }
+                        
+                    }
+                    else if(item.length > element.length && item.length < 2*element.length ){
+                        
+                        console.log("greater " + elementVal + " , " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+                        if(elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 + 3) ||
+                            elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 - 2) 
+                            && element.substring(0, element.length-1) != ''){
+                            matchedIngredients.add(item);
+                            console.log("matched---- " + elementVal + " , " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+                            break loop;
+                        }
+                    }
+                    else if(item.length > 2*element.length ){
+                        
+                        console.log("greater " + elementVal + " , " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+                        if(elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 + 3) ||
+                            elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2) ||
+                            elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 - 2) 
+                            && element.substring(0, element.length-1) != ''){
+                                if(elementVal.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 - 2)){
+                                    // Check if any word in the instruction is similar to the ingredient
+                                    console.log("Entered-----------------")
+                                    const similarity = stringSimilarity.compareTwoStrings(element, item.toLowerCase().substring(0, item.length / 2 - 2));
+                                    if(similarity > 0.8) {
+                                        matchedIngredients.add(item);
+                                        console.log("matched---- " + elementVal + " , " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+                                        break loop;
+                                    } 
+                                }else{
+                                    matchedIngredients.add(item);
+                                    console.log("matched---- " + elementVal + " , " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
+                                    break loop;
+                                }
+                        }
+                    }
+                }
+            }
+            
         })
+        setFinalIngredients([... matchedIngredients]);
 
-        // ingredients.forEach(item=>{
-        //     splitVal.forEach(element => {
-                    
-        //         if(element.length == item.length -1 || element.length == item.length -2){
-        //             console.log("greater " + element, " " + item.toLowerCase());
-        //             if(element.substring(0, item.length / 2 + 1) == item.toLowerCase().substring(0, item.length / 2 + 1)){
-        //                 setFinalIngredients(prev => [...prev, item]);
-        //             }
-        //         }
-        //         else if(item.length >= 2 * element.length){
-        //             console.log("less " + element.substring(0, element.length-1), " " + item.toLowerCase().substring(0, item.length / 2 - 2 ));
-        //             if(element.substring(0, element.length-1) == item.toLowerCase().substring(0, item.length / 2 - 2 )){
-        //                 setFinalIngredients(prev => [...prev, item]);
-        //             }
-        //         }
-        //     })
-        // })
     }, [ingredients]);
 
     const goToNextStep = () => {

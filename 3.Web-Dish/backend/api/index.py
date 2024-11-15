@@ -12,8 +12,8 @@ from flask_jwt_extended import create_access_token, jwt_required, JWTManager, ge
 from pymongo import MongoClient
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
-# import firebase_admin
-# from firebase_admin import credentials, storage
+import firebase_admin
+from firebase_admin import credentials, storage
 from google.cloud import storage
 
 from dotenv import load_dotenv
@@ -51,14 +51,14 @@ app.register_blueprint(google_blueprint, url_prefix="/login")
 
 # Firebase setup
 firebase_storage_bucket = 'ai-chef-master-eeb7d.appspot.com'
-# cred = credentials.Certificate('credentials.json')
-# firebase_admin.initialize_app(cred, {
-#     'storageBucket': firebase_storage_bucket
-# })
+cred = credentials.Certificate('credentials.json')
+firebase_admin.initialize_app(cred, {
+    'storageBucket': firebase_storage_bucket
+})
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
 # Initialize Google Cloud Storage client
-# storage_client = storage.Client()
-# bucket = storage_client.bucket(firebase_storage_bucket) 
+storage_client = storage.Client()
+bucket = storage_client.bucket(firebase_storage_bucket) 
 
 #=======================================================================================================================================================
 
