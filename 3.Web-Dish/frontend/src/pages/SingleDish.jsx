@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { BsFillStopwatchFill, BsFire } from "react-icons/bs";
+import { BsFillStopwatchFill, BsFire, BsTwitterX } from "react-icons/bs";
 import { SiCodechef } from "react-icons/si";
 import "plyr/dist/plyr.css";
+import { FaShare } from "react-icons/fa";
+import ShareModal from "../components/ShareModal";
+import { useLocation } from "react-router-dom";
 
 const SingleDish = (props) => {
   const {
@@ -13,11 +16,15 @@ const SingleDish = (props) => {
     dishIngredients,
     dishCalories,
     dishDescription,
+    isShareOpen,
+    setIsShareOpen
   } = props;
 
+  
+  const location = useLocation();
   return (
     <>
-      <div className="h-full w-screen  pt-5 bg-[#f7f3cd] text-black">
+      <div className={`h-full relative w-screen pt-5 bg-[#f7f3cd] text-black`}>
         <div className="px-12 flex flex-col md:flex-row items-center justify-center gap-8">
           <div className="w-full sm:w-8/12 md:w-7/12 ">
             <img
@@ -27,15 +34,15 @@ const SingleDish = (props) => {
             />
           </div>
           <div className="flex flex-col w-full md:5/12">
-            <div className="text-4xl md:text-4xl font-bold my-3">
+            <div className="flex items-center gap-5 text-4xl md:text-4xl font-bold my-3">
               {dishTitle}
+              <FaShare onClick={() => setIsShareOpen(!isShareOpen)} title="share dish" className="cursor-pointer mt-2 hover:text-blue-500 h-6 hover:scale-105 transition-all" />
             </div>
             <div
-              className={`${
-                dishType.toLowerCase() === "vegetarian"
-                  ? "bg-green-600"
-                  : "bg-red-600"
-              } text-white rounded-full w-fit py-1 px-2 mb-8`}
+              className={`${dishType.toLowerCase() === "vegetarian"
+                ? "bg-green-600"
+                : "bg-red-600"
+                } text-white rounded-full w-fit py-1 px-2 mb-8`}
             >
               {dishType}
             </div>

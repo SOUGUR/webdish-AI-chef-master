@@ -6,6 +6,7 @@ import SingleDish from "../../pages/SingleDish"
 import RecommendedData from "../../Data/RecommendedData"
 import Card2 from "../Card2";
 import Footer from "../FooterItem/Footer"
+import ShareModal from "../ShareModal";
 
 const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
     const [fadeIn, setFadeIn] = useSpring(() => ({
@@ -14,8 +15,10 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
         config: { duration: 1000 },
     }));
 
+    const [isShareOpen, setIsShareOpen] = useState(false);
     return (
-        <div className="bg-[#f7f3cd] min-h-screen">
+        <>
+        <div className={`bg-[#f7f3cd] min-h-screen overflow-hidden ${isShareOpen && 'fixed blur'}`}>
             <SingleDish
                 dishTitle={dish.dish_name}
                 dishImage={dish.image}
@@ -25,6 +28,8 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
                 preprationTime={dish.cooking_time}
                 dishIngredients={dish.ingredients.length}
                 dishCalories='500kcal'
+                isShareOpen={isShareOpen}
+                setIsShareOpen={setIsShareOpen}
             />
 
             <div className="px-12">
@@ -62,6 +67,10 @@ const DishInfoComponent = ({ dish, setStartCooking, people, setPeople }) => {
             </div>
             <Footer />
         </div>
+         {
+            isShareOpen && <ShareModal location={location.pathname} isShareOpen={isShareOpen} setIsShareOpen={setIsShareOpen} />
+        }
+        </>
     )
 }
 
