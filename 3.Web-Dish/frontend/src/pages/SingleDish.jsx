@@ -3,6 +3,7 @@ import { BsFillStopwatchFill } from "react-icons/bs";
 import { FaMapLocationDot } from "react-icons/fa6";
 import { SiCodechef } from "react-icons/si";
 import "plyr/dist/plyr.css";
+import { FaShare } from "react-icons/fa";
 
 const SingleDish = (props) => {
   const {
@@ -15,6 +16,8 @@ const SingleDish = (props) => {
     dishCalories,
     dishDescription,
     dishState,
+    isShareOpen,
+    setIsShareOpen
   } = props;
 
   return (
@@ -31,6 +34,10 @@ const SingleDish = (props) => {
           <div className="flex flex-col w-full md:5/12">
             <div className="text-4xl md:text-4xl font-bold my-3">
               {dishTitle}
+              <FaShare onClick={() => setIsShareOpen(!isShareOpen)} 
+                title="share dish" 
+                className="cursor-pointer mt-2 hover:text-blue-500 h-6 hover:scale-105 transition-all"  
+              />
             </div>
             <div
               className={`${
