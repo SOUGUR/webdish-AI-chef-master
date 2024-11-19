@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { BsTwitterX } from "react-icons/bs";
-import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { FaCopy } from "react-icons/fa6";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -22,7 +22,7 @@ const ShareModal = ({ location, setIsShareOpen, isShareOpen }) => {
     }, [handleChangeDiv])
 
     return (
-        <div id="medium-modal" tabindex="-1" class="absolute ml-10 flex justify-center items-center z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0">
+        <div id="medium-modal" tabindex="-1" class="absolute flex justify-center items-center h-screen z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0">
             <div class="relative w-full max-w-lg max-h-full">
                 {/* <!-- Modal content --> */}
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -54,8 +54,13 @@ const ShareModal = ({ location, setIsShareOpen, isShareOpen }) => {
 
                         <div className="flex w-full gap-5 mt-5 items-center justify-center">
                             <CopyToClipboard text={location}>
-                                <Link to={'https://facebook.com'} target="_blank">
+                                <Link to={`https://www.facebook.com/sharer/sharer.php?u=${location}`} target="_blank">
                                     <FaFacebook size={30} className="text-blue-400 hover:scale-105 transition-all hover:text-blue-700 cursor-pointer" />
+                                </Link>
+                            </CopyToClipboard>
+                            <CopyToClipboard text={location}>
+                                <Link to={`whatsapp://send?text=${location}`} target="_blank">
+                                    <FaWhatsapp size={32} className="text-green-500 hover:scale-105 transition-all hover:text-green-700 cursor-pointer" />
                                 </Link>
                             </CopyToClipboard>
                             <CopyToClipboard text={location}>
@@ -69,7 +74,7 @@ const ShareModal = ({ location, setIsShareOpen, isShareOpen }) => {
                                 </Link>
                             </CopyToClipboard>
                             <CopyToClipboard text={location}>
-                                <Link to={'https://www.linkedin.com/messaging/'} target="_blank">
+                                <Link to={'https://www.linkedin.com/messaging'} target="_blank">
                                     <FaLinkedin size={30} className=" text-blue-400 hover:scale-105 transition-all hover:text-blue-600 cursor-pointer" />
                                 </Link>
                             </CopyToClipboard>
