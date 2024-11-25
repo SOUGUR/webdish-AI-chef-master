@@ -129,7 +129,11 @@ const Instruction = ({ formData, setFormData, portion, allIngredients, setAllIng
                     instructions: updatedInstructions
                 };
             }
+            const stepObject = {
+                instruction: updatedInstructions
+            }
             setFormData(updatedFormData);
+            localStorage.setItem("stepData", JSON.stringify(stepObject));
             localStorage.setItem("formData", JSON.stringify(updatedFormData));
 
             setCheckBox(!checkBox);

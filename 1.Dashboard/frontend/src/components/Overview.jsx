@@ -1,6 +1,18 @@
+import { useEffect, useState } from "react";
 import { BiDish } from "react-icons/bi";
 
 const Overview = ({ form, color, value, open, setOpen, page }) => {
+  const [instructionData, setInstructionData] = useState([]);
+
+  useEffect(()=>{
+    const data = JSON.parse(localStorage.getItem("stepData"));
+    console.log(data.instruction);
+    setInstructionData(data.instruction);
+  },[]);
+
+  const info = instructionData?.map((item)=> item.stepIngredient);
+  console.log(info);
+
   return (
     <div className={`lg:max-w-[75%] mx-auto flex flex-col justify-center items-center font-primary ${color} py-10 px-1 lg:px-8`}>
       {value == "searchPage" ? (
@@ -79,22 +91,40 @@ const Overview = ({ form, color, value, open, setOpen, page }) => {
             {Array.from({ length: 5 }, (_, portion) => (
               <div key={portion} className="portion">
                 <h3 className="font-bold text-xl pt-2 underline">Portion {portion + 1}</h3>
-                {form?.ingredients?.length > 0 && (
-                  <>
-                    <p className="font-semibold text-lg">Ingredient</p>
-                    <ul>
-                      {form?.ingredients?.map((ingredient, ingredientIndex) => (
-                        <li key={ingredientIndex} className="text-lg">
-                          {ingredientIndex + 1}. {ingredient.name}- {ingredient.quantity[portion]} {ingredient.unit}
-                        </li>
-                      ))}
-                    </ul>
-                  </>
-                )}
-
+                {info.length > 0 && 
+                 
+                  info?.map((ingredient, ingredientIndex) => 
+                    <>
+                      <p className="font-semibold text-lg">Step {ingredientIndex+1} Ingredients:</p>
+                  
+                      <ul>
+                          
+                        {ingredient.map((item, idx)=>(
+                          
+                          <li key={ingredientIndex} className="text-lg">
+                          {idx+1}. {item.name} - {item.quantity[portion]} {item.unit}
+                          </li>
+                          ))
+                        }
+                        {
+                          instructionData.map((instruct, indx)=>
+                            indx == ingredientIndex &&
+                            <p key={indx} className="text-lg">
+                              <span className="font-semibold text-xl">Instruction: </span> {instruct.step}
+                            </p>
+                          )
+                        }
+                        <hr className="my-1"/>     
+                          
+                      </ul>
+                  
+                    </>
+                  )
+                }
+{/* 
                 {form?.instructions?.length > 0 && (
                   <>
-                    <p className="font-semibold text-lg">Instruction</p>
+                    <p className="font-semibold text-lg">Instructions:</p>
                     <ol>
                       {form?.instructions?.map((instruction, instructionIndex) => (
                         <li key={instructionIndex} className="text-lg">
@@ -103,7 +133,7 @@ const Overview = ({ form, color, value, open, setOpen, page }) => {
                       ))}
                     </ol>
                   </>
-                )}
+                )} */}
               </div>
             ))}
           </div>
