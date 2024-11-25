@@ -9,7 +9,6 @@ import {useLogin} from '../hooks/useLogin';
 import {useAuthContext} from '../hooks/useAuthContext';
 import toast from 'react-hot-toast'
 
-
 const LoginPage = () => {
     const {dispatch} = useAuthContext()
 
@@ -203,63 +202,9 @@ const LoginPage = () => {
 export default LoginPage
 
 
-// removed signup
-// const handleSignIn = () => {
-//   window.location.href = `${import.meta.env.VITE_API_URL}/login/google`;
-// };
 
 
-{/*<div className='flex w-full items-center  my-1 gap-x-2'>*/
-}
-{/*  <div className='custom-bg-reverse w-full h-[1px]'></div>*/
-}
-{/*  <p className='custom-text font-medium leading-[1.375rem]'>OR</p>*/
-}
-{/*  <div className='custom-bg-reverse w-full h-[1px]'></div>*/
-}
-{/*</div>*/
-}
-{/*<div className='text-xl mt-2 mb-8 '>*/
-}
-{/* <GoogleOAuthProvider clientId="661696889341-t7qs1n7slqoh60d1ooie4i7inefi3jco.apps.googleusercontent.com">
-                <GoogleLogin theme='filled_blue' size='large' text='continue_with' shape='circle'
-                  onSuccess={(credentialResponse) => {
-                    const decoded = jwtDecode(credentialResponse.credential);
 
-                    console.log(decoded)
-                  }}
-                  onError={() => {
-                    console.log("Login Failed");
-                  }}
-                />
-              </GoogleOAuthProvider> */
-}
 
-{/* <button type='button' onClick={() => {
-                googleLogin()
-              }}>
-                Continue with Google
-              </button> */
-}
 
-{/*<button type='button' onClick={handleSignIn} className='custom-text'>Sign in with Google</button>*/
-}
-{/*</div>*/
-}
 
-{/*<p className='custom-text-secondary text-center font-medium'>Don't have an account ?*/
-}
-{/*  <Link to='/signup'>*/
-}
-{/*    <button*/
-}
-{/*        className='border rounded-xl px-4 py-1 mx-2  text-white font-medium bg-[linear-gradient(45deg,transparent_25%,rgba(68,68,68,.2)_50%,transparent_75%,transparent_100%)] bg-zinc-950 relative max-w-md overflow-hidden  border-zinc-700   bg-[length:250%_250%,100%_100%] bg-[position:-100%_0,0_0] bg-no-repeat shadow-2xl transition-[background-position_0s_ease] hover:bg-[position:200%_0,0_0] hover:duration-[1200ms]'>Sign*/
-}
-{/*      up*/
-}
-{/*    </button>*/
-}
-{/*  </Link>*/
-}
-{/*</p>*/
-}

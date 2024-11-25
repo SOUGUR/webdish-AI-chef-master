@@ -77,8 +77,8 @@ const SeasonalTop = () => {
       {loading ? (
         <h3>Fetching...</h3>
       ) : (
-        <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden">
-          {dishes.slice(0, 7).map((dish, index) => (
+        <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll">
+          {dishes.slice(0, 8).map((dish, index) => (
             <Flip key={index} cascade left>
               <animated.div style={fadeIn} className="flex-grow h-full">
                 <Card2
@@ -126,8 +126,8 @@ const SeasonalTop = () => {
         </div>
       </Marquee> */}
 
-      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden">
-        {dishes.slice(8, 15).map((dish, index) => (
+      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll">
+        {dishes.slice(9, 16).map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full">
               <Card2
@@ -169,8 +169,8 @@ const SeasonalTop = () => {
         </div>
       </Marquee> */}
 
-      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden scroll-smooth">
-        {dishes.slice(16, 23).map((dish, index) => (
+      <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll scroll-smooth">
+        {dishes.slice(17, 25).map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full">
               <Card2
