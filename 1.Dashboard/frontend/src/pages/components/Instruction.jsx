@@ -4,10 +4,12 @@ import { MdEdit } from "react-icons/md";
 import { toast } from 'react-hot-toast';
 import './style.css'
 
-const Instruction = ({ formData, setFormData, portion }) => {
+const Instruction = ({ formData, setFormData, portion, allIngredients, setAllIngredients }) => {
     const [newInstruction, setNewInstruction] = useState("");
     const [instructionTime, setInstructionTime] = useState("");
     const [isTimeDisabled, setIsTimeDisabled] = useState(false);
+    const [stepIngredients, setStepIngredients] = useState([]);
+    const [checkBox, setCheckBox] = useState(false);
 
     useEffect(() => {
         if (portion !== 1 && formData.instructions.length > 0) {
@@ -20,14 +22,25 @@ const Instruction = ({ formData, setFormData, portion }) => {
         }
     }, [portion, formData.instructions]);
 
+    useEffect(()=>{
+        setStepIngredients(formData.ingredients);
+    }, [formData.ingredients]);
+
     const addInstruction = (e) => {
         e.preventDefault();
-
+        
+        console.log("Portion " + portion)
+        setStepIngredients(formData.ingredients);
         if (portion != 1 && !instructionTime) return toast.error(`Enter Instruction time for portion ${portion}`);
-
+        console.log("before if main")
         if (newInstruction && instructionTime > 0) {
             if (portion === 1 && formData.instructions.length > 0) {
+                console.log("Step 1 added")
                 const lastInstruction = formData.instructions[formData.instructions.length - 1];
+                console.log(lastInstruction);
+                setStepIngredients(formData.ingredients);
+                console.log(formData);
+                console.log(formData.ingredients)
                 const missingPortions = lastInstruction.time.slice(1).reduce((acc, time, index) => {
                     if (time === "") {
                         acc.push(index + 2);
@@ -36,6 +49,7 @@ const Instruction = ({ formData, setFormData, portion }) => {
                 }, []);
 
                 if (missingPortions.length > 0) {
+                    console.log("missingPortion > 0");
                     const firstMissingPortionIndex = missingPortions[0];
                     toast.error(`Please complete adding the time for portion ${firstMissingPortionIndex} before adding a new instruction.`);
                     return;
@@ -45,9 +59,15 @@ const Instruction = ({ formData, setFormData, portion }) => {
             const newInstructionItem = {
                 step: newInstruction,
                 time: ["", "", "", "", ""],
-                instruction_video_url: ""
+                instruction_video_url: "",
+                stepIngredient: formData.ingredients
             };
             newInstructionItem.time[portion - 1] = instructionTime;
+
+            console.log(newInstructionItem);
+            console.log(formData);
+            
+            console.log(formData.ingredients);
 
             const existingInstructionIndex = formData.instructions.findIndex(
                 (instruction) => instruction.step.toLowerCase() === newInstruction.toLowerCase()
@@ -58,7 +78,7 @@ const Instruction = ({ formData, setFormData, portion }) => {
                 updatedInstructions = formData.instructions.map((instruction, index) => {
                     if (index === existingInstructionIndex) {
                         const updatedTime = [...instruction.time];
-
+                        console.log("updatedInstruction " + updatedTime)
                         const newTimeValue = Number(instructionTime);
 
                         const isGreaterThanOrEqualToPrevious = updatedTime.slice(0, portion - 1).every(t => t === "" || newTimeValue >= Number(t));
@@ -76,7 +96,8 @@ const Instruction = ({ formData, setFormData, portion }) => {
                         updatedTime[portion - 1] = instructionTime;
                         return {
                             ...instruction,
-                            time: updatedTime
+                            time: updatedTime,
+                            stepIngredient: stepIngredients
                         };
                     }
                     return instruction;
@@ -85,14 +106,37 @@ const Instruction = ({ formData, setFormData, portion }) => {
                 updatedInstructions = [...formData.instructions, newInstructionItem];
             }
 
-            const updatedFormData = {
-                ...formData,
-                instructions: updatedInstructions,
-            };
-
+            // const updatedStepIngredients = formData.ingredients.map((ingredients, idx)=>{
+            //     const updatedIngredientList = [...ingredients.name]
+            //     return{
+            //         ...ingredients,
+            //         name: updatedIngredientList
+            //     }
+            // })
+            
+            let updatedFormData;
+            if(portion == 5){
+                setAllIngredients(prev=>[...prev, formData.ingredients]);
+                updatedFormData = {
+                    ...formData,
+                    instructions: updatedInstructions,
+                    ingredients: []
+                };
+            }
+            else{
+                updatedFormData = {
+                    ...formData,
+                    instructions: updatedInstructions
+                };
+            }
+            const stepObject = {
+                instruction: updatedInstructions
+            }
             setFormData(updatedFormData);
+            localStorage.setItem("stepData", JSON.stringify(stepObject));
             localStorage.setItem("formData", JSON.stringify(updatedFormData));
 
+            setCheckBox(!checkBox);
             setNewInstruction("");
             setInstructionTime("");
         }
@@ -191,13 +235,36 @@ const Instruction = ({ formData, setFormData, portion }) => {
                             </div>
                             <div className="flex w-full items-center justify-center">
                                 {portion === 1 ? (
-                                    <button
-                                        onClick={addInstruction}
-                                        type="button"
-                                        className="text-white border  bg-zinc-700 p-2 px-6 my-4 rounded-xl hover:bg-zinc-950 "
-                                    >
-                                        Add Instruction
-                                    </button>
+                                    <div className='flex flex-col mt-2'>
+                                        <div className='flex gap-2'>
+                                        {   stepIngredients.length != 0 ?
+                                                checkBox ?
+                                                <>
+                                                    <input checked onClick={()=> setCheckBox(!checkBox)} type='checkbox' />
+                                                    <p>Did you add all the ingredients for this step?</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <input checked="" onClick={()=> setCheckBox(!checkBox)} type='checkbox' />
+                                                    <p>Did you add all the ingredients for this step?</p>
+                                                </>
+                                            :
+                                            <></>
+                                        }
+                                            
+                                            
+                                        </div>
+                                        {
+                                            checkBox &&
+                                            <button
+                                                onClick={addInstruction}
+                                                type="button"
+                                                className="text-white border  bg-zinc-700 p-2 px-6 my-4 rounded-xl hover:bg-zinc-950 "
+                                            >
+                                                Add Instruction
+                                            </button>
+                                        }
+                                    </div>
                                 ) : portion !== 1 && !isTimeDisabled && (
                                     <button
                                         onClick={addInstruction}
