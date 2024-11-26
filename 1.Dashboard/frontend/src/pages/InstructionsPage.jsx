@@ -151,6 +151,9 @@ const InstructionsPage = ({ setTab, formData, setFormData }) => {
                         if (response.ok) {
                             setDisabled(true);
                             setisLoading(false);
+
+                            localStorage.removeItem("stepData");
+
                             toast.success("Dish Created");
                             localStorage.removeItem("formData");
                             setFormData(successInitialFormData);

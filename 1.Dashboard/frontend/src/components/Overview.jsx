@@ -90,7 +90,7 @@ const Overview = ({ form, color, value, open, setOpen, page }) => {
           <div className="p-1 border-b border-zinc-500 py-2  gap-4">
             {Array.from({ length: 5 }, (_, portion) => (
               <div key={portion} className="portion">
-                <h3 className="font-bold text-xl pt-2 underline">Portion {portion + 1}</h3>
+                <h3 className="font-bold text-2xl pt-2 underline">Portion {portion + 1}</h3>
                 {info.length > 0 && 
                  
                   info?.map((ingredient, ingredientIndex) => 
@@ -114,7 +114,7 @@ const Overview = ({ form, color, value, open, setOpen, page }) => {
                             </p>
                           )
                         }
-                        <hr className="my-1"/>     
+                        {ingredientIndex < info.length-1 && <hr className="my-1"/>}  
                           
                       </ul>
                   
