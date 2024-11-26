@@ -280,7 +280,6 @@ export default function NavBarHeader(props) {
               {" "}
               <Link className="flex items-center" to="/Settings">
                 Setting
-                <IoSettingsSharp />
               </Link>
             </li>
             {user && (
@@ -483,7 +482,6 @@ export default function NavBarHeader(props) {
                   className="text-base md:text-md flex items-center"
                 >
                   Setting
-                  <IoSettingsSharp />
                 </Link>
               </li>
             </ul>
