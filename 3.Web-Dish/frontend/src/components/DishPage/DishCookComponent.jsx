@@ -24,24 +24,10 @@ const RecipeSteps = ({ dish, people, steps }) => {
 
   const [ingredients, setIngredients] = useState([]);
 
-  // useEffect(() => {
-  //     const splitVal = dish.instructions[currentStep].step.split(" ");
-
-  //     dish.ingredients.map((ingredient) =>
-  //         splitVal.forEach(element => {
-  //             if (element.substring(0, ingredient.name.length / 2 + 1) == ingredient.name.toLowerCase().substring(0, ingredient.name.length / 2 + 1)) {
-  //                 console.log(ingredient.name);
-  //                 setIngredients(prev => [...prev, ingredient.name]);
-  //             }
-  //         })
-  //     );
-  // }, [currentStep]);
-
   useEffect(() => {
     // const splitVal = dish.instructions[currentStep].step.split(" ");
-    console.log(currentStep);
-    console.log(dish.instructions);
-    let stepIngredients = dish.instructions[currentStep]?.stepIngredients.map((item) => item);
+    // console.log(dish.instructions);
+    let stepIngredients = dish.instructions[currentStep].stepIngredient; 
 
     // dish.ingredients.map((ingredient) =>
     //     splitVal.forEach(element => {
@@ -54,7 +40,7 @@ const RecipeSteps = ({ dish, people, steps }) => {
     console.log("step ingredient");
     console.log(stepIngredients);
     setIngredients(stepIngredients);
-  }, [currentStep]);
+  }, [currentStep, ingredients]);
 
   const goToNextStep = () => {
     setIngredients([]);
@@ -129,10 +115,12 @@ const RecipeSteps = ({ dish, people, steps }) => {
                 <h2 className="text-xl font-semibold mb-4">Ingredients</h2>
               </Fade>
               <Fade bottom cascade delay={500}>
+
                 <ul className="mb-4 grid grid-cols-2 sm:grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
                   {
-                    ingredients.map((ingredient) =>
-                      <li key={j}>
+                    Object.entries(ingredients).map(([index, ingredient]) =>
+                    ingredient.quantity[0] != undefined &&
+                      <li key={index}>
                         <IngredientCard title={ingredient.name} quantity={`${ingredient.quantity[people - 1]} ${ingredient.unit}`} />
                       </li>
                     )
@@ -188,7 +176,7 @@ const RecipeSteps = ({ dish, people, steps }) => {
             </div>
           </div>
         </div>
-        <Fade bottom cascade delay={500}>
+        {/* <Fade bottom cascade delay={500}>
           <ul className="list-disc pl-6 mb-6">
             <li className="mb-2">{dish.instructions[currentStep].step}</li>
           </ul>
@@ -208,56 +196,8 @@ const RecipeSteps = ({ dish, people, steps }) => {
               </li>
             ))}
           </ul>
-        </Fade>
-      </div>
-
-      <div className="flex justify-between items-center">
-        <button
-          onClick={goToPreviousStep}
-          disabled={isFirstStep}
-          className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-          aria-label="Previous Step"
-        >
-          {isFirstStep ? "First Step" : "Previous Step"}
-        </button>
-        <div>
-          <span className="mr-2">{currentStep + 1}</span>
-          <span>of</span>
-          <span className="ml-2">{dish.instructions.length}</span>
-        </div>
-        {isLastStep ? (
-          <Link to="/feedback">
-            <button
-              onClick={handleFeedbackSubmission}
-              className="px-4 py-2 bg-green-500 text-white rounded-md"
-              aria-label="Submit Feedback"
-            >
-              Submit Feedback
-            </button>
-          </Link>
-        ) : (
-          <button
-            onClick={goToNextStep}
-            disabled={isLastStep}
-            className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:bg-gray-300 disabled:cursor-not-allowed"
-            aria-label="Next Step"
-          >
-            {isLastStep ? "Last Step" : "Next Step"}
-          </button>
-        )}
-      </div>
-      <div className="text-center mt-6">
-        {dish.instructions[currentStep].time[people - 1] >= 5 && (
-          <button
-            onClick={startTimer}
-            className="px-4 py-2 bg-purple-500 text-white rounded-md"
-          >
-            Start Timer for{" "}
-            {dish.instructions[currentStep].time[people - 1]} minutes
-          </button>
-        )}
-      </div>
-    
+        </Fade> */}
+      </div>   
     
     
       { timerRunning && (
