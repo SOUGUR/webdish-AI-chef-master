@@ -239,24 +239,23 @@ def history(name):
 
 @app.route("/retrieve-history", methods=['POST'])
 def retrieve_history():
-    history = [i['title'] for i in db.recent.find({'user':request.json.get('chef')})]
-    # print(history)
-    dish_info = []
-    for i in history:
-        # print(db.Dish.find_one({"dish_name":i}))
-        dish_info.append(db.Dish.find_one({'dish_name': i}))
-    return json.loads(json_util.dumps(dish_info))
+    try:
+        history = db.recent.find_one({"user":request.json.get("chef")}, {"dishes":1, "_id":0})['dishes']
+        return json.loads(json_util.dumps(history)), 200
+    except Exception as e:
+        return jsonify({"err":str(e)}), 500
 
 @app.route("/recent-history", methods = ["POST"])
 def recent_history():
-    exists = list(db.recent.find({"user":request.json.get("chef"), "title":request.json.get("dish")}))
-    if len(exists) > 0:
-        return jsonify({"status":"alread added"})
-    else:
-        inserted = db.recent.insert_one({"user":request.json.get("chef") , "title":request.json.get("dish")})
-        if inserted:
-            return jsonify({"status":"done"})
-    
+    if db.recent.count_documents({"user":request.json.get("chef")}) > 0:
+        dishes = set(db.recent.find_one({"user":request.json.get("chef")}, {"_id":0, "dishes":1})['dishes'])
+        dishes.add(request.json.get("dish"))
+        updated = db.recent.update_one({"user":request.json.get("chef")}, {"$set":{"dishes":list(dishes)}}, upsert=True)
+        if updated:
+            return jsonify({"status":"added"}), 200
+        else:
+            return jsonify({"status":"error"}), 500
+
 # ==============================================================================================================================================
 
 # Sebin Model :
