@@ -18,7 +18,7 @@ const FooterItem = () => {
         <div className="flex justify-center ">
           <Button className="footer-button p-3 hover:shadow-lg w-48 md:w-68 rounded font-sans text-white text-sm md:text-lg transform transition duration-500 hover:scale-110">
             <Link
-              to="/signup"
+              to="https://aichef.in/"
               className="no-underline text-black"
             // style={{ color: "hsl(50, 33%, 30%)" }}
             >
@@ -50,7 +50,7 @@ const FooterItem = () => {
 
           <div className="w-full lg:w-3/12 md:w-4/12 sm:w-6/12 flex justify-center mb-5">
             <ul className="list-items-styles">
-              <h2 className="footer-heading">Follow ACM</h2>
+              <h2 className="footer-heading">Follow Us On</h2>
               <li className="flex items-center cursor-pointer" onClick={() => {
                 window.location.href = "https://instagram.com"
               }}>

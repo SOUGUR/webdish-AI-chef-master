@@ -105,7 +105,7 @@ export default function MyNavbar({ theme, setTheme }) {
                           <MdLightMode size={20} />
                         </button>
                       )}
-
+{/* 
                       {user ? (
                         <button
                           title="Logout"
@@ -124,7 +124,7 @@ export default function MyNavbar({ theme, setTheme }) {
                         >
                           <TbLogin size={20} />
                         </Link>
-                      )}
+                      )} */}
                     </div>
                   </div>
                   <div className="sm:hidden flex items-center">

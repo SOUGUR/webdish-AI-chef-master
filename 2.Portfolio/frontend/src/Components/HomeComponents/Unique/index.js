@@ -41,7 +41,7 @@ export default function Unique() {
                 className="button-btn rounded-full shadow-2xl"
               >
                 <Link
-                  to="/signup"
+                  to="https://aichef.in/"
                   className="no-underline text-white px-4 py-2 text-base font-bold"
                 >
                   Try for Free ➪
