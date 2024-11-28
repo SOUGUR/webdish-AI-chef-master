@@ -247,11 +247,28 @@ def retrieve_history():
 
 @app.route("/recent-history", methods = ["POST"])
 def recent_history():
-    if db.recent.count_documents({"user":request.json.get("chef")}) > 0:
-        dishes = set(db.recent.find_one({"user":request.json.get("chef")}, {"_id":0, "dishes":1})['dishes'])
-        dishes.add(request.json.get("dish"))
-        updated = db.recent.update_one({"user":request.json.get("chef")}, {"$set":{"dishes":list(dishes)}}, upsert=True)
-        if updated:
+    new_dish = request.json.get("dish")
+    chef = request.json.get("chef")
+    if db.recent.count_documents({"user":chef}) > 0:
+        dishes = db.recent.find_one({"user":chef}, {"_id":0, "dishes":1})['dishes']
+        if new_dish in dishes:
+            dishes = [i for i in dishes if i != new_dish]
+            dishes.append(new_dish)
+            updated = db.recent.update_one({"user":chef}, {"$set":{"dishes":dishes}})
+            if updated:
+                return jsonify({"status":"added"}), 200
+            else:
+                return jsonify({"status":"error"}), 500
+        else:
+            dishes.append(new_dish)
+            updated = db.recent.update_one({"user":chef}, {"$set":{"dishes":dishes}})
+            if updated:
+                return jsonify({"status":"added"}), 200
+            else:
+                return jsonify({"status":"error"}), 500
+    else:
+        inserted = db.recent.insert_one({"user":chef, "dishes":[new_dish]})
+        if inserted:
             return jsonify({"status":"added"}), 200
         else:
             return jsonify({"status":"error"}), 500
