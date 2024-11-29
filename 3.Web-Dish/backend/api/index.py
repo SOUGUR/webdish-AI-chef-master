@@ -241,7 +241,11 @@ def history(name):
 def retrieve_history():
     try:
         history = db.recent.find_one({"user":request.json.get("chef")}, {"dishes":1, "_id":0})['dishes']
-        return json.loads(json_util.dumps(history)), 200
+        dishes = []
+        for j in history:
+            for i in list(db.Collective_dish.find({"dish_name":j})):
+                dishes.append(i)
+        return json.loads(json_util.dumps(dishes)), 200
     except Exception as e:
         return jsonify({"err":str(e)}), 500
 
