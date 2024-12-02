@@ -615,6 +615,20 @@ def get_steps(id):
     else:
         return jsonify({"error": "Recipe not found"}), 404
 
+@app.route("/search_ingredient", methods = ["POST"])
+def search_ingredient():
+    try:
+        query = request.json.get("query")
+        if not query:
+            return jsonify({"error":"Query not provided"}), 422
+        ingredients = list(db.Ingredients.find({"name":{"$regex":query}}))
+        list1 = []
+        for i in ingredients:
+            i['_id'] = str(i['_id'])
+            list1.append(i)
+        return jsonify({"Ingredients":list1}), 200
+    except:
+        return jsonify({"error":"Internal error occured"}), 500
 
 @app.route('/upload', methods=['POST'])
 def upload_video():
