@@ -379,12 +379,20 @@ const Inventory = ({ navigateToCart }) => {
                   </div>
                 </div>
                 <div className="flex justify-between mt-4">
+                  {/* Close Button */}
                   <button
                     onClick={closePopup}
                     className="bg-blue-500 text-white px-4 py-2 rounded-lg"
                   >
                     Close
                   </button>
+                  {/* Details Button */}
+                  <button 
+                    onClick={()=>{window.location = "/dish/"+selectedDish.dish_name}}
+                    className="bg-orange-500 text-white px-4 py-2 rounded-lg">
+                    Details
+                  </button>
+                  {/* View Cart Button */}
                   <button onClick={
                     window.location=`http://localhost:5173/dish/`+ selectedDish.dish_name
                   }
