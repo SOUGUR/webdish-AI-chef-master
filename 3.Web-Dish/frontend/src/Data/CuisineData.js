@@ -17,7 +17,7 @@ const CuisineData = [
   {
     dishName: "Spanish",
     dishImage:
-      "https://www.finedininglovers.com/sites/g/files/xknfdk626/files/styles/recipes_1200_1200_fallback/public/2021-11/23_StockFood_11358322_XXL_Paella_with_prawns_and_mussels-.jpg?itok=iW3rivfh"
+      "https://c1.wallpaperflare.com/preview/411/826/450/paella-black-rice-spanish-cuisine-rice.jpg"
   },
   {
     dishName: "Mexican",
@@ -27,7 +27,7 @@ const CuisineData = [
   {
     dishName: "Japanese",
     dishImage:
-      "https://www.finedininglovers.com/sites/g/files/xknfdk626/files/styles/recipes_1200_1200_fallback/public/2021-11/18_StockFood_13410163_XXL_Sashimi_sushi_set_with_daikon_and_lemon-.jpg?itok=QxjnJy-B"
+      "https://assets.bonappetit.com/photos/57ae038653e63daf11a4e122/16:9/w_1280,c_limit/shoyu-ramen.jpg"
   }
 ];
 

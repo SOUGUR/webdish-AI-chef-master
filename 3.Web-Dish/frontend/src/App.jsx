@@ -46,6 +46,7 @@ import ChooseWorldCountries from "./components/ChooseRegions/ChooseWorldCountrie
 import ChooseIndia from "./components/ChooseRegions/ChooseIndia";
 import ChooseVegNonVeg from "./components/ChooseRegions/ChooseVegNonVeg";
 import CreateMenu from "./components/Dishes/Create-Menu/CreateMenu";
+import Inventory from "./components/Dishes/Inventory/Inventory"
 import UserProfile from "./components/ProfileSetting/UserProfile";
 import SavedRecipes from "./components/ProfileSetting/SavedRecipes";
 import RecipesHistory from "./components/ProfileSetting/RecipesHistory";
@@ -70,6 +71,7 @@ import Soup from "./components/Choices/CulinaryCategories/Soup";
 import Bakery from "./components/Choices/CulinaryCategories/Bakery";
 import Settings from "./components/Settings";
 import NotFound from "./pages/NotFound";
+import Cart from "./components/Cart";
 
 import AndhraPradesh from "./components/Dishes/All-NavItem/AndhraPradeshState/AndhraPradesh";
 import AndhraPradeshLuxuryBreakFast from "./components/Dishes/All-NavItem/AndhraPradeshState/AndhraPradeshLuxuryBreakFast";
@@ -84,7 +86,14 @@ const App = () => {
   const { user } = useAuthContext();
   const [location, setLocation] = useState({ pathname: "" });
   const [showSearch, setSearch] = useState("")
-  const [Dishes, setDishes] = useState([])
+  const [Dishes, setDishes] = useState([])  
+  const [cartItems, setCartItems] = useState([]); // State to share cart items between Inventory and Cart
+
+  // Function to handle placing the order
+  const handlePlaceOrder = (cart) => {
+    console.log("Order placed:", cart);
+    setCartItems([]); // Clear cart after placing the order
+  };
 
   return (
     <BrowserRouter>
@@ -166,6 +175,8 @@ const App = () => {
         <Route path="/chana-masala-cook" element={<ChanaMasalaCook />} />
 
         <Route path="/Create-Menu" element={<CreateMenu />} />
+        <Route path="/Inventory" element={<Inventory navigateToCart={(newCartItems) => setCartItems(newCartItems)} />} />
+        <Route path="/Cart" element={<Cart cartItems={cartItems} handlePlaceOrder={handlePlaceOrder} navigateBack={() => { window.history.back(); }} />} />
 
         <Route path="/Pesarattu-info" element={<SingleDish />} />
         <Route path="/ChooseVegNonVeg" element={<ChooseVegNonVeg />} />

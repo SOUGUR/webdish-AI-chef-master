@@ -4,6 +4,7 @@ import { FaMapLocationDot } from "react-icons/fa6";
 import { SiCodechef } from "react-icons/si";
 import "plyr/dist/plyr.css";
 import { FaShare } from "react-icons/fa";
+import { FaTelegramPlane } from "react-icons/fa";
 
 const SingleDish = (props) => {
   const {
@@ -32,11 +33,11 @@ const SingleDish = (props) => {
             />
           </div>
           <div className="flex flex-col w-full md:5/12">
-            <div className="text-4xl md:text-4xl font-bold my-3">
+            <div className="text-4xl md:text-4xl font-bold my-3 flex flex-row">
               {dishTitle}
-              <FaShare onClick={() => setIsShareOpen(!isShareOpen)} 
-                title="share dish" 
-                className="cursor-pointer mt-2 hover:text-blue-500 h-6 hover:scale-105 transition-all"  
+              <FaTelegramPlane onClick={() => setIsShareOpen(!isShareOpen) } 
+                title="Share Dish" 
+                className="cursor-pointer mt-4 hover:text-[#00544f] h-6 hover:scale-105 transition-all ml-10 text-[20]"  
               />
             </div>
             <div

@@ -6,7 +6,7 @@ import ChoicesData from '../../Data/ChoicesData';
 import CuisineData from '../../Data/CuisineData';
 import 'animate.css/animate.min.css';
 
-const Choices = () => {
+const Choices = ({scrollToSeasonalTop}) => {
   const [animate, setAnimate] = useState(false);
   const { ref, inView } = useInView();
 
@@ -31,14 +31,14 @@ const Choices = () => {
       <h1 className='text-3xl  font-semibold pb-8 text-yellow-500'>What do you want to cook</h1>
       <div ref={ref} className={`text-white grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-2 sm:gap-8 md:gap-16 lg:gap-6 xl:gap-16 justify-around`}>
         {ChoicesData.map((item, index) => (
-          <Card1 key={index} dishName={item.dishName} dishImage={item.dishImage} animate={animate} dishPath={item.dishPath} />
+          <Card1 key={index} dishName={item.dishName} dishImage={item.dishImage} animate={animate} dishPath={item.dishPath} scrollToSection={scrollToSeasonalTop}/>
         ))}
       </div>
 
       <h1 className='text-3xl font-semibold py-8 text-yellow-500'>Cuisine</h1>
       <div className="text-white grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 gap-2 sm:gap-8 md:gap-16 lg:gap-6 xl:gap-16 justify-around">
         {CuisineData.map((item, index) => (
-          <Card1 key={index} dishName={item.dishName} dishImage={item.dishImage} animate={animate} dishPath={item.dishPath} />
+          <Card1 key={index} dishName={item.dishName} dishImage={item.dishImage} animate={animate} dishPath={item.dishPath} scrollToSection={scrollToSeasonalTop}/>
         ))}
       </div>
     </div>

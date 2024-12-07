@@ -4,10 +4,11 @@ import { useLogout } from "../hooks/useLogout";
 import { FaMicrophone } from "react-icons/fa";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MdArrowDropDown } from "react-icons/md";
-import { IoSettingsSharp } from "react-icons/io5";
 import { Link, useLocation } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 import { translateAllText } from "./Translator";
+import { BsCart3 } from "react-icons/bs";
+
 
 const Flag = ({ countryFlag }) => (
   <img
@@ -276,6 +277,11 @@ export default function NavBarHeader(props) {
                 <Link to="/signup/"> Create Account</Link>
               </li>
             )}
+
+            <li>
+              <Link to="/Cart/"> <BsCart3 className="text-xl" /> </Link>
+            </li>
+
             <li className="text-base md:text-md ">
               {" "}
               <Link className="flex items-center" to="/Settings">
@@ -303,6 +309,8 @@ export default function NavBarHeader(props) {
           </button>
         </div>
       </div>
+
+{/* ============================================================================================================================================= */}
 
       {showMenu && (
         <div className="md:hidden">

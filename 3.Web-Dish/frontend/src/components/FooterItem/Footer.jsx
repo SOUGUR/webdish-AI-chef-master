@@ -1,7 +1,7 @@
 import { FaInstagramSquare } from "react-icons/fa";
 import { BsTwitterX } from "react-icons/bs";
 import { FaLinkedin } from "react-icons/fa";
-import { FaSquareThreads } from "react-icons/fa6";
+import { FaSquareFacebook } from "react-icons/fa6";
 import './Footer.css'
 const Footer = () => {
   return (
@@ -32,7 +32,7 @@ const Footer = () => {
 
           <div className="w-full lg:w-3/12 md:w-4/12 sm:w-6/12 flex justify-center mb-5">
             <div className="footer-content">
-              <h2 className="footer-heading">Follow ACM</h2>
+              <h2 className="footer-heading">Follow Us On</h2>
               <ul className="list-items-styles">
                 <li className="flex items-center">
                   <div className="social">
@@ -61,22 +61,10 @@ const Footer = () => {
                 <li className="flex items-center">
                   <div className="social">
                     <a href="">
-                      <span className="mr-2"><FaSquareThreads style={{ color: '#00CED1' }} /></span> <span>Thread</span>
+                      <span className="mr-2"><FaSquareFacebook style={{ color: '#00CED1' }} /></span> <span>Facebook</span>
                     </a>
                   </div>
                 </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="w-full lg:w-3/12 md:w-4/12 sm:w-6/12 flex justify-center mb-5">
-            <div className="footer-content">
-              <h2 className="footer-heading">Quick Links</h2>
-              <ul className="list-items-styles">
-                <li>Privacy Policy</li>
-                <li>Terms &amp; Refund</li>
-                <li><a href="https://aichefmaster.com/aboutUs"> About Us </a></li>
-                <li><a href="https://aichefrecipe.com/contact"> Contact </a></li>
               </ul>
             </div>
           </div>

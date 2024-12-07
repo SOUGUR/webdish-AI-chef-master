@@ -22,7 +22,7 @@ const SeasonalTop = () => {
 
   return (
     <div className="text-zinc-800 bg-[#f7f3cd] text-center py-12">
-      <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
+      {/* <div className="pb-6 pt-6 flex justify-between px-4 md:px-8">
         <h1 className="text-center text-lg sm:text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold ">
           Recently Viewed
         </h1>
@@ -57,7 +57,7 @@ const SeasonalTop = () => {
             </animated.div>
           ))}
         </div>
-      )}
+      )} */}
 
       {/* SEASONAL DISHES */}
       <div className="pb-6 pt-6 flex justify-between px-4 md:px-8 scroll-smooth">
@@ -78,7 +78,7 @@ const SeasonalTop = () => {
         <h3>Fetching...</h3>
       ) : (
         <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll">
-          {dishes.slice(0, 8).map((dish, index) => (
+          {dishes.map((dish, index) => (
             <Flip key={index} cascade left>
               <animated.div style={fadeIn} className="flex-grow h-full">
                 <Card2
@@ -98,7 +98,7 @@ const SeasonalTop = () => {
         </div>
       )}
 
-      {/* TOP DISHES */}
+      {/* TOP DISHES
       <div className="pb-6 pt-6 flex justify-between px-4 md:px-8 scroll-smooth">
         <h1 className="text-center text-xl md:text-3xl lg:text-4xl text-[#00544f] font-semibold ">
           Top Dishes
@@ -114,20 +114,8 @@ const SeasonalTop = () => {
         </div>
       </div>
 
-      {/* <Marquee>
-        <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden" >
-          {TopDishesData.map((dish, index) => (
-            <Flip key={index} cascade left>
-              <animated.div style={fadeIn} className="flex-grow h-full">
-                <Card2 key={index} title={dish.dishName} time={dish.time} rating={dish.rating} imageUrl={dish.dishImage} />
-              </animated.div>
-            </Flip>
-          ))}
-        </div>
-      </Marquee> */}
-
       <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll">
-        {dishes.slice(9, 16).map((dish, index) => (
+        {dishes.map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full">
               <Card2
@@ -151,26 +139,9 @@ const SeasonalTop = () => {
           Recommended Dishes
         </h1>
       </div>
-      {/* <Marquee>
-        <div className="flex gap-3 py-3 ml-5 mr-3 overflow-hidden">
-          {RecommendedData.map((dish, index) => (
-            <Flip key={index} cascade left>
-              <animated.div style={fadeIn} className="flex-grow h-full">
-                <Card2
-                  key={index}
-                  title={dish.dishName}
-                  time={dish.time}
-                  rating={dish.rating}
-                  imageUrl={dish.dishImage}
-                />
-              </animated.div>
-            </Flip>
-          ))}
-        </div>
-      </Marquee> */}
 
       <div className="flex gap-3 py-3 ml-5 mr-3 overflow-scroll scroll-smooth">
-        {dishes.slice(17, 25).map((dish, index) => (
+        {dishes.map((dish, index) => (
           <Flip key={index} cascade left>
             <animated.div style={fadeIn} className="flex-grow h-full">
               <Card2
@@ -187,7 +158,7 @@ const SeasonalTop = () => {
             </animated.div>
           </Flip>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

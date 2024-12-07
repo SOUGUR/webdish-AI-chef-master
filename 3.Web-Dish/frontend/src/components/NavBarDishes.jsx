@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 
+
 export default function NavBarDishes() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [categoriesToShow, setCategoriesToShow] = useState([]);
@@ -14,6 +15,7 @@ export default function NavBarDishes() {
     { path: "/Quick-Dishes", label: "Quick Dishes" },
     { path: "/Healthy-Dishes", label: "Healthy Dishes" },
     { path: "/Create-Menu", label: "Create Menu" },
+    { path: "/Inventory", label: "Inventory" },
     { path: "/chef-intelligence", label: "Chef Intelligence", external: true },
   ];
 

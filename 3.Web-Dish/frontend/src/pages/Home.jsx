@@ -8,9 +8,17 @@ import Footer from '../components/FooterItem/Footer'
 import DishComponent from "../components/DishComponent"
 import '../components/DishShow.css'
 import '../components/results.css'
+import { useRef } from 'react'
 
 let i = 0
 const Home = (props) => {
+
+  const seasonalTopRef = useRef(null);
+
+  const scrollToSeasonalTop = () => {
+    seasonalTopRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className='overflow-x-hidden' >
       {props.showSearch && <div>
@@ -23,8 +31,8 @@ const Home = (props) => {
         {!props.showSearch && <div>
         <NavBarDishes />
         <Banner />
-        <Choices />
-        <SeasonalTop />
+        <Choices scrollToSeasonalTop={scrollToSeasonalTop}/>
+        <div ref={seasonalTopRef}><SeasonalTop /></div>
         <Footer />
       </div>}
     </div>

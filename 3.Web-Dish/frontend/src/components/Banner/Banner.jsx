@@ -8,6 +8,7 @@ import React from "react";
 ];
 const DishText = 'https://see.fontimg.com/api/renderfont4/BWA45/eyJyIjoiZnMiLCJoIjo0MSwidyI6MTI1MCwiZnMiOjMzLCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/QUkgQ2hlZiBLaXRjaGVu/rosmatika-regular.png'
 const mainText = "https://see.fontimg.com/api/renderfont4/BWA45/eyJyIjoiZnMiLCJoIjo0MSwidyI6MTI1MCwiZnMiOjMzLCJmZ2MiOiIjMDAwMDAwIiwiYmdjIjoiI0ZGRkZGRiIsInQiOjF9/V2VsY29tZSBUbw/rosmatika-regular.png"
+
 const Banner = () => {
  
   return (

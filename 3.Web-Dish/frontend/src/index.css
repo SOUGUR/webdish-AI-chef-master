@@ -14,3 +14,18 @@ body{
 .optionlistContainer{
     width: fit-content;
 }
+
+/* Hide number input arrows in all browsers */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.inventory-bg {
+  background-image: "https://thumbs.dreamstime.com/b/spices-wooden-box-17001214.jpg";
+}
