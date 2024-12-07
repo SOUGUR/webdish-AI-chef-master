@@ -646,7 +646,7 @@ def compare_ingredients():
         remove_emojis(ing).lower() for ing in data.get("ingredients", [])
     )
 
-    matching_recipes = db.Collective_dish.find()
+    matching_recipes = db.Actual_dish.find()
 
     result = []
     for recipe in matching_recipes:
@@ -675,7 +675,7 @@ def ingredient_suggestions():
     if not query:
         return jsonify([])  # If the query is empty, return an empty list
     
-    suggest_recipes = db.Collective_dish.find()
+    suggest_recipes = db.Actual_dish.find()
     all_ingredients = set()
     
     for recipe in suggest_recipes:
