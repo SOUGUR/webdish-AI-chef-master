@@ -15,7 +15,7 @@ export default function NavBarDishes() {
     { path: "/Quick-Dishes", label: "Quick Dishes" },
     { path: "/Healthy-Dishes", label: "Healthy Dishes" },
     { path: "/Create-Menu", label: "Create Menu" },
-    { path: "/Inventory", label: "Inventory" },
+    { path: "/Inventory", label: "Inventory Menu" },
     { path: "/chef-intelligence", label: "Chef Intelligence", external: true },
   ];
 
@@ -58,12 +58,12 @@ export default function NavBarDishes() {
       <div className="flex items-center justify-between w-full max-w-6xl">
         <div>
           {currentIndex !== 0 && categories.length > categoriesPerPage && (
-            <button className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 hover:bg-emerald-700 focus:outline-none shadow-md transition duration-300 ease-in-out" onClick={handlePrevPage}>
-              <BsChevronLeft className="w-8 h-8 text-white" />
+            <button className="flex items-center justify-center mr-2 ml-1 w-9 h-9 rounded-full bg-emerald-600 hover:bg-emerald-700 focus:outline-none shadow-md transition duration-300 ease-in-out" onClick={handlePrevPage}>
+              <BsChevronLeft className="w-5 h-5 text-white" />
             </button>
           )}
         </div>
-        <div className="flex space-x-4">
+        <div className="flex space-x-2">
           {categoriesToShow.map(({ path, label, external }) => (
             <Link
               key={path}
@@ -82,10 +82,10 @@ export default function NavBarDishes() {
         <div>
           {currentIndex !== Math.ceil(categories.length / categoriesPerPage) - 1 && categories.length > categoriesPerPage && (
             <button 
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-emerald-600 hover:bg-emerald-700 focus:outline-none shadow-md transition duration-300 ease-in-out"
+              className="flex items-center justify-center w-9 h-9 ml-2 mr-1 rounded-full bg-emerald-600 hover:bg-emerald-700 focus:outline-none shadow-md transition duration-300 ease-in-out"
               onClick={handleNextPage}
             >
-              <BsChevronRight className="w-6 h-full text-white" />
+              <BsChevronRight className="w-5 h-full text-white" />
             </button>
           )}
         </div>

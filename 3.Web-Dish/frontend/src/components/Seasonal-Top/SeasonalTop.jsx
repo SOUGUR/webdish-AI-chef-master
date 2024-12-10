@@ -87,6 +87,7 @@ const SeasonalTop = () => {
                   dishPath={`/dish/${dish.dish_name}`}
                   time={dish.cooking_time}
                   rating={0}
+                  dishType={dish.veg_non_veg}
                   imageUrl={
                     dish.image ||
                     "https://playswellwithbutter.com/wp-content/uploads/2021/04/Grilled-Bell-Peppers-6-960x1440.jpg"

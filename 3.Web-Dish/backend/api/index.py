@@ -290,7 +290,6 @@ from models import recommend_dishes, recommend_recipes_by_review
 
 @app.route('/query_recommend', methods=['POST'])
 def query_recommend():
-    
     try:
         query = request.json.get('query')
         if not query:
@@ -308,7 +307,7 @@ def recommend():
     query = request.json.get("query")
     if not query:
         return jsonify({"error":"Query not provided"})
-    return json_util.dumps(list(db.Dish.find({'dish_name': {"$regex":query}})))
+    return json_util.dumps(list(db.dishes.find({'dish_name': {"$regex":query}})))
     
 # API Route for recipe recommendation by feedback
 
@@ -550,7 +549,7 @@ def get_recipe(id):
 def get_states():
     data = request.json
     state = data.get('state')
-    cursor = db['Dish'].find({"popularity_state": state}, {"_id": 0})
+    cursor = db['Actual_dish'].find({"popularity_state": state}, {"_id": 0})
     # Convert cursor to a list of dictionaries
     dishes = list(cursor)
     return jsonify(dishes)
@@ -692,6 +691,33 @@ def ingredient_suggestions():
 
     suggestions = [ingredient for ingredient in all_ingredients if ingredient.startswith(query)]
     return jsonify(suggestions), 200
+
+@app.route('/api/check-ingredient', methods=['POST'])
+def check_ingredient():
+    data = request.json
+    ingredient = data.get("ingredient", "").strip().lower()  # Get the ingredient from the request
+    if not ingredient:
+        return jsonify({"exists": False}), 400  # Bad request if no ingredient is provided
+
+    # Query the database to check if the ingredient exists
+    suggest_recipes = db.Actual_dish.find()
+    all_ingredients = set()
+
+    for recipe in suggest_recipes:
+        if 'ingredients' in recipe:  # Check if the recipe contains ingredients
+            for item in recipe['ingredients']:
+                if isinstance(item, dict) and 'name' in item:
+                    ingredient_name = remove_emojis(item['name']).lower()
+                elif isinstance(item, str):
+                    ingredient_name = remove_emojis(item).lower()
+                else:
+                    continue
+
+                all_ingredients.add(ingredient_name)
+
+    # Check if the provided ingredient exists in the set of ingredients
+    exists = ingredient in all_ingredients
+    return jsonify({"exists": exists}), 200
 
 
 @app.route('/upload', methods=['POST'])

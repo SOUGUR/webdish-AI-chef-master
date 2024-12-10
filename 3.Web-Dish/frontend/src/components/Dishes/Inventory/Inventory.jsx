@@ -43,7 +43,7 @@ const Inventory = ({ navigateToCart }) => {
     setIsLoadingSuggestions(true);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/ingredient-suggestions?q=${query}`
+        `${import.meta.env.VITE_API_URL}/api/ingredient-suggestions?q=${query}`
       );
 
       if (response.ok) {
@@ -72,13 +72,45 @@ const Inventory = ({ navigateToCart }) => {
     fetchSuggestions(e.target.value); // Fetch suggestions when typing
   };
 
-  // Add ingredient to the list
-  const handleIngredientSubmit = () => {
-    if (ingredientName.trim()) {
+  // Function to validate the ingredient against the database
+  const validateIngredient = async (ingredient) => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/api/check-ingredient`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ ingredient }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        return data.exists; // Backend should return { exists: true/false }
+      } else {
+        toast.error("Failed to validate the ingredient.");
+        return false;
+      }
+    } catch (error) {
+      toast.error("An error occurred while validating the ingredient.");
+      return false;
+    }
+  };
+
+  // Add ingredient to the list with validation
+  const handleIngredientSubmit = async () => {
+    if (!ingredientName.trim()) {
+      toast.error("Please enter an ingredient name.");
+      return;
+    }
+
+    const isValid = await validateIngredient(ingredientName.trim());
+    if (isValid) {
       setIngredients((prev) => [...prev, ingredientName.trim()]);
       setIngredientName("");
+      toast.success("Ingredient added successfully!");
     } else {
-      toast.error("Please enter an ingredient name.");
+      toast.error("Dish not available according to your ingredient!.");
     }
   };
 
@@ -91,7 +123,7 @@ const Inventory = ({ navigateToCart }) => {
   const fetchRecipes = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5000/api/compare-ingredients",
+        `${import.meta.env.VITE_API_URL}/api/compare-ingredients`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -133,6 +165,7 @@ const Inventory = ({ navigateToCart }) => {
     setSelectedDish(null);
   };
 
+
   return (
     <div className="bg-[#f7f3cd] max-w-full overflow-x-hidden">
       <div>
@@ -148,7 +181,7 @@ const Inventory = ({ navigateToCart }) => {
           subtitle="Cooking what's in your kitchen into delicious meals."
           title={
             <img
-              src="https://see.fontimg.com/api/renderfont4/Gg5D/eyJyIjoiZnMiLCJoIjoxOTEsInciOjEyNTAsImZzIjoxNTMsImZnYyI6IiMwMDAwMDAiLCJiZ2MiOiIjRkZGRkZGIiwidCI6MX0/SW5kaWFu/samarkan-normal.png"
+              src="https://see.fontimg.com/api/rf5/G3yBa/Zjg3MTU5ZWJhYjVmNDIxYjllNmE4OTliOGRiMGJiMWMudHRm/SW52ZW50b3J5/gotty.png?r=fs&h=81&w=1250&fg=000000&bg=FFFFFF&tb=1&s=65"
               className=" filter invert w-96 flex"
               alt="Indian"
             />
@@ -162,7 +195,7 @@ const Inventory = ({ navigateToCart }) => {
             <p className="custom-text text-3xl font-medium">
               Manage Your Ingredients
             </p>
-            <p className="custom-text-secondary text-sm italic font-semibold py-1">
+            <p className="custom-text-secondary text-sm italic font-semibold py-1 ">
               *Add ingredients to your inventory and manage them easily.
             </p>
           </div>
@@ -267,17 +300,17 @@ const Inventory = ({ navigateToCart }) => {
           {/* Popup for Selected Dish */}
           {showPopup && selectedDish && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] lg:w-1/2">
+              <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-screen-md mx-auto">
                 <h2 className="text-2xl font-bold mb-4">
                   {selectedDish.dish_name}
                 </h2>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 max-h-[60vh] overflow-y-auto">
                   {/* Available Ingredients */}
                   <div>
-                    <h3 className="text-green-600 font-bold">
+                    <h3 className="text-green-600 font-bold text-lg mb-2">
                       Available Ingredients:
                     </h3>
-                    <ul>
+                    <ul className="space-y-2">
                       {selectedDish.ingredients
                         .filter((dishIng) =>
                           ingredients.some(
@@ -287,18 +320,19 @@ const Inventory = ({ navigateToCart }) => {
                           )
                         )
                         .map((availableIng, index) => (
-                          <li key={index} className="text-green-500">
+                          <li key={index} className="text-green-500 text-base">
                             {availableIng}
                           </li>
                         ))}
                     </ul>
                   </div>
+
                   {/* Unavailable Ingredients */}
                   <div>
-                    <h3 className="text-red-600 font-bold">
+                    <h3 className="text-red-600 font-bold text-lg mb-2">
                       Unavailable Ingredients:
                     </h3>
-                    <ul>
+                    <ul className="space-y-4">
                       {selectedDish.ingredients
                         .filter(
                           (dishIng) =>
@@ -313,15 +347,15 @@ const Inventory = ({ navigateToCart }) => {
                             key={index}
                             className="flex items-center justify-between text-red-500"
                           >
-                            <span>{unavailableIng}</span>
+                            <span className="text-base">{unavailableIng}</span>
                             <div className="flex items-center gap-2">
                               {/* Decrease Quantity Button */}
                               <button
                                 type="button"
-                                className="w-8 h-8 pb-1 bg-gray-200 text-xl text-center rounded-full flex items-center justify-center"
+                                className="w-6 h-6 bg-gray-200 text-xl rounded-full flex items-center justify-center"
                                 onClick={() => {
                                   const newQuantity = Math.max(
-                                    1,
+                                    0,
                                     (parseInt(
                                       document.getElementById(
                                         `quantity-${unavailableIng}`
@@ -344,7 +378,7 @@ const Inventory = ({ navigateToCart }) => {
                                 min="1"
                                 defaultValue={0}
                                 placeholder="Qty"
-                                className="w-12 border px-3 my-1 py-1 text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 text-center"
+                                className="w-10 border px-2 text-lg rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400 text-center"
                                 onChange={(e) =>
                                   addToCart(
                                     unavailableIng,
@@ -356,14 +390,14 @@ const Inventory = ({ navigateToCart }) => {
                               {/* Increase Quantity Button */}
                               <button
                                 type="button"
-                                className="w-8 h-8 pb-1 bg-gray-200 text-xl text-center rounded-full flex items-center justify-center"
+                                className="w-6 h-6 bg-gray-200 text-xl rounded-full flex items-center justify-center"
                                 onClick={() => {
                                   const newQuantity =
                                     (parseInt(
                                       document.getElementById(
                                         `quantity-${unavailableIng}`
                                       ).value
-                                    ) || 1) + 1;
+                                    ) || 0) + 1;
                                   document.getElementById(
                                     `quantity-${unavailableIng}`
                                   ).value = newQuantity;
@@ -378,7 +412,8 @@ const Inventory = ({ navigateToCart }) => {
                     </ul>
                   </div>
                 </div>
-                <div className="flex justify-between mt-4">
+
+                <div className="flex justify-between mt-4 gap-2">
                   {/* Close Button */}
                   <button
                     onClick={closePopup}
@@ -386,19 +421,18 @@ const Inventory = ({ navigateToCart }) => {
                   >
                     Close
                   </button>
+
                   {/* Details Button */}
-                  <button 
-                    onClick={()=>{window.location = "/dish/"+selectedDish.dish_name}}
-                    className="bg-orange-500 text-white px-4 py-2 rounded-lg">
-                    Details
+                  <button
+                    onClick={() => {
+                      window.location = "/dish/" + selectedDish.dish_name;
+                    }}
+                    className="bg-[#00544f] text-white px-4 py-2 rounded-lg"
+                  >
+                    Go to Recipe
                   </button>
+
                   {/* View Cart Button */}
-                  <button onClick={
-                    window.location=`http://localhost:5173/dish/`+ selectedDish.dish_name
-                  }
-                  className="bg-orange-500 text-white px-4 py-2 rounded-lg">
-                    details
-                  </button>
                   <button
                     onClick={handleViewCart}
                     className="bg-orange-500 text-white px-4 py-2 rounded-lg"
@@ -417,11 +451,3 @@ const Inventory = ({ navigateToCart }) => {
 };
 
 export default Inventory;
-
-
-
-
-
-
-
-

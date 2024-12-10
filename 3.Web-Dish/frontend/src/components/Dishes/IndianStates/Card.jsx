@@ -40,6 +40,7 @@ const Card = ({ title, famousDish }) => {
                                     dishPath={`/dish/${dish.dish_name}`}
                                     imageUrl={dish.image}
                                     time={dish.cooking_time}
+                                    dishType={dish.veg_non_veg}
                                     rating={0}
                                 />
                             </div>

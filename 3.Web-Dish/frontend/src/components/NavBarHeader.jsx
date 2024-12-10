@@ -165,7 +165,7 @@ export default function NavBarHeader(props) {
               </div>
             </li>
 
-            <li className="flex items-center">
+            {/* <li className="flex items-center">
               <div className="mx-auto flex w-full items-center justify-center  ">
                 <div className="group cursor-pointer py-2 text-base md:text-md">
                   <div className="flex items-center gap-1">
@@ -189,9 +189,9 @@ export default function NavBarHeader(props) {
                   </div>
                 </div>
               </div>
-            </li>
+            </li> */}
 
-            {location.pathname !== "/" && (
+            {/* {location.pathname !== "/" && (
               <li className="flex items-center gap-2">
                 <div className="mx-auto flex w-full items-center justify-center  ">
                   <div className="group cursor-pointer py-2">
@@ -218,6 +218,16 @@ export default function NavBarHeader(props) {
                     </div>
                   </div>
                 </div>
+              </li>
+            )} */}
+
+            <li>
+              <Link to="/Cart/"> <BsCart3 className="text-xl" /> </Link>
+            </li>
+
+            {!user && (
+              <li className=" text-base md:text-md text-center">
+                <Link to="/signup/"> Create Account</Link>
               </li>
             )}
 
@@ -255,7 +265,7 @@ export default function NavBarHeader(props) {
               {indianDropdownOpen && (
                 <div
                   className={
-                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible no-translate"
+                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 text-white shadow-xl group-hover:visible no-translate"
                   }
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
@@ -272,22 +282,13 @@ export default function NavBarHeader(props) {
               )}
             </li>
 
-            {!user && (
-              <li className=" text-base md:text-md text-center">
-                <Link to="/signup/"> Create Account</Link>
-              </li>
-            )}
-
-            <li>
-              <Link to="/Cart/"> <BsCart3 className="text-xl" /> </Link>
-            </li>
-
             <li className="text-base md:text-md ">
               {" "}
               <Link className="flex items-center" to="/Settings">
                 Setting
               </Link>
             </li>
+
             {user && (
               <li className="text-base md:text-md text-center">
                 <button onClick={logout}>Logout</button>
@@ -314,21 +315,12 @@ export default function NavBarHeader(props) {
 
       {showMenu && (
         <div className="md:hidden">
-          <div className="px-4 py-2">
-            <ul className="flex gap-5 flex-col">
-              <li className="text-base md:text-md">
-                <Link to="/" onClick={() => setShowMenu(false)}>
-                  Home
-                </Link>
-              </li>
-              <li className="text-base md:text-md">
-                <Link to="/" onClick={() => setShowMenu(false)}>
-                  About Us
-                </Link>
-              </li>
-              <li className="flex items-center ">
+          <div className="px-4 py-2 flex flex-col">
+            <ul className="flex gap-5 flex-col items-center justify-center">
+
+            <li className="flex items-center ">
                 <div className="relative ">
-                  <div className="absolute inset-y-0 flex items-center px-3 pointer-events-none">
+                  <div className="absolute inset-y-0 flex items-center px-2 pointer-events-none">
                     <FiSearch
                       size={25}
                       className="text-gray-500 dark:text-gray-400"
@@ -337,7 +329,7 @@ export default function NavBarHeader(props) {
                   <input
                     type="search"
                     placeholder="Search recipes, dishes"
-                    className="text-sm font-medium w-full md:w-32 lg:w-64 p-2 pl-10 rounded-md text-black focus:border-white focus:ring-white outline-none"
+                    className="text-sm font-medium w-full md:w-42 lg:w-64 p-2 px-9 rounded-md text-black focus:border-white focus:ring-white outline-none"
                     onChange={(e) => {
                       if (e.target.value) {
                         props.setSearch(e.target.value);
@@ -348,13 +340,24 @@ export default function NavBarHeader(props) {
                     }}
                   />
 
-                  <div className="absolute inset-y-0 right-2 flex items-center pr-3 pointer-events-none">
+                  <div className="absolute inset-y-0 right-1 flex items-center pointer-events-none">
                     <FaMicrophone className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   </div>
                 </div>
               </li>
 
-              {/* Language selection dropdown */}
+              <li className="text-base md:text-md">
+                <Link to="/" onClick={() => setShowMenu(false)}>
+                  Home
+                </Link>
+              </li>
+              <li className="text-base md:text-md">
+                <Link to="/" onClick={() => setShowMenu(false)}>
+                  About Us
+                </Link>
+              </li>
+
+              {/* Language selection dropdown
               <li className="flex items-center">
                 <div className="mx-auto flex w-full">
                   <div className="group cursor-pointer py-2 text-base md:text-md">
@@ -379,9 +382,9 @@ export default function NavBarHeader(props) {
                     </div>
                   </div>
                 </div>
-              </li>
+              </li> */}
 
-              {location.pathname !== "/" && (
+              {/* {location.pathname !== "/" && (
               <li className="flex items-center gap-2">
                 <div className="mx-auto flex w-full items-center justify-center  ">
                   <div className="group cursor-pointer py-2">
@@ -409,7 +412,7 @@ export default function NavBarHeader(props) {
                   </div>
                 </div>
               </li>
-            )}
+            )} */}
 
 
               <li className="text-base  md:text-md flex items-center">
@@ -424,9 +427,10 @@ export default function NavBarHeader(props) {
                       <MdArrowDropDown size={23} />
                     </div>
                   </div>
+                  {indianDropdownOpen && (
                   <div
                     className={
-                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1 px-4  text-white shadow-xl group-hover:visible"
+                      "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] pl-8 pt-2 text-white shadow-xl group-hover:visible border-2 border-white-200"
                     }
                     style={{ maxHeight: "200px", overflowY: "auto" }}
                   >
@@ -440,28 +444,24 @@ export default function NavBarHeader(props) {
                       </div>
                     ))}
                   </div>
+                  )}
                 </div>
               </div>
-
-              {indianDropdownOpen && (
-                <div
-                  className={
-                    "invisible absolute z-50  flex mx-auto flex-col bg-[#00544f] mt-2 py-1  text-white shadow-xl group-hover:visible"
-                  }
-                  style={{ maxHeight: "200px", overflowY: "auto" }}
-                >
-                  {IndianLanguages.map((lang) => (
-                    <div
-                      key={lang.code}
-                      className="flex text-white pt-1 items-center px-4 mb-1 gap-2 cursor-pointer hover:bg-[#007a72]"
-                      onClick={() => handleIndianLanguageSelect(lang.code)}
-                    >
-                      <span>{lang.name}</span>
-                    </div>
-                  ))}
-                </div>
-              )}
             </li>
+
+            <li>
+              <Link to="/Cart/" className="flex flex-row gap-2"> Cart <BsCart3 className="text-xl" /> </Link>
+            </li>
+
+            <li>
+                <Link
+                  to="/settings"
+                  onClick={() => setShowMenu(false)}
+                  className="text-base md:text-md flex items-center"
+                >
+                  Setting
+                </Link>
+              </li>
 
               {/* Conditional render for "Create Account" or "Logout" */}
               {!user ? (
@@ -483,15 +483,6 @@ export default function NavBarHeader(props) {
                 </li>
               )}
 
-              <li>
-                <Link
-                  to="/settings"
-                  onClick={() => setShowMenu(false)}
-                  className="text-base md:text-md flex items-center"
-                >
-                  Setting
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

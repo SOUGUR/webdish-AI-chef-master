@@ -60,7 +60,7 @@ const Footer = () => {
 
                 <li className="flex items-center">
                   <div className="social">
-                    <a href="">
+                    <a href="https://www.facebook.com/profile.php?id=61557270956883&mibextid=ZbWKwL">
                       <span className="mr-2"><FaSquareFacebook style={{ color: '#00CED1' }} /></span> <span>Facebook</span>
                     </a>
                   </div>

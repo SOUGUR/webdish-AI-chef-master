@@ -17,9 +17,6 @@ export default function UpgradePremium() {
                 <div className="mb-8 mx-5 md:mx-20">
                     <h1 className="text-center text-3xl font-bold text-teal-800 mb-2">Pricing</h1>
                     <h2 className="text-center text-2xl font-bold text-teal-800 mb-4">Choose Your Best Plan</h2>
-                    <p className="text-lg leading-7 text-center mb-6">
-                        Savor delectable cuisine with AI Chefmaster and join our thriving community of over 40,000 satisfied food lovers! Your culinary journey begins here, where AI meets flavor, and every dish is a masterpiece.
-                    </p>
                 </div>
 
                 <div className="relative self-center bg-slate-200 rounded-lg p-0.5 flex">

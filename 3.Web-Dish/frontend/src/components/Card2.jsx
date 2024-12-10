@@ -4,7 +4,12 @@ import { FaStar } from "react-icons/fa";
 import "./Card2.css";
 import { Link } from "react-router-dom";
 
-const Card2 = ({ title, imageUrl, time, rating, dishPath }) => {
+const Card2 = ({ title, imageUrl, time, rating, dishPath, dishType }) => {
+
+  const dishTypeIcon =
+  (dishType?.toLowerCase() || "") === "vegetarian" ? "/assets/veg.png" : "/assets/nonveg.png";
+
+
   return (
     <Link to={dishPath} onClick={() => window.scrollTo(0, 0)} className="flex justify-center h-full">
       <div className="card bg-[#00544f] rounded-lg overflow-hidden h-full card-hover-effect relative">
@@ -15,6 +20,12 @@ const Card2 = ({ title, imageUrl, time, rating, dishPath }) => {
             src={imageUrl}
             alt={title} 
           />   
+
+            {/* Dish Type Icon */}
+          <div className="absolute top-2 left-2 w-5 h-5">
+            <img src={dishTypeIcon} alt={dishType} className="w-full h-full object-cover" />
+          </div>
+
           {/* Rating */}
           <div className="rating-container absolute top-0 right-0 p-2">
             <div className="rating-content">

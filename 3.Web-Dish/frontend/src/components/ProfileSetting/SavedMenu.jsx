@@ -8,7 +8,11 @@ function SavedMenu() {
             <FaSave className="mr-3" size={25} />
             <h1 className="text-lg md:text-2xl font-bold">Saved Menu</h1>
       </div>
-        
+
+      <div>No Recipe</div>
+
+
+{/*         
         <div className="flex flex-col justify-center align-middle items-center gap-4">
           <div className="flex gap-5">
             <label className="text-lg font-semibold">Breakfast</label>
@@ -31,7 +35,7 @@ function SavedMenu() {
               <button className="text-[#00544f] hover:text-white bg-transparent hover:bg-[#00544f] border border-[#00544f] rounded-md px-3 py-1 transition duration-300 ease-in-out">Edit</button>
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
    );
 }

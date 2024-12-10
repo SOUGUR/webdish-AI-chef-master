@@ -35,10 +35,6 @@ const SingleDish = (props) => {
           <div className="flex flex-col w-full md:5/12">
             <div className="text-4xl md:text-4xl font-bold my-3 flex flex-row">
               {dishTitle}
-              <FaTelegramPlane onClick={() => setIsShareOpen(!isShareOpen) } 
-                title="Share Dish" 
-                className="cursor-pointer mt-4 hover:text-[#00544f] h-6 hover:scale-105 transition-all ml-10 text-[20]"  
-              />
             </div>
             <div
               className={`${
@@ -50,8 +46,8 @@ const SingleDish = (props) => {
               {dishType}
             </div>
 
-            <div className="flex flex-col justify-between  ">
-              <div className="flex items-center   justify-around text-white space-y-4 md:space-y-0 md:space-x-4 bg-[#00544f] py-2 rounded-2xl">
+            <div className="flex flex-col justify-between">
+              <div className="flex flex-wrap items-center justify-between text-white gap-1 bg-[#00544f] py-2 px-6 rounded-2xl ">
                 <div className="flex flex-col items-center md:flex-row gap-3">
                   <BsFillStopwatchFill className="text-4xl md:mt-2" />
                   <div className="font-semibold text-sm md:text-base">
@@ -77,10 +73,11 @@ const SingleDish = (props) => {
                 </div> */}
 
                 <div className="flex flex-col items-center md:flex-row gap-3">
-                  <FaMapLocationDot className="text-4xl md:mt-2" />
+                <FaTelegramPlane onClick={() => setIsShareOpen(!isShareOpen) } 
+                className="h-9 w-8 cursor-pointer hover:scale-105 transition-all text-[20]"/>
                   <div className="font-semibold text-sm md:text-base">
-                    <p className="text-xs md:text-sm">State</p>
-                    <p className="text-xs md:text-sm">{dishState}</p>
+                    <p className="text-xs md:text-sm">Share</p>
+                    <p className="text-xs md:text-sm">Dish</p>
                   </div>
                 </div>
 
