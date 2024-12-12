@@ -18,6 +18,7 @@ import random
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import uuid
 
 app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True)
@@ -290,85 +291,169 @@ def get_steps(id):
 EMAIL_USER = os.getenv('EMAIL_USER')
 EMAIL_PASS = os.getenv('EMAIL_PASS')
 
-otp_store = {}
-email_verified_store = {}
+# OTP System
+def send_otp_email(email, html_content):
+    try:
+        msg = MIMEMultipart()
+        msg['From'] = EMAIL_USER
+        msg['To'] = email
+        msg['Subject'] = "Login OTP for 2-Step Verification"
 
+        body = html_content
+        msg.attach(MIMEText(body, 'html'))
 
-def generate_otp():
-    return str(random.randint(100000, 999999))
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        text = msg.as_string()
+        server.sendmail(EMAIL_USER, email, text)
+        server.quit()
+        return True
+    except Exception as e:
+        return False
 
-
-def send_otp_email(email, otp):
-    msg = MIMEMultipart()
-    msg['From'] = EMAIL_USER
-    msg['To'] = email
-    msg['Subject'] = "Login OTP for 2-Step Verification"
-
-    body = f"Your OTP for login is: {otp}"
-    msg.attach(MIMEText(body, 'plain'))
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(EMAIL_USER, EMAIL_PASS)
-    text = msg.as_string()
-    server.sendmail(EMAIL_USER, email, text)
-    server.quit()
-
+def gen_ticket():
+    random_string = uuid.uuid4().hex[:45]
+    return f"{random_string}"
 
 @app.route('/chef/send-otp', methods=['POST'])
 def send_otp():
-    data = request.get_json()
-    username = data.get('email')  # The 'email' field actually contains the username
-    print(username)
-
-    if not username:
-        return jsonify(message='Username is required'), 400
-
-    # Check if user exists
-    user = db.Chef.find_one({'userId': username})
-    if not user:
-        return jsonify(message='User not found'), 404
-
-    email = user.get('email')
-    if not email:
-        return jsonify(message='Email not found for this user'), 404
-
-    # Generate and send OTP
-    otp = generate_otp()
-    otp_store[email] = otp
     try:
-        send_otp_email(email, otp)
-        return jsonify(message='OTP sent successfully'), 200
+        data = request.get_json()
+        userId = data.get("email")
+        finder = db.Chef.find_one({"userId":userId})
+        if not finder:
+            return jsonify({"msg":"User not found."})
+        otp = str(random.randint(111111, 1000000))
+        html_content = f"""<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Chef Master - OTP Email</title>
+  <style>
+    body {{
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f6f6f6;
+      color: #333;
+    }}
+    .email-container {{
+      max-width: 600px;
+      margin: 20px auto;
+      background-color: #ffffff;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+    }}
+    .email-header {{
+      background-color: #FF6F61;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      position: relative;
+    }}
+    .email-header img {{
+      max-height: 50px;
+      margin-bottom: 10px;
+    }}
+    .email-body {{
+      padding: 20px;
+      text-align: center;
+    }}
+    .email-body h1 {{
+      font-size: 32px;
+      color: #FF6F61;
+      margin-bottom: 10px;
+    }}
+    .otp-code {{
+      display: inline-block;
+      font-size: 24px;
+      font-weight: bold;
+      background-color: #f9f9f9;
+      color: #333;
+      padding: 10px 20px;
+      border: 1px dashed #FF6F61;
+      margin: 20px 0;
+    }}
+    .email-body p {{
+      font-size: 16px;
+      color: #555;
+    }}
+    .email-footer {{
+      background-color: #f6f6f6;
+      text-align: center;
+      padding: 10px;
+      font-size: 12px;
+      color: #888;
+    }}
+    @media (max-width: 600px) {{
+      .email-container {{
+        width: 100%;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+      }}
+      .email-header, .email-footer {{
+        font-size: 18px;
+      }}
+    }}
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="email-header">
+      <img src="https://www.aichefmaster.com/assets/logo.jpeg" alt="AI Chef Master Logo">
+      <p>Secure Your Account</p>
+    </div>
+    <div class="email-body">
+      <p>Hello {finder['firstName']},</p>
+      <p>Use the following One-Time Password (OTP) to complete your process:</p>
+      <div class="otp-code">{otp}</div>
+      <p>This OTP is valid for 5 minutes.</p>
+      <p>If you did not request this, please ignore this email or contact support.</p>
+      <p>Thank you,<br>Team AI Chef Master</p>
+    </div>
+    <div class="email-footer">
+      © 2024 AI Chef Master. All rights reserved.
+    </div>
+  </div>
+</body>
+</html>
+"""
+        status = send_otp_email(finder['email'], html_content)
+        ticket = gen_ticket(userId)
+        if db.UserOTP.count_documents({"ticket":ticket})>0:
+            ticket = gen_ticket(userId)
+        db.UserOTP.insert_one({"ticket":ticket, "otp":otp, "time":datetime.utcnow()})
+        if status:
+            return jsonify({"ticket":f"{ticket}"})
+        else:
+            return jsonify({"msg":"error"})
     except Exception as e:
-        print(f"Error sending OTP: {str(e)}")
-        return jsonify(message='Failed to send OTP. Please try again.'+str(e)), 500
+        return jsonify({"msg":"e"+str(e)}), 500
 
 
 @app.route('/chef/verify-otp', methods=['POST'])
 def verify_otp():
     data = request.get_json()
-    username = data.get('email')
+    ticket = data.get('ticket')
     # Check if user exists
-    user = db.Chef.find_one({'userId': username})
-    if not user:
+    ticket = db.UserOTP.find_one({'ticket': ticket})
+    if not ticket:
         return jsonify(message='User not found'), 404
 
-    email = user.get('email')
-    otp = data.get('otp')
+    real_otp = ticket.get('otp')
+    data_otp = data.get('otp')
 
-    if not email or not otp:
-        return jsonify(message='Email and OTP are required'), 400
+    if not ticket or not data_otp:
+        return jsonify(message='OTP is required'), 400
 
-    stored_otp = otp_store.get(email)
-    if not stored_otp or stored_otp != otp:
+    if not data_otp or real_otp != data_otp:
         return jsonify(message='Invalid OTP'), 401
-
-    # OTP is valid
-    otp_store.pop(email, None)
-
-    email_verified_store[email] = True
-
-    return jsonify(message='Email verified successfully'), 200
+    if real_otp == data_otp:
+        return jsonify(message='Email verified successfully'), 200
 
 
 @app.route('/chef/login', methods=['POST'])
